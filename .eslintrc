@@ -1,0 +1,23 @@
+{
+  "rules": {
+    "indent": [2, 2],
+    "quotes": [2, "single"],
+    "linebreak-style": [2, "unix"],
+    "semi": [2, "always"],
+    "comma-spacing": [2, {"before": false, "after": true}],
+    "comma-style": [2, "last"],
+    "no-multiple-empty-lines": [2, {"max": 1}],
+    "camelcase": [2, {"properties": "never"}],
+    "space-after-keywords": [2, "always"],
+    "operator-assignment": [2, "always"],
+    "block-spacing": [2, "always"],
+    "no-with": [2],
+    "max-len": [2, 80, 4]
+  },
+  "env": {
+    "browser": false,
+    "node": true,
+    "es6": true
+  },
+  "extends": "eslint:recommended"
+}
