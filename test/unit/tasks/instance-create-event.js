@@ -17,27 +17,27 @@ loadenv({ project: 'link', debugName: 'link:test' });
 var Promise = require('bluebird');
 var TaskFatalError = require('ponos').TaskFatalError;
 
-var instanceUpdateEvent = require('tasks/instance-update-event');
+var instanceCreateEvent = require('tasks/instance-create-event');
 var NaviEntry = require('models/navi-entry');
 
 describe('link', function() {
   describe('tasks', function() {
     var ctx = {};
-    describe('instance-update-event', function() {
+    describe('instance-create-event', function() {
       beforeEach(function (done) {
         ctx.updateResults = { updateResults: true };
-        sinon.stub(NaviEntry, 'handleInstanceUpdate').returns(Promise.resolve(ctx.updateResults));
+        sinon.stub(NaviEntry, 'handleNewInstance').returns(Promise.resolve(ctx.updateResults));
         done();
       });
 
       afterEach(function (done) {
-        NaviEntry.handleInstanceUpdate.restore();
+        NaviEntry.handleNewInstance.restore();
         done();
       });
 
       it('should fatally reject without a job', function(done) {
         var job = null;
-        instanceUpdateEvent(job).asCallback(function (err) {
+        instanceCreateEvent(job).asCallback(function (err) {
           expect(err).to.be.an.instanceof(TaskFatalError);
           expect(err.message).to.match(/non-object job/);
           done();
@@ -46,19 +46,19 @@ describe('link', function() {
 
       it('should fatally reject without object `instance`', function(done) {
         var job = { instance: [] };
-        instanceUpdateEvent(job).asCallback(function (err) {
+        instanceCreateEvent(job).asCallback(function (err) {
           expect(err).to.be.an.instanceof(TaskFatalError);
           expect(err.message).to.match(/instance.*object/);
           done();
         });
       });
 
-      it('should call naviEntry.handleInstanceUpdate with the instance', function (done) {
+      it('should call naviEntry.handleNewInstance with the instance', function (done) {
         var job = { instance: { _id: 1234 } };
-        instanceUpdateEvent(job)
+        instanceCreateEvent(job)
           .then(function (results) {
-            sinon.assert.calledOnce(NaviEntry.handleInstanceUpdate);
-            sinon.assert.calledWith(NaviEntry.handleInstanceUpdate, { instance: job.instance });
+            sinon.assert.calledOnce(NaviEntry.handleNewInstance);
+            sinon.assert.calledWith(NaviEntry.handleNewInstance, { instance: job.instance });
             expect(results).to.equal(ctx.updateResults);
             done();
           })
