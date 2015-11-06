@@ -20,8 +20,6 @@ var TaskFatalError = require('ponos').TaskFatalError;
 var instanceUpdateEvent = require('tasks/instance-update-event');
 var NaviEntry = require('models/navi-entry');
 
-
-
 describe('link', function() {
   describe('tasks', function() {
     var ctx = {};
@@ -66,6 +64,6 @@ describe('link', function() {
           })
           .catch(done);
       });
-    }); // end 'instance-update-event'
-  }); // end 'tasks'
-}); // end 'metis'
+    });
+  });
+});

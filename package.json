@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "eslint": "eslint lib/",
-    "test": "npm run eslint && NODE_PATH=./lib NODE_ENV=test lab -v -c -a code test",
+    "test": "npm run eslint && npm run unit",
+    "unit": "NODE_PATH=./lib NODE_ENV=test lab -v -c -a code test",
     "start": "NODE_PATH=./lib node lib/index.js"
   },
   "author": "Ryan Kahn <kahn@runnable.com>",
@@ -16,6 +17,8 @@
     "bunyan": "^1.5.1",
     "keypather": "^1.10.1",
     "loadenv": "^2.1.0",
+    "mongoose": "~3.8.24",
+    "mongoose-validator": "~1.0.3",
     "ponos": "^1.1.0"
   },
   "devDependencies": {
