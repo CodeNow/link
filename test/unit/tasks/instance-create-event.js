@@ -22,11 +22,11 @@ var NaviEntry = require('models/navi-entry');
 
 describe('link', function() {
   describe('tasks', function() {
-    var ctx = {};
+    var updateResults;
     describe('instance-create-event', function() {
       beforeEach(function (done) {
-        ctx.updateResults = { updateResults: true };
-        sinon.stub(NaviEntry, 'handleNewInstance').returns(Promise.resolve(ctx.updateResults));
+        updateResults = { updateResults: true };
+        sinon.stub(NaviEntry, 'handleNewInstance').returns(Promise.resolve(updateResults));
         done();
       });
 
@@ -59,7 +59,7 @@ describe('link', function() {
           .then(function (results) {
             sinon.assert.calledOnce(NaviEntry.handleNewInstance);
             sinon.assert.calledWith(NaviEntry.handleNewInstance, { instance: job.instance });
-            expect(results).to.equal(ctx.updateResults);
+            expect(results).to.equal(updateResults);
             done();
           })
           .catch(done);

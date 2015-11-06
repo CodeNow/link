@@ -18,10 +18,10 @@ var NaviEntry = require('models/navi-entry');
 
 describe('link', function() {
   describe('models', function() {
-    var ctx = {};
+    var mockInstance;
     describe('navi-entry', function() {
       beforeEach(function (done) {
-        ctx.mockInstance = {
+        mockInstance = {
           shortHash: 'instanceID',
           getElasticHostname: sinon.stub().returns('elasticHostname.example.com'),
           getDirectHostname: sinon.stub().returns('directHostname.example.com'),
@@ -41,7 +41,7 @@ describe('link', function() {
       describe('handleNewInstance', function () {
         describe('masterPod Instance', function (){
           beforeEach(function (done) {
-            ctx.mockInstance.masterPod = true;
+            mockInstance.masterPod = true;
             sinon.stub(NaviEntry.prototype, 'save');
             done();
           });
@@ -55,13 +55,13 @@ describe('link', function() {
               done();
             });
             it('should create a navi entry', function (done) {
-              NaviEntry.handleNewInstance(ctx.mockInstance)
+              NaviEntry.handleNewInstance(mockInstance)
                 .catch(done)
                 .then(function () {
-                  sinon.assert.calledOnce(ctx.mockInstance.getElasticHostname);
-                  sinon.assert.calledOnce(ctx.mockInstance.getDirectHostname);
-                  sinon.assert.calledOnce(ctx.mockInstance.getMainBranchName);
-                  sinon.assert.calledOnce(ctx.mockInstance.getDependencies);
+                  sinon.assert.calledOnce(mockInstance.getElasticHostname);
+                  sinon.assert.calledOnce(mockInstance.getDirectHostname);
+                  sinon.assert.calledOnce(mockInstance.getMainBranchName);
+                  sinon.assert.calledOnce(mockInstance.getDependencies);
                   sinon.assert.calledOnce(NaviEntry.prototype.save);
                   var naviEntryValue = NaviEntry.prototype.save.lastCall.thisValue;
                   expect(naviEntryValue.elasticUrl, 'elastic URL').to.equal('elasticHostname.example.com');
@@ -80,16 +80,17 @@ describe('link', function() {
             });
           });
           describe('db err', function () {
+            var err;
             beforeEach(function (done) {
-              ctx.err = new Error('boom');
-              NaviEntry.prototype.save.yieldsAsync(ctx.err);
+              err = new Error('boom');
+              NaviEntry.prototype.save.yieldsAsync(err);
               done();
             });
             it('should callback err if db errs', function (done) {
-              NaviEntry.handleNewInstance(ctx.mockInstance)
-                .catch(function (err) {
-                  expect(err).to.exist();
-                  expect(err.message).to.equal(ctx.err.message);
+              NaviEntry.handleNewInstance(mockInstance)
+                .catch(function (returnedErr) {
+                  expect(returnedErr).to.exist();
+                  expect(returnedErr.message).to.equal(err.message);
                   done();
                 })
                 .catch(done);
@@ -98,7 +99,7 @@ describe('link', function() {
         });
         describe('non masterPod Instance', function (){
           beforeEach(function (done) {
-            ctx.mockInstance.masterPod = false;
+            mockInstance.masterPod = false;
             sinon.stub(NaviEntry, 'findOneAndUpdate');
             done();
           });
@@ -112,7 +113,7 @@ describe('link', function() {
               done();
             });
             it('should create a navi entry', function (done) {
-              NaviEntry.handleNewInstance(ctx.mockInstance)
+              NaviEntry.handleNewInstance(mockInstance)
                 .catch(done)
                 .then(function () {
                   sinon.assert.calledWith(
@@ -138,15 +139,17 @@ describe('link', function() {
             });
           });
           describe('db err', function () {
+            var err;
             beforeEach(function (done) {
-              ctx.err = new Error('boom');
-              NaviEntry.findOneAndUpdate.yieldsAsync(ctx.err);
+              err = new Error('boom');
+              NaviEntry.findOneAndUpdate.yieldsAsync(err);
               done();
             });
             it('should callback err if db errs', function (done) {
-              NaviEntry.handleNewInstance(ctx.mockInstance)
-                .catch(function (err) {
-                  expect(err).to.equal(err);
+              NaviEntry.handleNewInstance(mockInstance)
+                .catch(function (returnedErr) {
+                  expect(returnedErr).to.exist();
+                  expect(returnedErr.message).to.equal(err.message);
                   done();
                 });
             });
@@ -164,16 +167,17 @@ describe('link', function() {
         });
 
         describe('db err', function () {
+          var err;
           beforeEach(function (done) {
-            ctx.err = new Error('boom');
-            NaviEntry.findOneAndUpdate.yieldsAsync(ctx.err);
+            err = new Error('boom');
+            NaviEntry.findOneAndUpdate.yieldsAsync(err);
             done();
           });
           it('should callback err if db errs', function (done) {
-            NaviEntry.handleInstanceUpdate(ctx.mockInstance)
-              .catch(function (err) {
-                expect(err).to.exist();
-                expect(err.message).to.equal(ctx.err.message);
+            NaviEntry.handleInstanceUpdate(mockInstance)
+              .catch(function (returnedErr) {
+                expect(returnedErr).to.exist();
+                expect(returnedErr.message).to.equal(err.message);
                 done();
               })
               .catch(done);
@@ -182,7 +186,7 @@ describe('link', function() {
 
         describe('running', function (){
           beforeEach(function (done) {
-            ctx.mockInstance.container = {
+            mockInstance.container = {
               dockerHost: '10.0.0.1',
               ports: [80, 3000],
               Running: true
@@ -190,7 +194,7 @@ describe('link', function() {
             done();
           });
           it('should update the database', function (done) {
-            NaviEntry.handleInstanceUpdate(ctx.mockInstance)
+            NaviEntry.handleInstanceUpdate(mockInstance)
               .catch(done)
               .then(function () {
                 sinon.assert.calledWith(
@@ -200,8 +204,8 @@ describe('link', function() {
                   }, {
                     $set: {
                       'direct-urls.instanceID': {
-                        ports: ctx.mockInstance.container.ports,
-                        dockerHost: ctx.mockInstance.container.dockerHost,
+                        ports: mockInstance.container.ports,
+                        dockerHost: mockInstance.container.dockerHost,
                         running: true,
                         branch: 'branchName',
                         dependencies: [{dep: 1}],
@@ -219,8 +223,8 @@ describe('link', function() {
       describe('_getDirectURlObj', function (){
         it('should handle error fetching dependencies', function (done) {
           var err = new Error('Hello!');
-          ctx.mockInstance.getDependencies.yieldsAsync(err);
-          NaviEntry._getDirectURlObj(ctx.mockInstance)
+          mockInstance.getDependencies.yieldsAsync(err);
+          NaviEntry._getDirectURlObj(mockInstance)
             .catch(function (returnedError){
               expect(returnedError).to.exist();
               expect(returnedError.message).to.equal(err.message);
@@ -229,10 +233,10 @@ describe('link', function() {
             .catch(done);
         });
         it('should return the direct url object', function (done) {
-          NaviEntry._getDirectURlObj(ctx.mockInstance)
+          NaviEntry._getDirectURlObj(mockInstance)
             .catch(done)
             .then(function (data){
-              sinon.assert.calledOnce(ctx.mockInstance.getDependencies);
+              sinon.assert.calledOnce(mockInstance.getDependencies);
               expect(data).to.deep.equal({
                 branch: 'branchName',
                 url: 'directHostname.example.com',
