@@ -9,6 +9,7 @@ var afterEach = lab.afterEach;
 var Code = require('code');
 var expect = Code.expect;
 var sinon = require('sinon');
+var Runnable = require('runnable');
 
 var loadenv = require('loadenv');
 loadenv.restore();
@@ -22,10 +23,11 @@ describe('link', function() {
     describe('navi-entry', function() {
       beforeEach(function (done) {
         mockInstance = {
+          _id: 'instanceID',
           shortHash: 'instanceID',
           getElasticHostname: sinon.stub().returns('elasticHostname.example.com'),
-          getDirectHostname: sinon.stub().returns('directHostname.example.com'),
-          getMainBranchName: sinon.stub().returns('branchName'),
+          getContainerHostname: sinon.stub().returns('directHostname.example.com'),
+          getBranchName: sinon.stub().returns('branchName'),
           getDependencies: sinon.stub().yieldsAsync(null, [{dep:1}]),
           owner: {
             github: 1234,
@@ -59,8 +61,8 @@ describe('link', function() {
                 .catch(done)
                 .then(function () {
                   sinon.assert.calledOnce(mockInstance.getElasticHostname);
-                  sinon.assert.calledOnce(mockInstance.getDirectHostname);
-                  sinon.assert.calledOnce(mockInstance.getMainBranchName);
+                  sinon.assert.calledOnce(mockInstance.getContainerHostname);
+                  sinon.assert.calledOnce(mockInstance.getBranchName);
                   sinon.assert.calledOnce(mockInstance.getDependencies);
                   sinon.assert.calledOnce(NaviEntry.prototype.save);
                   var naviEntryValue = NaviEntry.prototype.save.lastCall.thisValue;
