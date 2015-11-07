@@ -7,7 +7,7 @@
     "standard": "standard lib/**/*.js",
     "standard-test": "standard test/**/*.js",
     "test": "npm run standard && npm run standard-test && npm run unit",
-    "unit": "NODE_PATH=./lib NODE_ENV=test lab -v -c -a code test",
+    "unit": "NODE_PATH=./lib NODE_ENV=test lab --leaks -v -c -a code test",
     "start": "NODE_PATH=./lib node lib/index.js"
   },
   "author": "Ryan Kahn <kahn@runnable.com>",

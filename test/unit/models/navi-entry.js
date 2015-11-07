@@ -9,7 +9,7 @@ var afterEach = lab.afterEach
 var Code = require('code')
 var expect = Code.expect
 var sinon = require('sinon')
-// var Runnable = require('runnable')
+var Runnable = require('runnable')
 
 var loadenv = require('loadenv')
 loadenv.restore()
@@ -20,15 +20,12 @@ var NaviEntry = require('models/navi-entry')
 describe('link', function () {
   describe('models', function () {
     var mockInstance
+    var mockRunnableInstance
     describe('navi-entry', function () {
       beforeEach(function (done) {
         mockInstance = {
           _id: 'instanceID',
           shortHash: 'instanceID',
-          getElasticHostname: sinon.stub().returns('elasticHostname.example.com'),
-          getContainerHostname: sinon.stub().returns('directHostname.example.com'),
-          getBranchName: sinon.stub().returns('branchName'),
-          getDependencies: sinon.stub().yieldsAsync(null, [{dep: 1}]),
           owner: {
             github: 1234,
             username: 'Myztiq'
@@ -38,6 +35,18 @@ describe('link', function () {
             Running: false
           }
         }
+        mockRunnableInstance = {
+          getElasticHostname: sinon.stub().returns('elasticHostname.example.com'),
+          getContainerHostname: sinon.stub().returns('directHostname.example.com'),
+          getBranchName: sinon.stub().returns('branchName'),
+          getDependencies: sinon.stub().yieldsAsync(null, [{dep: 1}]),
+          attrs: mockInstance
+        }
+        sinon.stub(Runnable.prototype, 'newInstance').returns(mockRunnableInstance)
+        done()
+      })
+      afterEach(function (done) {
+        Runnable.prototype.newInstance.restore()
         done()
       })
       describe('handleNewInstance', function () {
@@ -60,15 +69,17 @@ describe('link', function () {
               NaviEntry.handleNewInstance(mockInstance)
                 .catch(done)
                 .then(function () {
-                  sinon.assert.calledOnce(mockInstance.getElasticHostname)
-                  sinon.assert.calledOnce(mockInstance.getContainerHostname)
-                  sinon.assert.calledOnce(mockInstance.getBranchName)
-                  sinon.assert.calledOnce(mockInstance.getDependencies)
+                  sinon.assert.calledOnce(Runnable.prototype.newInstance)
+                  sinon.assert.calledOnce(mockRunnableInstance.getElasticHostname)
+                  sinon.assert.calledOnce(mockRunnableInstance.getContainerHostname)
+                  sinon.assert.calledOnce(mockRunnableInstance.getBranchName)
+                  sinon.assert.calledOnce(mockRunnableInstance.getDependencies)
                   sinon.assert.calledOnce(NaviEntry.prototype.save)
                   var naviEntryValue = NaviEntry.prototype.save.lastCall.thisValue
+                  console.log('naviEntryValue', naviEntryValue)
                   expect(naviEntryValue.elasticUrl, 'elastic URL').to.equal('elasticHostname.example.com')
                   expect(naviEntryValue.ownerGithubId, 'ownerGithubId').to.equal(1234)
-                  expect(naviEntryValue.directUrls.instanceID, 'DirectUrls').to.deep.equal({
+                  expect(naviEntryValue['directUrls'].instanceID, 'DirectUrls').to.deep.equal({
                     branch: 'branchName',
                     url: 'directHostname.example.com',
                     dependencies: [{dep: 1}],
@@ -102,7 +113,7 @@ describe('link', function () {
         describe('non masterPod Instance', function () {
           beforeEach(function (done) {
             mockInstance.masterPod = false
-            sinon.stub(NaviEntry, 'findOneAndUpdate')
+            sinon.stub(NaviEntry, 'findOneAndUpdate').yieldsAsync()
             done()
           })
           afterEach(function (done) {
@@ -110,10 +121,6 @@ describe('link', function () {
             done()
           })
           describe('db success', function () {
-            beforeEach(function (done) {
-              NaviEntry.findOneAndUpdate.yieldsAsync()
-              done()
-            })
             it('should create a navi entry', function (done) {
               NaviEntry.handleNewInstance(mockInstance)
                 .catch(done)
@@ -121,10 +128,10 @@ describe('link', function () {
                   sinon.assert.calledWith(
                     NaviEntry.findOneAndUpdate,
                     {
-                      'direct-urls.instanceID': {$exists: true}
+                      'directUrls.instanceID': {$exists: true}
                     }, {
                       $set: {
-                        'direct-urls.instanceID': {
+                        'directUrls.instanceID': {
                           branch: 'branchName',
                           url: 'directHostname.example.com',
                           dependencies: [{dep: 1}],
@@ -202,10 +209,10 @@ describe('link', function () {
                 sinon.assert.calledWith(
                   NaviEntry.findOneAndUpdate,
                   {
-                    'direct-urls.instanceID': {$exists: true}
+                    'directUrls.instanceID': {$exists: true}
                   }, {
                     $set: {
-                      'direct-urls.instanceID': {
+                      'directUrls.instanceID': {
                         ports: mockInstance.container.ports,
                         dockerHost: mockInstance.container.dockerHost,
                         running: true,
@@ -225,8 +232,8 @@ describe('link', function () {
       describe('_getDirectURlObj', function () {
         it('should handle error fetching dependencies', function (done) {
           var err = new Error('Hello!')
-          mockInstance.getDependencies.yieldsAsync(err)
-          NaviEntry._getDirectURlObj(mockInstance)
+          mockRunnableInstance.getDependencies.yieldsAsync(err)
+          NaviEntry._getDirectURlObj(mockRunnableInstance)
             .catch(function (returnedError) {
               expect(returnedError).to.exist()
               expect(returnedError.message).to.equal(err.message)
@@ -235,10 +242,10 @@ describe('link', function () {
             .catch(done)
         })
         it('should return the direct url object', function (done) {
-          NaviEntry._getDirectURlObj(mockInstance)
+          NaviEntry._getDirectURlObj(mockRunnableInstance)
             .catch(done)
             .then(function (data) {
-              sinon.assert.calledOnce(mockInstance.getDependencies)
+              sinon.assert.calledOnce(mockRunnableInstance.getDependencies)
               expect(data).to.deep.equal({
                 branch: 'branchName',
                 url: 'directHostname.example.com',
