@@ -54,11 +54,11 @@ describe('link', function () {
       })
 
       it('should call naviEntry.handleNewInstance with the instance', function (done) {
-        var job = { instance: { _id: 1234 } }
+        var job = { instance: { _id: 1234 }, timestamp: new Date().toString() }
         instanceCreated(job)
           .then(function (results) {
             sinon.assert.calledOnce(NaviEntry.handleNewInstance)
-            sinon.assert.calledWith(NaviEntry.handleNewInstance, { instance: job.instance })
+            sinon.assert.calledWith(NaviEntry.handleNewInstance, job.instance, job.timestamp)
             expect(results).to.equal(updateResults)
             done()
           })

@@ -21,8 +21,10 @@ describe('link', function () {
   describe('models', function () {
     var mockInstance
     var mockRunnableInstance
+    var mockTimestamp
     describe('navi-entry', function () {
       beforeEach(function (done) {
+        mockTimestamp = new Date().toString()
         mockInstance = {
           _id: 'instanceID',
           shortHash: 'instanceID',
@@ -121,15 +123,17 @@ describe('link', function () {
           })
           describe('db success', function () {
             it('should create a navi entry', function (done) {
-              NaviEntry.handleNewInstance(mockInstance)
+              NaviEntry.handleNewInstance(mockInstance, mockTimestamp)
                 .catch(done)
                 .then(function () {
                   sinon.assert.calledWith(
                     NaviEntry.findOneAndUpdate,
                     {
-                      'directUrls.instanceID': {$exists: true}
+                      'directUrls.instanceID': {$exists: true},
+                      lastUpdated: { $lt: mockTimestamp }
                     }, {
                       $set: {
+                        lastUpdated: mockTimestamp,
                         'directUrls.instanceID': {
                           branch: 'branchName',
                           url: 'directHostname.example.com',
@@ -202,15 +206,17 @@ describe('link', function () {
             done()
           })
           it('should update the database', function (done) {
-            NaviEntry.handleInstanceUpdate(mockInstance)
+            NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
               .catch(done)
               .then(function () {
                 sinon.assert.calledWith(
                   NaviEntry.findOneAndUpdate,
                   {
-                    'directUrls.instanceID': {$exists: true}
+                    'directUrls.instanceID': {$exists: true},
+                    lastUpdated: { $lt: mockTimestamp }
                   }, {
                     $set: {
+                      lastUpdated: mockTimestamp,
                       'directUrls.instanceID': {
                         ports: mockInstance.container.ports,
                         dockerHost: mockInstance.container.dockerHost,
