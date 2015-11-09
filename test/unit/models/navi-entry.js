@@ -76,7 +76,6 @@ describe('link', function () {
                   sinon.assert.calledOnce(mockRunnableInstance.getDependencies)
                   sinon.assert.calledOnce(NaviEntry.prototype.save)
                   var naviEntryValue = NaviEntry.prototype.save.lastCall.thisValue
-                  console.log('naviEntryValue', naviEntryValue)
                   expect(naviEntryValue.elasticUrl, 'elastic URL').to.equal('elasticHostname.example.com')
                   expect(naviEntryValue.ownerGithubId, 'ownerGithubId').to.equal(1234)
                   expect(naviEntryValue['directUrls'].instanceID, 'DirectUrls').to.deep.equal({
