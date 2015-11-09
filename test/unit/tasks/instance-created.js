@@ -67,7 +67,7 @@ describe('link', function () {
         instanceCreated(job)
           .then(function (results) {
             sinon.assert.calledOnce(NaviEntry.handleNewInstance)
-            sinon.assert.calledWith(NaviEntry.handleNewInstance, job.instance, job.timestamp)
+            sinon.assert.calledWith(NaviEntry.handleNewInstance, job.instance, new Date(job.timestamp))
             expect(results).to.equal(updateResults)
             done()
           })
