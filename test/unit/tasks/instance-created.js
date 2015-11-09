@@ -53,6 +53,15 @@ describe('link', function () {
         })
       })
 
+      it('should fatally reject without object `timestamp`', function (done) {
+        var job = { instance: {} }
+        instanceCreated(job).asCallback(function (err) {
+          expect(err).to.be.an.instanceof(TaskFatalError)
+          expect(err.message).to.match(/timestamp.*string/)
+          done()
+        })
+      })
+
       it('should call naviEntry.handleNewInstance with the instance', function (done) {
         var job = { instance: { _id: 1234 }, timestamp: new Date().toString() }
         instanceCreated(job)
