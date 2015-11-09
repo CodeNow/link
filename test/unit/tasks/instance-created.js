@@ -17,7 +17,7 @@ loadenv({ project: 'link', debugName: 'link:test' })
 var Promise = require('bluebird')
 var TaskFatalError = require('ponos').TaskFatalError
 
-var instanceCreateEvent = require('tasks/instance-create-event')
+var instanceCreated = require('tasks/instance-created')
 var NaviEntry = require('models/navi-entry')
 
 describe('link', function () {
@@ -37,7 +37,7 @@ describe('link', function () {
 
       it('should fatally reject without a job', function (done) {
         var job = null
-        instanceCreateEvent(job).asCallback(function (err) {
+        instanceCreated(job).asCallback(function (err) {
           expect(err).to.be.an.instanceof(TaskFatalError)
           expect(err.message).to.match(/non-object job/)
           done()
@@ -46,7 +46,7 @@ describe('link', function () {
 
       it('should fatally reject without object `instance`', function (done) {
         var job = { instance: [] }
-        instanceCreateEvent(job).asCallback(function (err) {
+        instanceCreated(job).asCallback(function (err) {
           expect(err).to.be.an.instanceof(TaskFatalError)
           expect(err.message).to.match(/instance.*object/)
           done()
@@ -55,7 +55,7 @@ describe('link', function () {
 
       it('should call naviEntry.handleNewInstance with the instance', function (done) {
         var job = { instance: { _id: 1234 } }
-        instanceCreateEvent(job)
+        instanceCreated(job)
           .then(function (results) {
             sinon.assert.calledOnce(NaviEntry.handleNewInstance)
             sinon.assert.calledWith(NaviEntry.handleNewInstance, { instance: job.instance })
