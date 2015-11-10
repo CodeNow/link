@@ -7,7 +7,7 @@
     "standard": "standard lib/**/*.js",
     "standard-test": "standard test/**/*.js",
     "test": "npm run standard && npm run standard-test && npm run unit && npm run functional",
-    "unit": "NODE_PATH=./lib NODE_ENV=test lab --leaks -v -c -a code test",
+    "unit": "NODE_PATH=./lib NODE_ENV=test lab --leaks -v -c -a code test/unit",
     "functional": "NODE_PATH=./lib NODE_ENV=test lab  --leaks -v -a code test/functional",
     "start": "NODE_PATH=./lib node lib/index.js"
   },
@@ -19,7 +19,7 @@
     "bunyan": "^1.5.1",
     "keypather": "^1.10.1",
     "loadenv": "^2.1.0",
-    "mongoose": "~3.8.24",
+    "mongoose": "^4.2.5",
     "mongoose-validator": "~1.0.3",
     "ponos": "^1.1.0",
     "runnable": "git+ssh://git@github.com:CodeNow/runnable-api-client#v4.6.7"

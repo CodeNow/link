@@ -46,10 +46,12 @@ describe('link', function () {
           attrs: mockInstance
         }
         sinon.stub(Runnable.prototype, 'newInstance').returns(mockRunnableInstance)
+        sinon.stub(Runnable.prototype, 'githubLogin').yieldsAsync(null)
         done()
       })
       afterEach(function (done) {
         Runnable.prototype.newInstance.restore()
+        Runnable.prototype.githubLogin.restore()
         done()
       })
       describe('handleNewInstance', function () {
