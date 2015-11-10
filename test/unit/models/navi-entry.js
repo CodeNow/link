@@ -189,8 +189,6 @@ describe('link', function () {
           it('should callback err if db errs', function (done) {
             NaviEntry.handleInstanceUpdate(mockInstance)
               .catch(function (returnedErr) {
-                console.log(returnedErr)
-                console.log(returnedErr.message)
                 expect(returnedErr).to.be.an.instanceof(TaskFatalError)
                 expect(returnedErr.message).to.match(/findOneAndUpdate/)
                 done()
@@ -249,6 +247,19 @@ describe('link', function () {
             })
             .catch(done)
         })
+        it('should handle 4040 fetching dependencies', function (done) {
+          var err = new Error('Hello!')
+          err.statusCode = 404
+          mockRunnableInstance.fetchDependencies.yieldsAsync(err)
+          NaviEntry._getDirectURlObj(mockRunnableInstance)
+            .catch(function (returnedError) {
+              expect(returnedError).to.exist()
+              expect(returnedError).to.be.an.instanceof(TaskFatalError)
+              expect(returnedError.message).to.match(/not found/)
+              done()
+            })
+            .catch(done)
+        })
         it('should return the direct url object', function (done) {
           NaviEntry._getDirectURlObj(mockRunnableInstance)
             .catch(done)
@@ -265,6 +276,94 @@ describe('link', function () {
               done()
             })
             .catch(done)
+        })
+      })
+      describe('handleInstanceDelete', function () {
+        describe('master instance', function () {
+          beforeEach(function (done) {
+            mockInstance.masterPod = true
+            sinon.stub(NaviEntry, 'findOneAndRemove').yieldsAsync(null)
+            done()
+          })
+
+          afterEach(function (done) {
+            NaviEntry.findOneAndRemove.restore()
+            done()
+          })
+
+          describe('db err', function () {
+            var err
+            beforeEach(function (done) {
+              err = new Error('boom')
+              NaviEntry.findOneAndRemove.yieldsAsync(err)
+              done()
+            })
+            it('should callback err if db errs', function (done) {
+              NaviEntry.handleInstanceDelete(mockInstance)
+                .catch(function (returnedErr) {
+                  expect(returnedErr).to.be.an.instanceof(Error)
+                  expect(returnedErr).to.not.be.an.instanceof(TaskFatalError)
+                  done()
+                })
+                .catch(done)
+            })
+          })
+          it('should update the database', function (done) {
+            NaviEntry.handleInstanceDelete(mockInstance)
+              .catch(done)
+              .then(function () {
+                sinon.assert.calledWith(
+                  NaviEntry.findOneAndRemove,
+                  {
+                    'directUrls.instanceID': {$exists: true}
+                  })
+                done()
+              })
+              .catch(done)
+          })
+        })
+        describe('slave instance', function () {
+          beforeEach(function (done) {
+            mockInstance.masterPod = false
+            sinon.stub(NaviEntry, 'findOneAndUpdate').yieldsAsync(null)
+            done()
+          })
+
+          afterEach(function (done) {
+            NaviEntry.findOneAndUpdate.restore()
+            done()
+          })
+
+          describe('db err', function () {
+            var err
+            beforeEach(function (done) {
+              err = new Error('boom')
+              NaviEntry.findOneAndUpdate.yieldsAsync(err)
+              done()
+            })
+            it('should callback err if db errs', function (done) {
+              NaviEntry.handleInstanceDelete(mockInstance)
+                .catch(function (returnedErr) {
+                  expect(returnedErr).to.be.an.instanceof(TaskFatalError)
+                  expect(returnedErr.message).to.match(/findOneAndUpdate/)
+                  done()
+                })
+                .catch(done)
+            })
+          })
+          it('should update the database', function (done) {
+            NaviEntry.handleInstanceDelete(mockInstance)
+              .catch(done)
+              .then(function () {
+                sinon.assert.calledWith(
+                  NaviEntry.findOneAndUpdate,
+                  {
+                    'directUrls.instanceID': {$exists: true}
+                  })
+                done()
+              })
+              .catch(done)
+          })
         })
       })
     })
