@@ -53,17 +53,17 @@ describe('link', function () {
         })
       })
 
-      it('should fatally reject without object `timestamp`', function (done) {
+      it('should fatally reject without number `timestamp`', function (done) {
         var job = { instance: {} }
         instanceUpdated(job).asCallback(function (err) {
           expect(err).to.be.an.instanceof(TaskFatalError)
-          expect(err.message).to.match(/timestamp.*string/)
+          expect(err.message).to.match(/timestamp.*number/)
           done()
         })
       })
 
       it('should call naviEntry.handleInstanceUpdate with the instance', function (done) {
-        var job = { instance: { _id: 1234 }, timestamp: new Date().toString() }
+        var job = { instance: { _id: 1234 }, timestamp: new Date().valueOf() }
         instanceUpdated(job)
           .then(function (results) {
             sinon.assert.calledOnce(NaviEntry.handleInstanceUpdate)
