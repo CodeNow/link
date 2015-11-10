@@ -19,68 +19,66 @@ var TaskFatalError = require('ponos').TaskFatalError
 var instanceUpdated = require('tasks/instance-updated')
 var NaviEntry = require('models/navi-entry')
 
-describe('link', function () {
-  describe('tasks', function () {
-    var updateResults
-    describe('instance-update-event', function () {
-      beforeEach(function (done) {
-        updateResults = { updateResults: true }
-        sinon.stub(NaviEntry, 'handleInstanceUpdate').returns(Promise.resolve(updateResults))
+describe('tasks', function () {
+  var updateResults
+  describe('instance-update-event', function () {
+    beforeEach(function (done) {
+      updateResults = { updateResults: true }
+      sinon.stub(NaviEntry, 'handleInstanceUpdate').returns(Promise.resolve(updateResults))
+      done()
+    })
+
+    afterEach(function (done) {
+      NaviEntry.handleInstanceUpdate.restore()
+      done()
+    })
+
+    it('should fatally reject without a job', function (done) {
+      var job = null
+      instanceUpdated(job).asCallback(function (err) {
+        expect(err).to.be.an.instanceof(TaskFatalError)
+        expect(err.message).to.match(/non-object job/)
         done()
       })
+    })
 
-      afterEach(function (done) {
-        NaviEntry.handleInstanceUpdate.restore()
+    it('should fatally reject without object `instance`', function (done) {
+      var job = { instance: [] }
+      instanceUpdated(job).asCallback(function (err) {
+        expect(err).to.be.an.instanceof(TaskFatalError)
+        expect(err.message).to.match(/instance.*object/)
         done()
       })
+    })
 
-      it('should fatally reject without a job', function (done) {
-        var job = null
-        instanceUpdated(job).asCallback(function (err) {
-          expect(err).to.be.an.instanceof(TaskFatalError)
-          expect(err.message).to.match(/non-object job/)
+    it('should fatally reject without number `timestamp`', function (done) {
+      var job = { instance: instance }
+      instanceUpdated(job).asCallback(function (err) {
+        expect(err).to.be.an.instanceof(TaskFatalError)
+        expect(err.message).to.match(/timestamp.*number/)
+        done()
+      })
+    })
+
+    it('should fatally reject without `Job.instance.owner.username`', function (done) {
+      var job = { instance: {}, timestamp: new Date().valueOf() }
+      instanceUpdated(job).asCallback(function (err) {
+        expect(err).to.be.an.instanceof(TaskFatalError)
+        expect(err.message).to.match(/username.*string/)
+        done()
+      })
+    })
+
+    it('should call naviEntry.handleInstanceUpdate with the instance', function (done) {
+      var job = { instance: instance, timestamp: new Date().valueOf() }
+      instanceUpdated(job)
+        .then(function (results) {
+          sinon.assert.calledOnce(NaviEntry.handleInstanceUpdate)
+          sinon.assert.calledWith(NaviEntry.handleInstanceUpdate, job.instance, new Date(job.timestamp))
+          expect(results).to.equal(updateResults)
           done()
         })
-      })
-
-      it('should fatally reject without object `instance`', function (done) {
-        var job = { instance: [] }
-        instanceUpdated(job).asCallback(function (err) {
-          expect(err).to.be.an.instanceof(TaskFatalError)
-          expect(err.message).to.match(/instance.*object/)
-          done()
-        })
-      })
-
-      it('should fatally reject without number `timestamp`', function (done) {
-        var job = { instance: instance }
-        instanceUpdated(job).asCallback(function (err) {
-          expect(err).to.be.an.instanceof(TaskFatalError)
-          expect(err.message).to.match(/timestamp.*number/)
-          done()
-        })
-      })
-
-      it('should fatally reject without `Job.instance.owner.username`', function (done) {
-        var job = { instance: {}, timestamp: new Date().valueOf() }
-        instanceUpdated(job).asCallback(function (err) {
-          expect(err).to.be.an.instanceof(TaskFatalError)
-          expect(err.message).to.match(/username.*string/)
-          done()
-        })
-      })
-
-      it('should call naviEntry.handleInstanceUpdate with the instance', function (done) {
-        var job = { instance: instance, timestamp: new Date().valueOf() }
-        instanceUpdated(job)
-          .then(function (results) {
-            sinon.assert.calledOnce(NaviEntry.handleInstanceUpdate)
-            sinon.assert.calledWith(NaviEntry.handleInstanceUpdate, job.instance, new Date(job.timestamp))
-            expect(results).to.equal(updateResults)
-            done()
-          })
-          .catch(done)
-      })
+        .catch(done)
     })
   })
 })
