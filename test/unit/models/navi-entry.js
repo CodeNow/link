@@ -42,7 +42,7 @@ describe('link', function () {
           getElasticHostname: sinon.stub().returns('elasticHostname.example.com'),
           getContainerHostname: sinon.stub().returns('directHostname.example.com'),
           getBranchName: sinon.stub().returns('branchName'),
-          getDependencies: sinon.stub().yieldsAsync(null, [{dep: 1}]),
+          fetchDependencies: sinon.stub().yieldsAsync(null, [{dep: 1}]),
           attrs: mockInstance
         }
         sinon.stub(Runnable.prototype, 'newInstance').returns(mockRunnableInstance)
@@ -76,7 +76,7 @@ describe('link', function () {
                   sinon.assert.calledOnce(mockRunnableInstance.getElasticHostname)
                   sinon.assert.calledOnce(mockRunnableInstance.getContainerHostname)
                   sinon.assert.calledOnce(mockRunnableInstance.getBranchName)
-                  sinon.assert.calledOnce(mockRunnableInstance.getDependencies)
+                  sinon.assert.calledOnce(mockRunnableInstance.fetchDependencies)
                   sinon.assert.calledOnce(NaviEntry.prototype.save)
                   var naviEntryValue = NaviEntry.prototype.save.lastCall.thisValue
                   expect(naviEntryValue.elasticUrl, 'elastic URL').to.equal('elasticHostname.example.com')
@@ -240,7 +240,7 @@ describe('link', function () {
       describe('_getDirectURlObj', function () {
         it('should handle error fetching dependencies', function (done) {
           var err = new Error('Hello!')
-          mockRunnableInstance.getDependencies.yieldsAsync(err)
+          mockRunnableInstance.fetchDependencies.yieldsAsync(err)
           NaviEntry._getDirectURlObj(mockRunnableInstance)
             .catch(function (returnedError) {
               expect(returnedError).to.exist()
@@ -253,7 +253,7 @@ describe('link', function () {
           NaviEntry._getDirectURlObj(mockRunnableInstance)
             .catch(done)
             .then(function (data) {
-              sinon.assert.calledOnce(mockRunnableInstance.getDependencies)
+              sinon.assert.calledOnce(mockRunnableInstance.fetchDependencies)
               expect(data).to.deep.equal({
                 branch: 'branchName',
                 url: 'directHostname.example.com',
