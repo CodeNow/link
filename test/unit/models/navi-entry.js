@@ -16,6 +16,7 @@ loadenv.restore()
 loadenv({ project: 'link', debugName: 'link:test' })
 
 var NaviEntry = require('models/navi-entry')
+var TaskFatalError = require('ponos').TaskFatalError
 
 describe('link', function () {
   describe('models', function () {
@@ -160,8 +161,8 @@ describe('link', function () {
             it('should callback err if db errs', function (done) {
               NaviEntry.handleNewInstance(mockInstance)
                 .catch(function (returnedErr) {
-                  expect(returnedErr).to.exist()
-                  expect(returnedErr.message).to.equal(err.message)
+                  expect(returnedErr).to.be.an.instanceof(TaskFatalError)
+                  expect(returnedErr.message).to.match(/findOneAndUpdate/)
                   done()
                 })
             })
@@ -188,8 +189,10 @@ describe('link', function () {
           it('should callback err if db errs', function (done) {
             NaviEntry.handleInstanceUpdate(mockInstance)
               .catch(function (returnedErr) {
-                expect(returnedErr).to.exist()
-                expect(returnedErr.message).to.equal(err.message)
+                console.log(returnedErr)
+                console.log(returnedErr.message)
+                expect(returnedErr).to.be.an.instanceof(TaskFatalError)
+                expect(returnedErr.message).to.match(/findOneAndUpdate/)
                 done()
               })
               .catch(done)
