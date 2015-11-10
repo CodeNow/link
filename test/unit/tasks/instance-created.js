@@ -9,6 +9,7 @@ var afterEach = lab.afterEach
 var Code = require('code')
 var expect = Code.expect
 var sinon = require('sinon')
+var instance = require('../../mocks/master-instance')
 
 var loadenv = require('loadenv')
 loadenv.restore()
@@ -54,7 +55,7 @@ describe('link', function () {
       })
 
       it('should fatally reject without object `timestamp`', function (done) {
-        var job = { instance: {} }
+        var job = { instance: instance }
         instanceCreated(job).asCallback(function (err) {
           expect(err).to.be.an.instanceof(TaskFatalError)
           expect(err.message).to.match(/timestamp.*number/)
@@ -62,8 +63,17 @@ describe('link', function () {
         })
       })
 
+      it('should fatally reject without `Job.instance.owner.username`', function (done) {
+        var job = { instance: {}, timestamp: new Date().valueOf() }
+        instanceCreated(job).asCallback(function (err) {
+          expect(err).to.be.an.instanceof(TaskFatalError)
+          expect(err.message).to.match(/username.*string/)
+          done()
+        })
+      })
+
       it('should call naviEntry.handleNewInstance with the instance', function (done) {
-        var job = { instance: { _id: 1234 }, timestamp: new Date().valueOf() }
+        var job = { instance: instance, timestamp: new Date().valueOf() }
         instanceCreated(job)
           .then(function (results) {
             sinon.assert.calledOnce(NaviEntry.handleNewInstance)

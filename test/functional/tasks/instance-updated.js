@@ -8,9 +8,13 @@ var beforeEach = lab.beforeEach
 var afterEach = lab.afterEach
 var sinon = require('sinon')
 
+var debug = require('debug')
+
 var loadenv = require('loadenv')
 loadenv.restore()
-loadenv({ project: 'link', debugName: 'link:test' })
+loadenv({ project: 'link', debugName: 'link:env' })
+
+debug('link:test')
 
 var instanceUpdated = require('tasks/instance-updated')
 var NaviEntry = require('models/navi-entry')
