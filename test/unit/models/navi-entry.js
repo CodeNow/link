@@ -249,7 +249,8 @@ describe('link', function () {
         })
         it('should handle 4040 fetching dependencies', function (done) {
           var err = new Error('Hello!')
-          err.statusCode = 404
+          err.data = {}
+          err.data.statusCode = 404
           mockRunnableInstance.fetchDependencies.yieldsAsync(err)
           NaviEntry._getDirectURlObj(mockRunnableInstance)
             .catch(function (returnedError) {
