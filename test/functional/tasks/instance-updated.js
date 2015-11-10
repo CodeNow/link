@@ -40,8 +40,14 @@ describe('functional', function () {
               var set = {
                 $set: {lastUpdated: sinon.match.date}
               }
-              // set.$set['directUrls.' + masterInstance.shortHash] = sinon.match.object
-              console.log(NaviEntry.findOneAndUpdate.lastCall.args)
+              set.$set[ 'directUrls.' + masterInstance.shortHash ] = {
+                branch: masterInstance.contextVersion.appCodeVersions[0].branch,
+                dependencies: [],
+                dockerHost: null,
+                ports: null,
+                running: false,
+                url: masterInstance.shortHash + '-runnable-angular-staging-codenow.runnable2.net'
+              }
               sinon.assert.calledWith(NaviEntry.findOneAndUpdate, find, set, sinon.match.func)
               done()
             })
@@ -71,6 +77,14 @@ describe('functional', function () {
               find['directUrls.' + slaveInstance.shortHash] = {$exists: true}
               var set = {
                 $set: {lastUpdated: sinon.match.date}
+              }
+              set.$set[ 'directUrls.' + slaveInstance.shortHash ] = {
+                branch: slaveInstance.contextVersion.appCodeVersions[0].branch,
+                dependencies: [],
+                dockerHost: null,
+                ports: null,
+                running: false,
+                url: slaveInstance.shortHash + '-runnable-angular-staging-codenow.runnable2.net'
               }
               // set.$set['directUrls.' + slaveInstance.shortHash] = sinon.match.object
               sinon.assert.calledWith(NaviEntry.findOneAndUpdate, find, set, sinon.match.func)
