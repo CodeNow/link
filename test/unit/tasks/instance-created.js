@@ -56,7 +56,7 @@ describe('link', function () {
       it('should fatally reject without object `timestamp`', function (done) {
         var job = { instance: {} }
         instanceCreated(job).asCallback(function (err) {
-          expect(err).to.be.an.instanceof(TaskFatalErrorisObject)
+          expect(err).to.be.an.instanceof(TaskFatalError)
           expect(err.message).to.match(/timestamp.*number/)
           done()
         })
