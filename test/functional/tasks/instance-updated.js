@@ -10,9 +10,7 @@ var sinon = require('sinon')
 
 var debug = require('debug')
 
-var loadenv = require('loadenv')
-loadenv.restore()
-loadenv({ project: 'link', debugName: 'link:env' })
+require('loadenv')({ debugName: 'link:env' })
 
 debug('link:test')
 

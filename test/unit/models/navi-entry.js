@@ -11,9 +11,7 @@ var expect = Code.expect
 var sinon = require('sinon')
 var Runnable = require('runnable')
 
-var loadenv = require('loadenv')
-loadenv.restore()
-loadenv({ project: 'link', debugName: 'link:test' })
+require('loadenv')({ debugName: 'link:env' })
 
 var NaviEntry = require('models/navi-entry')
 var TaskFatalError = require('ponos').TaskFatalError

@@ -11,9 +11,7 @@ var expect = Code.expect
 var sinon = require('sinon')
 var instance = require('../../mocks/master-instance')
 
-var loadenv = require('loadenv')
-loadenv.restore()
-loadenv({ project: 'link', debugName: 'link:test' })
+require('loadenv')({ debugName: 'link:env' })
 
 var Promise = require('bluebird')
 var TaskFatalError = require('ponos').TaskFatalError
