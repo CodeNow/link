@@ -1,0 +1,175 @@
+{
+  "_id": "5638f8f4957e540c00cd2bd6",
+  "name": "SAN-2923-dns-loading-runnable-angular",
+  "owner": {
+    "gravatar": "https://avatars.githubusercontent.com/u/2335750?v=3",
+    "username": "CodeNow",
+    "github": 2335750
+  },
+  "parent": "evznp1",
+  "lowerName": "san-2923-dns-loading-runnable-angular",
+  "contextVersion": {
+    "_id": "5638f8f4957e540c00cd2bcd",
+    "infraCodeVersion": "563829b6957e540c00cd2aa6",
+    "createdBy": {
+      "github": 495765
+    },
+    "context": "562abc039010190c001016e5",
+    "owner": {
+      "github": 2335750
+    },
+    "__v": 0,
+    "containerId": "5638f8f4957e540c00cd2bcc",
+    "dockerHost": null,
+    "build": {
+      "triggeredBy": {
+        "github": 6379413
+      },
+      "started": "2015-11-03T18:12:04.214Z",
+      "hash": "28fb8cf2240c290f1309c46f9177fa1e",
+      "dockerTag": "registry.runnable.com/2335750/562abc039010190c001016e5:5638f8f4957e540c00cd2bcd",
+      "dockerContainer": "d8e9af37b24de0ee27dc0f016202d2b7d275a1961c312a9fdf3e1e57279cddb4",
+      "containerStarted": "2015-11-03T18:12:04.519Z",
+      "dockerImage": "ecb4b8739ca8",
+      "failed": false,
+      "completed": "2015-11-03T18:16:31.981Z",
+      "triggeredAction": {
+        "manual": false,
+        "appCodeVersion": {
+          "commit": "a299caa75ae7c6527561a065b565cacfd68e38b3",
+          "repo": "CodeNow/runnable-angular",
+          "commitLog": []
+        }
+      },
+      "_id": "5638f8f4957e540c00cd2bcc",
+      "dockerContainerName": "5638f8f4957e540c00cd2bcc",
+      "duration": 267767
+    },
+    "advanced": false,
+    "appCodeVersions": [
+      {
+        "commit": "a299caa75ae7c6527561a065b565cacfd68e38b3",
+        "branch": "SAN-2923-dns-loading",
+        "lowerBranch": "san-2923-dns-loading",
+        "repo": "CodeNow/runnable-angular",
+        "lowerRepo": "codenow/runnable-angular",
+        "_id": "562abc049010190c001016ed",
+        "privateKey": "CodeNow/runnable-angular.key",
+        "publicKey": "CodeNow/runnable-angular.key.pub",
+        "defaultBranch": "master",
+        "useLatest": false,
+        "transformRules": {
+          "rename": [],
+          "replace": [],
+          "exclude": []
+        }
+      }
+    ],
+    "created": "2015-11-03T18:12:04.076Z",
+    "id": "5638f8f4957e540c00cd2bcd"
+  },
+  "shortHash": "18xz92",
+  "createdBy": {
+    "gravatar": "https://avatars.githubusercontent.com/u/495765?v=3",
+    "username": "Myztiq",
+    "github": 495765
+  },
+  "build": {
+    "_id": "5638f8f4957e540c00cd2bd1",
+    "createdBy": {
+      "github": 6379413
+    },
+    "owner": {
+      "github": 2335750
+    },
+    "__v": 0,
+    "started": "2015-11-03T18:12:04.111Z",
+    "buildNumber": 4747,
+    "completed": "2015-11-03T18:16:32.002Z",
+    "failed": false,
+    "created": "2015-11-03T18:12:04.097Z",
+    "contextVersions": [
+      "5638f8f4957e540c00cd2bcd"
+    ],
+    "contexts": [
+      "562abc039010190c001016e5"
+    ],
+    "duration": 267891,
+    "successful": true,
+    "id": "5638f8f4957e540c00cd2bd1"
+  },
+  "autoForked": true,
+  "masterPod": false,
+  "env": [],
+  "created": "2015-11-03T18:12:04.608Z",
+  "locked": false,
+  "public": false,
+  "__v": 0,
+  "network": {
+    "hostIp": "10.21.128.4"
+  },
+  "contextVersions": [
+    {
+      "_id": "5638f8f4957e540c00cd2bcd",
+      "infraCodeVersion": "563829b6957e540c00cd2aa6",
+      "createdBy": {
+        "github": 495765
+      },
+      "context": "562abc039010190c001016e5",
+      "owner": {
+        "github": 2335750
+      },
+      "__v": 0,
+      "containerId": "5638f8f4957e540c00cd2bcc",
+      "dockerHost": null,
+      "build": {
+        "triggeredBy": {
+          "github": 6379413
+        },
+        "started": "2015-11-03T18:12:04.214Z",
+        "hash": "28fb8cf2240c290f1309c46f9177fa1e",
+        "dockerTag": "registry.runnable.com/2335750/562abc039010190c001016e5:5638f8f4957e540c00cd2bcd",
+        "dockerContainer": "d8e9af37b24de0ee27dc0f016202d2b7d275a1961c312a9fdf3e1e57279cddb4",
+        "containerStarted": "2015-11-03T18:12:04.519Z",
+        "dockerImage": "ecb4b8739ca8",
+        "failed": false,
+        "completed": "2015-11-03T18:16:31.981Z",
+        "triggeredAction": {
+          "manual": false,
+          "appCodeVersion": {
+            "commit": "a299caa75ae7c6527561a065b565cacfd68e38b3",
+            "repo": "CodeNow/runnable-angular",
+            "commitLog": []
+          }
+        },
+        "_id": "5638f8f4957e540c00cd2bcc",
+        "dockerContainerName": "5638f8f4957e540c00cd2bcc",
+        "duration": 267767
+      },
+      "advanced": false,
+      "appCodeVersions": [
+        {
+          "commit": "a299caa75ae7c6527561a065b565cacfd68e38b3",
+          "branch": "SAN-2923-dns-loading",
+          "lowerBranch": "san-2923-dns-loading",
+          "repo": "CodeNow/runnable-angular",
+          "lowerRepo": "codenow/runnable-angular",
+          "_id": "562abc049010190c001016ed",
+          "privateKey": "CodeNow/runnable-angular.key",
+          "publicKey": "CodeNow/runnable-angular.key.pub",
+          "defaultBranch": "master",
+          "useLatest": false,
+          "transformRules": {
+            "rename": [],
+            "replace": [],
+            "exclude": []
+          }
+        }
+      ],
+      "created": "2015-11-03T18:12:04.076Z",
+      "id": "5638f8f4957e540c00cd2bcd"
+    }
+  ],
+  "containers": [],
+  "id": "5638f8f4957e540c00cd2bd6"
+}
