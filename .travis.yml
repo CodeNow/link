@@ -1,12 +1,12 @@
 language: node_js
 sudo: false
 node_js:
-- 4.2.1
+- 4.2
 env:
   global:
-  - LOG_LEVEL_STDOUT=error
+  - LOG_LEVEL=error
 cache:
-- directories:
+  directories:
   - ./node_modules
 services:
 - mongodb
@@ -17,3 +17,6 @@ script:
 - npm run test
 notifications:
   email: false
+  slack:
+    rooms:
+    - secure: SCFvu9jLIBHvrmeTxRBBkchq4EHZDjvnqfWU+MijHew+RkprfL00BeKDkgbqC2vd/2S+ew64QfCn5k9OTyntWtAxdY59Z6F2YwFnzY84CZgm1DHBBagXtWN3v0ZAJPaWOsTKr7kC3YRNMPmEg1JPBWK3HvpGL2KMcReE5xzYN+WetqpTxJc0rUhclwsC+zjHWRDR3yORqrqvvuWiK6Sjg0kWlfJckKCrfxoYcOarSWTaWECfT4nJ0knkd4E8Ct64NjfVeYyQDr2/qXTr421635hxviFKO16X04fwVhtjW8wpLoFl8dhPojxV5HqpqrsMwqoEIzdRWu2+pRfZFhWtUjCJfWc4dSn++hbutr902sh/SOWsN5nTyTlRAGtQDQ89FcTI7OMKp+DCnvlVsRaUp7lhqPqsI35THA2pUna/q/Ge0bXBJMLDJoqkmt4NcBh7frkN0GvMnA9LaSU5IWxNMwESgAr5g9nOqxsi/1GpseI06MElxnaNTRqi7LsgtK7Gz8nOL4va9tOUJgiDgHtQ1OJNgflzddiB8LKMywBWJZ3Ph9kEjeaYPXufXIoeMUQUskEZcFw/DbfnyYsC34tfZyJ/Q6G2e3Z3vSntFzEfhaA1mML6NjRRk/IaevhOtUBh2kq/PVKuq9dSV9W0MKCvNdLF9w3sI999dJ8U0qDZxrk=
