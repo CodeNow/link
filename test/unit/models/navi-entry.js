@@ -37,10 +37,8 @@ describe('models', function () {
         }
       }
       mockDependency = {
-        getElasticHostname: sinon.stub().returns('elasticHostname'),
-        attrs: {
-          shortHash: 'dependencyShorthash'
-        }
+        hostname: 'elasticHostname',
+        shortHash: 'dependencyShorthash'
       }
       mockRunnableInstance = {
         getElasticHostname: sinon.stub().returns('elasticHostname.example.com'),
