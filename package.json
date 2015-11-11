@@ -6,7 +6,7 @@
   "scripts": {
     "standard": "standard lib/**/*.js",
     "standard-test": "standard test/**/*.js",
-    "test": "npm run standard && npm run standard-test && npm run unit && npm run functional",
+    "test": "npm run standard && npm run standard-test && npm run unit",
     "unit": "NODE_PATH=./lib NODE_ENV=test lab --leaks -v -c -a code test/unit",
     "functional": "NODE_PATH=./lib NODE_ENV=test lab  --leaks -v -a code test/functional",
     "start": "NODE_PATH=./lib node lib/index.js"
