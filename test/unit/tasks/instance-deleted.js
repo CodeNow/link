@@ -51,15 +51,6 @@ describe('tasks', function () {
       })
     })
 
-    it('should fatally reject without `Job.instance.owner.username`', function (done) {
-      var job = { instance: {}, timestamp: new Date().valueOf() }
-      instanceDeleted(job).asCallback(function (err) {
-        expect(err).to.be.an.instanceof(TaskFatalError)
-        expect(err.message).to.match(/username.*string/)
-        done()
-      })
-    })
-
     it('should call naviEntry.handleInstanceDelete with the instance', function (done) {
       var job = { instance: instance, timestamp: new Date().valueOf() }
       instanceDeleted(job)
