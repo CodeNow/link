@@ -1,26 +1,26 @@
 'use strict'
 
-var Lab = require('lab')
-var lab = exports.lab = Lab.script()
-var describe = lab.describe
-var it = lab.it
-var beforeEach = lab.beforeEach
-var afterEach = lab.afterEach
-var Code = require('code')
-var expect = Code.expect
-var sinon = require('sinon')
-var instance = require('../../mocks/master-instance')
+let Lab = require('lab')
+let lab = exports.lab = Lab.script()
+let describe = lab.describe
+let it = lab.it
+let beforeEach = lab.beforeEach
+let afterEach = lab.afterEach
+let Code = require('code')
+let expect = Code.expect
+let sinon = require('sinon')
+let instance = require('../../mocks/master-instance')
 
 require('loadenv')({ debugName: 'link:env' })
 
-var Promise = require('bluebird')
-var TaskFatalError = require('ponos').TaskFatalError
+let Promise = require('bluebird')
+let TaskFatalError = require('ponos').TaskFatalError
 
-var instanceUpdated = require('tasks/instance-updated')
-var NaviEntry = require('models/navi-entry')
+let instanceUpdated = require('tasks/instance-updated')
+let NaviEntry = require('models/navi-entry')
 
 describe('tasks', function () {
-  var updateResults
+  let updateResults
   describe('instance-update-event', function () {
     beforeEach(function (done) {
       updateResults = { updateResults: true }
@@ -34,7 +34,7 @@ describe('tasks', function () {
     })
 
     it('should fatally reject without a job', function (done) {
-      var job = null
+      let job = null
       instanceUpdated(job).asCallback(function (err) {
         expect(err).to.be.an.instanceof(TaskFatalError)
         expect(err.message).to.match(/non-object job/)
@@ -43,7 +43,7 @@ describe('tasks', function () {
     })
 
     it('should fatally reject without object `instance`', function (done) {
-      var job = { instance: [] }
+      let job = { instance: [] }
       instanceUpdated(job).asCallback(function (err) {
         expect(err).to.be.an.instanceof(TaskFatalError)
         expect(err.message).to.match(/instance.*object/)
@@ -52,7 +52,7 @@ describe('tasks', function () {
     })
 
     it('should fatally reject without number `timestamp`', function (done) {
-      var job = { instance: instance }
+      let job = { instance: instance }
       instanceUpdated(job).asCallback(function (err) {
         expect(err).to.be.an.instanceof(TaskFatalError)
         expect(err.message).to.match(/timestamp.*number/)
@@ -61,7 +61,7 @@ describe('tasks', function () {
     })
 
     it('should fatally reject without `Job.instance.owner.username`', function (done) {
-      var job = { instance: {}, timestamp: new Date().valueOf() }
+      let job = { instance: {}, timestamp: new Date().valueOf() }
       instanceUpdated(job).asCallback(function (err) {
         expect(err).to.be.an.instanceof(TaskFatalError)
         expect(err.message).to.match(/username.*string/)
@@ -70,7 +70,7 @@ describe('tasks', function () {
     })
 
     it('should call naviEntry.handleInstanceUpdate with the instance', function (done) {
-      var job = { instance: instance, timestamp: new Date().valueOf() }
+      let job = { instance: instance, timestamp: new Date().valueOf() }
       instanceUpdated(job)
         .then(function (results) {
           sinon.assert.calledOnce(NaviEntry.handleInstanceUpdate)

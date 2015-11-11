@@ -1,25 +1,25 @@
 'use strict'
 
-var Lab = require('lab')
-var lab = exports.lab = Lab.script()
-var describe = lab.describe
-var it = lab.it
-var beforeEach = lab.beforeEach
-var afterEach = lab.afterEach
-var Code = require('code')
-var expect = Code.expect
-var sinon = require('sinon')
-var Runnable = require('runnable')
+let Lab = require('lab')
+let lab = exports.lab = Lab.script()
+let describe = lab.describe
+let it = lab.it
+let beforeEach = lab.beforeEach
+let afterEach = lab.afterEach
+let Code = require('code')
+let expect = Code.expect
+let sinon = require('sinon')
+let Runnable = require('runnable')
 
 require('loadenv')({ debugName: 'link:env' })
 
-var NaviEntry = require('models/navi-entry')
-var TaskFatalError = require('ponos').TaskFatalError
+let NaviEntry = require('models/navi-entry')
+let TaskFatalError = require('ponos').TaskFatalError
 
 describe('models', function () {
-  var mockRunnableInstance
-  var mockTimestamp
-  var mockInstance
+  let mockRunnableInstance
+  let mockTimestamp
+  let mockInstance
   describe('navi-entry', function () {
     beforeEach(function (done) {
       mockTimestamp = new Date().toString()
@@ -62,7 +62,7 @@ describe('models', function () {
       })
 
       describe('db err', function () {
-        var err
+        let err
         beforeEach(function (done) {
           err = new Error('boom')
           NaviEntry.findOneAndUpdate.yieldsAsync(err)
@@ -207,7 +207,7 @@ describe('models', function () {
     })
     describe('_getDirectURlObj', function () {
       it('should handle error fetching dependencies', function (done) {
-        var err = new Error('Hello!')
+        let err = new Error('Hello!')
         mockRunnableInstance.fetchDependencies.yieldsAsync(err)
         NaviEntry._getDirectURlObj(mockRunnableInstance)
           .catch(function (returnedError) {
@@ -218,7 +218,7 @@ describe('models', function () {
           .catch(done)
       })
       it('should handle 4040 fetching dependencies', function (done) {
-        var err = new Error('Hello!')
+        let err = new Error('Hello!')
         err.data = {}
         err.data.statusCode = 404
         mockRunnableInstance.fetchDependencies.yieldsAsync(err)
@@ -263,7 +263,7 @@ describe('models', function () {
       })
 
       describe('db err', function () {
-        var err
+        let err
         beforeEach(function (done) {
           err = new Error('boom')
           NaviEntry.findOneAndUpdate.yieldsAsync(err)
