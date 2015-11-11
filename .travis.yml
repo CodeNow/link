@@ -2,27 +2,19 @@ language: node_js
 sudo: false
 node_js:
 - 4.2.1
-matrix:
-  fast_finish: true
 env:
   global:
   - LOG_LEVEL_STDOUT=error
-  - CIRCLE_NODE_TOTAL=2
-  matrix:
-  - CIRCLE_NODE_INDEX=0
-  - CIRCLE_NODE_INDEX=1
 cache:
 - directories:
-  - /tmp/downloads
   - ./node_modules
 services:
 - mongodb
 - rabbitmq
 before_install:
-- ulimit -n
 - npm install -g npm@2.14.7
 script:
-- timeout 10m npm run test
+- npm run test
 notifications:
   email: false
   slack:
