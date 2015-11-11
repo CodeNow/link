@@ -113,6 +113,7 @@ describe('models', function () {
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
                 {
+                  elasticUrl: 'elasticHostname.example.com',
                   $or: [
                     {
                       'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
@@ -131,7 +132,7 @@ describe('models', function () {
                       dockerHost: undefined,
                       running: false,
                       branch: 'branchName',
-                      dependencies: {},
+                      dependencies: [],
                       url: 'directHostname.example.com',
                       masterPod: true
                     }
@@ -194,6 +195,7 @@ describe('models', function () {
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
                 {
+                  elasticUrl: 'elasticHostname.example.com',
                   $or: [
                     {
                       'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
@@ -265,7 +267,7 @@ describe('models', function () {
             expect(data).to.deep.equal({
               branch: 'branchName',
               url: 'directHostname.example.com',
-              dependencies: {'elasticHostname': 'dependencyShorthash'},
+              dependencies: [{shortHash: 'dependencyShorthash', elasticUrl: 'elasticHostname'}],
               dockerHost: undefined,
               ports: {},
               running: false,
