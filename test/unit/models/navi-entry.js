@@ -218,7 +218,7 @@ describe('models', function () {
                       dockerHost: '10.0.0.1',
                       running: true,
                       branch: 'branchName',
-                      dependencies: {'elasticHostname': 'dependencyShorthash'},
+                      dependencies: {'dependencyShorthash': 'elasticHostname'},
                       url: 'directHostname.example.com',
                       masterPod: false
                     }
