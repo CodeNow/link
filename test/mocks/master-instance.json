@@ -1,202 +1,653 @@
 {
-  "_id": "562abc169010190c00101706",
-  "name": "runnable-angular",
+  "_id": "55d3aa87b222f91c0036b2c3",
+  "name": "api",
   "owner": {
     "gravatar": "https://avatars.githubusercontent.com/u/2335750?v=3",
     "username": "CodeNow",
     "github": 2335750
   },
-  "lowerName": "runnable-angular",
+  "lowerName": "api",
   "contextVersion": {
-    "id": "5641174606b1f41e003ed2bb",
-    "created": "2015-11-09T21:59:34.073Z",
-    "appCodeVersions": [
-      {
-        "transformRules": {
-          "exclude": [],
-          "replace": [],
-          "rename": []
-        },
-        "useLatest": false,
-        "defaultBranch": "master",
-        "publicKey": "CodeNow/runnable-angular.key.pub",
-        "privateKey": "CodeNow/runnable-angular.key",
-        "_id": "562abc049010190c001016ed",
-        "lowerRepo": "codenow/runnable-angular",
-        "repo": "CodeNow/runnable-angular",
-        "lowerBranch": "master",
-        "branch": "master",
-        "commit": "e9ebc4fb15d229efa89395e22d5aeecf1e41794e"
-      },
-      {
-        "transformRules": {
-          "exclude": [],
-          "replace": [],
-          "rename": []
-        },
-        "useLatest": true,
-        "defaultBranch": "master",
-        "publicKey": "CodeNow/hermes-private.key.pub",
-        "privateKey": "CodeNow/hermes-private.key",
-        "_id": "5641176306b1f41e003ed2c6",
-        "lowerRepo": "codenow/hermes-private",
-        "repo": "CodeNow/hermes-private",
-        "lowerBranch": "master",
-        "branch": "master",
-        "commit": "91cd0d7aa63878796d203864ddfd9c3c4e630d95",
-        "additionalRepo": true
-      }
-    ],
-    "advanced": false,
+    "_id": "56427ffbbe9f6c1e0023a6c2",
+    "infraCodeVersion": "562aa5d75bb6620c009860e2",
+    "createdBy": {
+      "github": 160236
+    },
+    "context": "55d3aa4f0a1648160092e53f",
+    "owner": {
+      "github": 2335750
+    },
+    "__v": 0,
+    "containerId": "56427ffbbe9f6c1e0023a6c1",
+    "dockerHost": "http://10.0.246.126:4242",
     "build": {
-      "dockerContainerName": "5641174606b1f41e003ed2ba",
-      "_id": "5641174606b1f41e003ed2ba",
+      "message": "Manual build",
+      "triggeredBy": {
+        "github": 160236
+      },
+      "started": "2015-11-10T23:38:36.014Z",
+      "hash": "f387c89cb433895e789e5a90f9e7258f",
+      "dockerTag": "registry.runnable.com/2335750/55d3aa4f0a1648160092e53f:56427ffbbe9f6c1e0023a6c2",
+      "dockerContainer": "71125032f6f2c90649dcf750797c1051b37ac03d7d55b67a6f72d76c41c9bf66",
+      "containerStarted": "2015-11-10T23:38:36.487Z",
+      "dockerImage": "4c9d573c2e86",
+      "failed": false,
+      "completed": "2015-11-10T23:39:44.828Z",
       "triggeredAction": {
+        "manual": true,
         "appCodeVersion": {
           "commitLog": []
-        },
-        "manual": true
+        }
       },
-      "containerStarted": "2015-11-09T22:00:09.018Z",
-      "dockerContainer": "3ca041fd9b8d3f296f3668bc7a09f472965775aaa0f5d3a6dc9060acc6b096ee",
-      "dockerTag": "registry.runnable.com/2335750/562abc039010190c001016e5:5641174606b1f41e003ed2bb",
-      "hash": "2173e5771cada44e9ef2ac0bc52b30b0",
-      "started": "2015-11-09T22:00:08.612Z",
-      "triggeredBy": {
-        "github": 5341618
-      },
-      "message": "manual"
+      "_id": "56427ffbbe9f6c1e0023a6c1",
+      "dockerContainerName": "56427ffbbe9f6c1e0023a6c1",
+      "duration": 68814
     },
-    "dockerHost": "http://10.20.153.39:4242",
-    "containerId": "5641174606b1f41e003ed2ba",
-    "__v": 0,
-    "owner": {
-      "github": 2335750
-    },
-    "context": "562abc039010190c001016e5",
-    "createdBy": {
-      "github": 5341618
-    },
-    "infraCodeVersion": "5641174606b1f41e003ed2bc",
-    "_id": "5641174606b1f41e003ed2bb"
+    "advanced": false,
+    "appCodeVersions": [
+      {
+        "commit": "81b163456994523ad739c3810656243ff17bf37b",
+        "branch": "master",
+        "lowerBranch": "master",
+        "repo": "CodeNow/api",
+        "lowerRepo": "codenow/api",
+        "_id": "55d3aa51e38bc61a00bde0ea",
+        "privateKey": "CodeNow/api.key",
+        "publicKey": "CodeNow/api.key.pub",
+        "defaultBranch": "master",
+        "useLatest": false,
+        "transformRules": {
+          "rename": [],
+          "replace": [],
+          "exclude": []
+        }
+      }
+    ],
+    "created": "2015-11-10T23:38:35.566Z",
+    "id": "56427ffbbe9f6c1e0023a6c2"
   },
-  "shortHash": "evznp1",
+  "shortHash": "e4rov2",
   "createdBy": {
-    "gravatar": "https://avatars.githubusercontent.com/u/6379413?v=3",
-    "username": "Nathan219",
-    "github": 6379413
+    "gravatar": "https://avatars.githubusercontent.com/u/2194285?v=3",
+    "username": "anandkumarpatel",
+    "github": 2194285
   },
   "build": {
-    "_id": "5641174706b1f41e003ed2c1",
+    "_id": "56427ffbbe9f6c1e0023a6c4",
     "createdBy": {
-      "github": 5341618
+      "github": 160236
     },
     "owner": {
       "github": 2335750
     },
     "__v": 0,
-    "started": "2015-11-09T22:00:08.163Z",
-    "buildNumber": 5234,
+    "started": "2015-11-10T23:38:35.800Z",
+    "buildNumber": 69410,
+    "completed": "2015-11-10T23:39:44.941Z",
     "failed": false,
-    "created": "2015-11-09T21:59:35.588Z",
+    "created": "2015-11-10T23:38:35.583Z",
     "contextVersions": [
-      "5641174606b1f41e003ed2bb"
+      "56427ffbbe9f6c1e0023a6c2"
     ],
     "contexts": [
-      "562abc039010190c001016e5"
+      "55d3aa4f0a1648160092e53f"
     ],
-    "id": "5641174706b1f41e003ed2c1"
+    "duration": 69141,
+    "successful": true,
+    "id": "56427ffbbe9f6c1e0023a6c4"
   },
   "autoForked": false,
   "masterPod": true,
-  "env": [],
-  "created": "2015-10-23T23:00:38.284Z",
-  "locked": false,
+  "env": [
+    "DOMAIN=runnable-angular-staging-codenow.runnableapp.com",
+    "FULL_API_DOMAIN=https://api-staging-codenow.runnableapp.com",
+    "GITHUB_CALLBACK_URL=https://api-staging-codenow.runnableapp.com/auth/github/callback",
+    "GITHUB_CLIENT_ID=1b29938c7fb7f7de03cb",
+    "GITHUB_CLIENT_SECRET=e50fc29af5017c4bdee4b70a8816b07dc9431bce",
+    "GITHUB_HOOK_URL=https://api-staging-codenow.runnableapp.com/actions/github",
+    "NODE_ENV=staging",
+    "ALLOW_ALL_CORS=true",
+    "DEBUG=none",
+    "NODE_PATH=./lib",
+    "HACK_NEO4J=neo4j-staging-codenow.runnableapp.com",
+    "OPTIMUS_HOST=2pj7q2-optimus-staging-CodeNow.runnableapp.com",
+    "NEO4J=http://neo4j-staging-codenow.runnableapp.com:7474",
+    "RABBITMQ_HOSTNAME=rabbitmq-staging-codenow.runnableapp.com",
+    "DATADOG_HOST=stage-datadog-staging-codenow.runnableapp.com",
+    "MAVIS_HOST=http://mavis-staging-codenow.runnableapp.com",
+    "MONGO=mongodb://mongodb-staging-codenow.runnableapp.com/alpha",
+    "REDIS_IPADDRESS=redis-staging-codenow.runnableapp.com",
+    "NAVI_HOST=http://10.0.1.5:32799",
+    "CHARON_HOST=10.0.0.125",
+    "LOG_LEVEL=trace",
+    "LOG_LEVEL_STDOUT=trace",
+    "LOGGLY_TOKEN=f673760d-e0b3-4a93-a15e-2862ea074f91",
+    "NEWRELIC_NAME=api-staging",
+    "NEWRELIC_KEY=338516e0826451c297d44dc60aeaf0a0ca4bfead",
+    "HYPERION=http://runnable-hyperion-codenow.runnableapp.com"
+  ],
+  "created": "2015-08-18T21:58:31.726Z",
+  "locked": true,
   "public": false,
   "__v": 0,
+  "container": {
+    "dockerContainer": "417ae1a9ec6782936bcb783bb88a80cb60ed6a6e7e4c58f0d42e31e123f8952a",
+    "dockerHost": "http://10.0.246.126:4242",
+    "inspect": {
+      "AppArmorProfile": "",
+      "Args": [
+        "-c",
+        "until grep -q ethwe /proc/net/dev; do sleep 1; done;NODE_PATH=./lib node app.js | tee /api.log 2>&1 | ./node_modules/.bin/bunyan; sleep 600"
+      ],
+      "Config": {
+        "AttachStderr": false,
+        "AttachStdin": false,
+        "AttachStdout": false,
+        "Cmd": [
+          "/bin/sh",
+          "-c",
+          "until grep -q ethwe /proc/net/dev; do sleep 1; done;NODE_PATH=./lib node app.js | tee /api.log 2>&1 | ./node_modules/.bin/bunyan; sleep 600"
+        ],
+        "CpuShares": 0,
+        "Cpuset": "",
+        "Domainname": "",
+        "Entrypoint": null,
+        "Env": [
+          "DOMAIN=runnable-angular-staging-codenow.runnableapp.com",
+          "FULL_API_DOMAIN=https://api-staging-codenow.runnableapp.com",
+          "GITHUB_CALLBACK_URL=https://api-staging-codenow.runnableapp.com/auth/github/callback",
+          "GITHUB_CLIENT_ID=1b29938c7fb7f7de03cb",
+          "GITHUB_CLIENT_SECRET=e50fc29af5017c4bdee4b70a8816b07dc9431bce",
+          "GITHUB_HOOK_URL=https://api-staging-codenow.runnableapp.com/actions/github",
+          "NODE_ENV=staging",
+          "ALLOW_ALL_CORS=true",
+          "DEBUG=none",
+          "NODE_PATH=./lib",
+          "HACK_NEO4J=neo4j-staging-codenow.runnableapp.com",
+          "OPTIMUS_HOST=2pj7q2-optimus-staging-CodeNow.runnableapp.com",
+          "NEO4J=http://neo4j-staging-codenow.runnableapp.com:7474",
+          "RABBITMQ_HOSTNAME=rabbitmq-staging-codenow.runnableapp.com",
+          "DATADOG_HOST=stage-datadog-staging-codenow.runnableapp.com",
+          "MAVIS_HOST=http://mavis-staging-codenow.runnableapp.com",
+          "MONGO=mongodb://mongodb-staging-codenow.runnableapp.com/alpha",
+          "REDIS_IPADDRESS=redis-staging-codenow.runnableapp.com",
+          "NAVI_HOST=http://10.0.1.5:32799",
+          "CHARON_HOST=10.0.0.125",
+          "LOG_LEVEL=trace",
+          "LOG_LEVEL_STDOUT=trace",
+          "LOGGLY_TOKEN=f673760d-e0b3-4a93-a15e-2862ea074f91",
+          "NEWRELIC_NAME=api-staging",
+          "NEWRELIC_KEY=338516e0826451c297d44dc60aeaf0a0ca4bfead",
+          "HYPERION=http://runnable-hyperion-codenow.runnableapp.com",
+          "RUNNABLE_CONTAINER_ID=e4rov2",
+          "HOME=/",
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        ],
+        "Hostname": "417ae1a9ec67",
+        "Image": "registry.runnable.com/2335750/55d3aa4f0a1648160092e53f:56427ffbbe9f6c1e0023a6c2",
+        "Labels": {
+          "contextVersionId": "56427ffbbe9f6c1e0023a6c2",
+          "creatorGithubId": "2194285",
+          "deploymentUuid": "82575f5e-665f-45d2-8d96-ca8f65abe2f4",
+          "instanceId": "55d3aa87b222f91c0036b2c3",
+          "instanceName": "api",
+          "instanceShortHash": "e4rov2",
+          "ownerGithubId": "2335750",
+          "ownerUsername": "CodeNow",
+          "sessionUserGithubId": "160236",
+          "tid": "87274de8-1903-4aef-8173-4f6d37b88492",
+          "type": "user-container"
+        },
+        "MacAddress": "",
+        "Memory": 1000000000,
+        "MemorySwap": -1,
+        "NetworkDisabled": false,
+        "OnBuild": null,
+        "OpenStdin": false,
+        "PortSpecs": null,
+        "StdinOnce": false,
+        "Tty": false,
+        "User": "",
+        "Volumes": null,
+        "WorkingDir": "/api"
+      },
+      "Created": "2015-11-10T23:38:22.216970593Z",
+      "Driver": "aufs",
+      "ExecDriver": "native-0.2",
+      "ExecIDs": [
+        "846bbd4c5c0ebdd4af2c2f0002f52cb06d78a01007ba7f08bea6797d506ae830"
+      ],
+      "HostConfig": {
+        "Binds": null,
+        "CapAdd": null,
+        "CapDrop": null,
+        "CgroupParent": "",
+        "ContainerIDFile": "",
+        "CpuShares": 0,
+        "CpusetCpus": "",
+        "Devices": null,
+        "Dns": null,
+        "DnsSearch": null,
+        "ExtraHosts": null,
+        "IpcMode": "",
+        "Links": null,
+        "LogConfig": {
+          "Config": null,
+          "Type": "json-file"
+        },
+        "LxcConf": null,
+        "Memory": 0,
+        "MemorySwap": 0,
+        "NetworkMode": "",
+        "PidMode": "",
+        "PortBindings": null,
+        "Privileged": false,
+        "PublishAllPorts": true,
+        "ReadonlyRootfs": false,
+        "RestartPolicy": {
+          "MaximumRetryCount": 0,
+          "Name": ""
+        },
+        "SecurityOpt": null,
+        "Ulimits": null,
+        "VolumesFrom": null
+      },
+      "HostnamePath": "/docker/containers/417ae1a9ec6782936bcb783bb88a80cb60ed6a6e7e4c58f0d42e31e123f8952a/hostname",
+      "HostsPath": "/docker/containers/417ae1a9ec6782936bcb783bb88a80cb60ed6a6e7e4c58f0d42e31e123f8952a/hosts",
+      "Id": "417ae1a9ec6782936bcb783bb88a80cb60ed6a6e7e4c58f0d42e31e123f8952a",
+      "Image": "4c9d573c2e8697854182ff23c98ac79bad605ac77258e18b80ccc2c8e18a1966",
+      "LogPath": "/docker/containers/417ae1a9ec6782936bcb783bb88a80cb60ed6a6e7e4c58f0d42e31e123f8952a/417ae1a9ec6782936bcb783bb88a80cb60ed6a6e7e4c58f0d42e31e123f8952a-json.log",
+      "MountLabel": "",
+      "Name": "/ecstatic_jones",
+      "NetworkSettings": {
+        "Bridge": "docker0",
+        "Gateway": "172.17.42.1",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "IPAddress": "172.17.0.20",
+        "IPPrefixLen": 16,
+        "IPv6Gateway": "",
+        "LinkLocalIPv6Address": "fe80::42:acff:fe11:14",
+        "LinkLocalIPv6PrefixLen": 64,
+        "MacAddress": "02:42:ac:11:00:14",
+        "PortMapping": null,
+        "Ports": {
+          "1/tcp": [
+            {
+              "HostIp": "0.0.0.0",
+              "HostPort": "32783"
+            }
+          ],
+          "3000/tcp": [
+            {
+              "HostIp": "0.0.0.0",
+              "HostPort": "32779"
+            }
+          ],
+          "3001/tcp": [
+            {
+              "HostIp": "0.0.0.0",
+              "HostPort": "32780"
+            }
+          ],
+          "443/tcp": [
+            {
+              "HostIp": "0.0.0.0",
+              "HostPort": "32781"
+            }
+          ],
+          "80/tcp": [
+            {
+              "HostIp": "0.0.0.0",
+              "HostPort": "32782"
+            }
+          ]
+        }
+      },
+      "Path": "/bin/sh",
+      "ProcessLabel": "",
+      "ResolvConfPath": "/docker/containers/417ae1a9ec6782936bcb783bb88a80cb60ed6a6e7e4c58f0d42e31e123f8952a/resolv.conf",
+      "RestartCount": 0,
+      "State": {
+        "Dead": false,
+        "Error": "",
+        "ExitCode": 0,
+        "FinishedAt": "2015-11-10T23:44:38.672724386Z",
+        "OOMKilled": false,
+        "Paused": false,
+        "Pid": 6259,
+        "Restarting": false,
+        "Running": true,
+        "StartedAt": "2015-11-10T23:44:39.152093488Z"
+      }
+    },
+    "ports": {
+      "1/tcp": [
+        {
+          "HostIp": "0.0.0.0",
+          "HostPort": "32783"
+        }
+      ],
+      "3000/tcp": [
+        {
+          "HostIp": "0.0.0.0",
+          "HostPort": "32779"
+        }
+      ],
+      "3001/tcp": [
+        {
+          "HostIp": "0.0.0.0",
+          "HostPort": "32780"
+        }
+      ],
+      "443/tcp": [
+        {
+          "HostIp": "0.0.0.0",
+          "HostPort": "32781"
+        }
+      ],
+      "80/tcp": [
+        {
+          "HostIp": "0.0.0.0",
+          "HostPort": "32782"
+        }
+      ]
+    }
+  },
   "lastBuiltSimpleContextVersion": {
-    "created": "2015-11-09T22:00:09.753Z",
-    "id": "563d28c79b130621009c3939"
+    "created": "2015-11-10T23:38:36.190Z",
+    "id": "563bfeb2b466d00d00327039"
   },
   "network": {
-    "networkIp": "10.255.244.0",
-    "hostIp": "10.21.0.86"
+    "networkIp": "10.255.248.0",
+    "hostIp": "10.21.234.187"
   },
   "contextVersions": [
     {
-      "id": "5641174606b1f41e003ed2bb",
-      "created": "2015-11-09T21:59:34.073Z",
-      "appCodeVersions": [
-        {
-          "transformRules": {
-            "exclude": [],
-            "replace": [],
-            "rename": []
-          },
-          "useLatest": false,
-          "defaultBranch": "master",
-          "publicKey": "CodeNow/runnable-angular.key.pub",
-          "privateKey": "CodeNow/runnable-angular.key",
-          "_id": "562abc049010190c001016ed",
-          "lowerRepo": "codenow/runnable-angular",
-          "repo": "CodeNow/runnable-angular",
-          "lowerBranch": "master",
-          "branch": "master",
-          "commit": "e9ebc4fb15d229efa89395e22d5aeecf1e41794e"
-        },
-        {
-          "transformRules": {
-            "exclude": [],
-            "replace": [],
-            "rename": []
-          },
-          "useLatest": true,
-          "defaultBranch": "master",
-          "publicKey": "CodeNow/hermes-private.key.pub",
-          "privateKey": "CodeNow/hermes-private.key",
-          "_id": "5641176306b1f41e003ed2c6",
-          "lowerRepo": "codenow/hermes-private",
-          "repo": "CodeNow/hermes-private",
-          "lowerBranch": "master",
-          "branch": "master",
-          "commit": "91cd0d7aa63878796d203864ddfd9c3c4e630d95",
-          "additionalRepo": true
-        }
-      ],
-      "advanced": false,
-      "build": {
-        "dockerContainerName": "5641174606b1f41e003ed2ba",
-        "_id": "5641174606b1f41e003ed2ba",
-        "triggeredAction": {
-          "appCodeVersion": {
-            "commitLog": []
-          },
-          "manual": true
-        },
-        "containerStarted": "2015-11-09T22:00:09.018Z",
-        "dockerContainer": "3ca041fd9b8d3f296f3668bc7a09f472965775aaa0f5d3a6dc9060acc6b096ee",
-        "dockerTag": "registry.runnable.com/2335750/562abc039010190c001016e5:5641174606b1f41e003ed2bb",
-        "hash": "2173e5771cada44e9ef2ac0bc52b30b0",
-        "started": "2015-11-09T22:00:08.612Z",
-        "triggeredBy": {
-          "github": 5341618
-        },
-        "message": "manual"
+      "_id": "56427ffbbe9f6c1e0023a6c2",
+      "infraCodeVersion": "562aa5d75bb6620c009860e2",
+      "createdBy": {
+        "github": 160236
       },
-      "dockerHost": "http://10.20.153.39:4242",
-      "containerId": "5641174606b1f41e003ed2ba",
-      "__v": 0,
+      "context": "55d3aa4f0a1648160092e53f",
       "owner": {
         "github": 2335750
       },
-      "context": "562abc039010190c001016e5",
-      "createdBy": {
-        "github": 5341618
+      "__v": 0,
+      "containerId": "56427ffbbe9f6c1e0023a6c1",
+      "dockerHost": "http://10.0.246.126:4242",
+      "build": {
+        "message": "Manual build",
+        "triggeredBy": {
+          "github": 160236
+        },
+        "started": "2015-11-10T23:38:36.014Z",
+        "hash": "f387c89cb433895e789e5a90f9e7258f",
+        "dockerTag": "registry.runnable.com/2335750/55d3aa4f0a1648160092e53f:56427ffbbe9f6c1e0023a6c2",
+        "dockerContainer": "71125032f6f2c90649dcf750797c1051b37ac03d7d55b67a6f72d76c41c9bf66",
+        "containerStarted": "2015-11-10T23:38:36.487Z",
+        "dockerImage": "4c9d573c2e86",
+        "failed": false,
+        "completed": "2015-11-10T23:39:44.828Z",
+        "triggeredAction": {
+          "manual": true,
+          "appCodeVersion": {
+            "commitLog": []
+          }
+        },
+        "_id": "56427ffbbe9f6c1e0023a6c1",
+        "dockerContainerName": "56427ffbbe9f6c1e0023a6c1",
+        "duration": 68814
       },
-      "infraCodeVersion": "5641174606b1f41e003ed2bc",
-      "_id": "5641174606b1f41e003ed2bb"
+      "advanced": false,
+      "appCodeVersions": [
+        {
+          "commit": "81b163456994523ad739c3810656243ff17bf37b",
+          "branch": "master",
+          "lowerBranch": "master",
+          "repo": "CodeNow/api",
+          "lowerRepo": "codenow/api",
+          "_id": "55d3aa51e38bc61a00bde0ea",
+          "privateKey": "CodeNow/api.key",
+          "publicKey": "CodeNow/api.key.pub",
+          "defaultBranch": "master",
+          "useLatest": false,
+          "transformRules": {
+            "rename": [],
+            "replace": [],
+            "exclude": []
+          }
+        }
+      ],
+      "created": "2015-11-10T23:38:35.566Z",
+      "id": "56427ffbbe9f6c1e0023a6c2"
     }
   ],
-  "containers": [],
-  "id": "562abc169010190c00101706"
+  "containers": [
+    {
+      "dockerContainer": "417ae1a9ec6782936bcb783bb88a80cb60ed6a6e7e4c58f0d42e31e123f8952a",
+      "dockerHost": "http://10.0.246.126:4242",
+      "inspect": {
+        "AppArmorProfile": "",
+        "Args": [
+          "-c",
+          "until grep -q ethwe /proc/net/dev; do sleep 1; done;NODE_PATH=./lib node app.js | tee /api.log 2>&1 | ./node_modules/.bin/bunyan; sleep 600"
+        ],
+        "Config": {
+          "AttachStderr": false,
+          "AttachStdin": false,
+          "AttachStdout": false,
+          "Cmd": [
+            "/bin/sh",
+            "-c",
+            "until grep -q ethwe /proc/net/dev; do sleep 1; done;NODE_PATH=./lib node app.js | tee /api.log 2>&1 | ./node_modules/.bin/bunyan; sleep 600"
+          ],
+          "CpuShares": 0,
+          "Cpuset": "",
+          "Domainname": "",
+          "Entrypoint": null,
+          "Env": [
+            "DOMAIN=runnable-angular-staging-codenow.runnableapp.com",
+            "FULL_API_DOMAIN=https://api-staging-codenow.runnableapp.com",
+            "GITHUB_CALLBACK_URL=https://api-staging-codenow.runnableapp.com/auth/github/callback",
+            "GITHUB_CLIENT_ID=1b29938c7fb7f7de03cb",
+            "GITHUB_CLIENT_SECRET=e50fc29af5017c4bdee4b70a8816b07dc9431bce",
+            "GITHUB_HOOK_URL=https://api-staging-codenow.runnableapp.com/actions/github",
+            "NODE_ENV=staging",
+            "ALLOW_ALL_CORS=true",
+            "DEBUG=none",
+            "NODE_PATH=./lib",
+            "HACK_NEO4J=neo4j-staging-codenow.runnableapp.com",
+            "OPTIMUS_HOST=2pj7q2-optimus-staging-CodeNow.runnableapp.com",
+            "NEO4J=http://neo4j-staging-codenow.runnableapp.com:7474",
+            "RABBITMQ_HOSTNAME=rabbitmq-staging-codenow.runnableapp.com",
+            "DATADOG_HOST=stage-datadog-staging-codenow.runnableapp.com",
+            "MAVIS_HOST=http://mavis-staging-codenow.runnableapp.com",
+            "MONGO=mongodb://mongodb-staging-codenow.runnableapp.com/alpha",
+            "REDIS_IPADDRESS=redis-staging-codenow.runnableapp.com",
+            "NAVI_HOST=http://10.0.1.5:32799",
+            "CHARON_HOST=10.0.0.125",
+            "LOG_LEVEL=trace",
+            "LOG_LEVEL_STDOUT=trace",
+            "LOGGLY_TOKEN=f673760d-e0b3-4a93-a15e-2862ea074f91",
+            "NEWRELIC_NAME=api-staging",
+            "NEWRELIC_KEY=338516e0826451c297d44dc60aeaf0a0ca4bfead",
+            "HYPERION=http://runnable-hyperion-codenow.runnableapp.com",
+            "RUNNABLE_CONTAINER_ID=e4rov2",
+            "HOME=/",
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+          ],
+          "Hostname": "417ae1a9ec67",
+          "Image": "registry.runnable.com/2335750/55d3aa4f0a1648160092e53f:56427ffbbe9f6c1e0023a6c2",
+          "Labels": {
+            "contextVersionId": "56427ffbbe9f6c1e0023a6c2",
+            "creatorGithubId": "2194285",
+            "deploymentUuid": "82575f5e-665f-45d2-8d96-ca8f65abe2f4",
+            "instanceId": "55d3aa87b222f91c0036b2c3",
+            "instanceName": "api",
+            "instanceShortHash": "e4rov2",
+            "ownerGithubId": "2335750",
+            "ownerUsername": "CodeNow",
+            "sessionUserGithubId": "160236",
+            "tid": "87274de8-1903-4aef-8173-4f6d37b88492",
+            "type": "user-container"
+          },
+          "MacAddress": "",
+          "Memory": 1000000000,
+          "MemorySwap": -1,
+          "NetworkDisabled": false,
+          "OnBuild": null,
+          "OpenStdin": false,
+          "PortSpecs": null,
+          "StdinOnce": false,
+          "Tty": false,
+          "User": "",
+          "Volumes": null,
+          "WorkingDir": "/api"
+        },
+        "Created": "2015-11-10T23:38:22.216970593Z",
+        "Driver": "aufs",
+        "ExecDriver": "native-0.2",
+        "ExecIDs": [
+          "846bbd4c5c0ebdd4af2c2f0002f52cb06d78a01007ba7f08bea6797d506ae830"
+        ],
+        "HostConfig": {
+          "Binds": null,
+          "CapAdd": null,
+          "CapDrop": null,
+          "CgroupParent": "",
+          "ContainerIDFile": "",
+          "CpuShares": 0,
+          "CpusetCpus": "",
+          "Devices": null,
+          "Dns": null,
+          "DnsSearch": null,
+          "ExtraHosts": null,
+          "IpcMode": "",
+          "Links": null,
+          "LogConfig": {
+            "Config": null,
+            "Type": "json-file"
+          },
+          "LxcConf": null,
+          "Memory": 0,
+          "MemorySwap": 0,
+          "NetworkMode": "",
+          "PidMode": "",
+          "PortBindings": null,
+          "Privileged": false,
+          "PublishAllPorts": true,
+          "ReadonlyRootfs": false,
+          "RestartPolicy": {
+            "MaximumRetryCount": 0,
+            "Name": ""
+          },
+          "SecurityOpt": null,
+          "Ulimits": null,
+          "VolumesFrom": null
+        },
+        "HostnamePath": "/docker/containers/417ae1a9ec6782936bcb783bb88a80cb60ed6a6e7e4c58f0d42e31e123f8952a/hostname",
+        "HostsPath": "/docker/containers/417ae1a9ec6782936bcb783bb88a80cb60ed6a6e7e4c58f0d42e31e123f8952a/hosts",
+        "Id": "417ae1a9ec6782936bcb783bb88a80cb60ed6a6e7e4c58f0d42e31e123f8952a",
+        "Image": "4c9d573c2e8697854182ff23c98ac79bad605ac77258e18b80ccc2c8e18a1966",
+        "LogPath": "/docker/containers/417ae1a9ec6782936bcb783bb88a80cb60ed6a6e7e4c58f0d42e31e123f8952a/417ae1a9ec6782936bcb783bb88a80cb60ed6a6e7e4c58f0d42e31e123f8952a-json.log",
+        "MountLabel": "",
+        "Name": "/ecstatic_jones",
+        "NetworkSettings": {
+          "Bridge": "docker0",
+          "Gateway": "172.17.42.1",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "IPAddress": "172.17.0.20",
+          "IPPrefixLen": 16,
+          "IPv6Gateway": "",
+          "LinkLocalIPv6Address": "fe80::42:acff:fe11:14",
+          "LinkLocalIPv6PrefixLen": 64,
+          "MacAddress": "02:42:ac:11:00:14",
+          "PortMapping": null,
+          "Ports": {
+            "1/tcp": [
+              {
+                "HostIp": "0.0.0.0",
+                "HostPort": "32783"
+              }
+            ],
+            "3000/tcp": [
+              {
+                "HostIp": "0.0.0.0",
+                "HostPort": "32779"
+              }
+            ],
+            "3001/tcp": [
+              {
+                "HostIp": "0.0.0.0",
+                "HostPort": "32780"
+              }
+            ],
+            "443/tcp": [
+              {
+                "HostIp": "0.0.0.0",
+                "HostPort": "32781"
+              }
+            ],
+            "80/tcp": [
+              {
+                "HostIp": "0.0.0.0",
+                "HostPort": "32782"
+              }
+            ]
+          }
+        },
+        "Path": "/bin/sh",
+        "ProcessLabel": "",
+        "ResolvConfPath": "/docker/containers/417ae1a9ec6782936bcb783bb88a80cb60ed6a6e7e4c58f0d42e31e123f8952a/resolv.conf",
+        "RestartCount": 0,
+        "State": {
+          "Dead": false,
+          "Error": "",
+          "ExitCode": 0,
+          "FinishedAt": "2015-11-10T23:44:38.672724386Z",
+          "OOMKilled": false,
+          "Paused": false,
+          "Pid": 6259,
+          "Restarting": false,
+          "Running": true,
+          "StartedAt": "2015-11-10T23:44:39.152093488Z"
+        }
+      },
+      "ports": {
+        "1/tcp": [
+          {
+            "HostIp": "0.0.0.0",
+            "HostPort": "32783"
+          }
+        ],
+        "3000/tcp": [
+          {
+            "HostIp": "0.0.0.0",
+            "HostPort": "32779"
+          }
+        ],
+        "3001/tcp": [
+          {
+            "HostIp": "0.0.0.0",
+            "HostPort": "32780"
+          }
+        ],
+        "443/tcp": [
+          {
+            "HostIp": "0.0.0.0",
+            "HostPort": "32781"
+          }
+        ],
+        "80/tcp": [
+          {
+            "HostIp": "0.0.0.0",
+            "HostPort": "32782"
+          }
+        ]
+      }
+    }
+  ],
+  "id": "55d3aa87b222f91c0036b2c3"
 }

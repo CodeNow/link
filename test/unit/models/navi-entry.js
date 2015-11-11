@@ -17,9 +17,9 @@ var NaviEntry = require('models/navi-entry')
 var TaskFatalError = require('ponos').TaskFatalError
 
 describe('models', function () {
-  var mockInstance
   var mockRunnableInstance
   var mockTimestamp
+  var mockInstance
   describe('navi-entry', function () {
     beforeEach(function (done) {
       mockTimestamp = new Date().toString()
@@ -84,7 +84,7 @@ describe('models', function () {
                   branch: 'branchName',
                   url: 'directHostname.example.com',
                   dependencies: [{dep: 1}],
-                  ports: undefined,
+                  ports: {},
                   running: false,
                   dockerHost: undefined
                 })
@@ -138,7 +138,7 @@ describe('models', function () {
                         branch: 'branchName',
                         url: 'directHostname.example.com',
                         dependencies: [{dep: 1}],
-                        ports: undefined,
+                        ports: {},
                         running: false,
                         dockerHost: undefined
                       }
@@ -198,10 +198,39 @@ describe('models', function () {
 
       describe('running', function () {
         beforeEach(function (done) {
-          mockInstance.container = {
-            dockerHost: '10.0.0.1',
-            ports: [80, 3000],
-            Running: true
+          mockInstance.container.dockerHost = '10.0.0.1'
+          mockInstance.container.Running = true
+          mockInstance.container.ports = {
+            '1/tcp': [
+              {
+                'HostIp': '0.0.0.0',
+                'HostPort': '32783'
+              }
+            ],
+            '3000/tcp': [
+              {
+                'HostIp': '0.0.0.0',
+                'HostPort': '32779'
+              }
+            ],
+            '3001/tcp': [
+              {
+                'HostIp': '0.0.0.0',
+                'HostPort': '32780'
+              }
+            ],
+            '443/tcp': [
+              {
+                'HostIp': '0.0.0.0',
+                'HostPort': '32781'
+              }
+            ],
+            '80/tcp': [
+              {
+                'HostIp': '0.0.0.0',
+                'HostPort': '32782'
+              }
+            ]
           }
           done()
         })
@@ -218,7 +247,13 @@ describe('models', function () {
                   $set: {
                     lastUpdated: mockTimestamp,
                     'directUrls.instanceID': {
-                      ports: mockInstance.container.ports,
+                      ports: {
+                        '1': '32783',
+                        '80': '32782',
+                        '443': '32781',
+                        '3000': '32779',
+                        '3001': '32780'
+                      },
                       dockerHost: mockInstance.container.dockerHost,
                       running: true,
                       branch: 'branchName',
@@ -270,7 +305,7 @@ describe('models', function () {
               url: 'directHostname.example.com',
               dependencies: [{dep: 1}],
               dockerHost: undefined,
-              ports: undefined,
+              ports: {},
               running: false
             })
             done()
