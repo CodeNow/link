@@ -86,6 +86,23 @@ describe('models', function () {
         })
       })
 
+      describe('db match error', function () {
+        var err
+        beforeEach(function (done) {
+          err = new Error('boom')
+          err.code = 11000
+          NaviEntry.findOneAndUpdate.yieldsAsync(err)
+          done()
+        })
+        it('should callback err if db errs', function (done) {
+          NaviEntry.handleInstanceUpdate(mockInstance)
+            .catch(done)
+            .then(function () {
+              done()
+            })
+        })
+      })
+
       describe('not running', function () {
         beforeEach(function (done) {
           mockRunnableInstance.fetchDependencies.yieldsAsync(null, null)
