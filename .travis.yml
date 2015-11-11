@@ -1,0 +1,33 @@
+language: node_js
+sudo: false
+node_js:
+- 4.2.1
+matrix:
+  fast_finish: true
+env:
+  global:
+  - LOG_LEVEL_STDOUT=error
+  - CIRCLE_NODE_TOTAL=2
+  matrix:
+  - CIRCLE_NODE_INDEX=0
+  - CIRCLE_NODE_INDEX=1
+cache:
+- directories:
+  - /tmp/downloads
+  - ./node_modules
+services:
+- mongodb
+- rabbitmq
+before_install:
+- ulimit -n
+- npm install -g npm@2.14.7
+script:
+- timeout 10m npm run test
+notifications:
+  email: false
+  slack:
+    rooms:
+    - SZMv1t5nvj0YktlyWrfTPQd95cfvz3dFxvb4+7Zq2qz/xHmo54SaoNkDESeR0EYBu1xQV0oBUIXEwXEpm7T7SCt7O9OYredA91Xslb6tIgzAwwEuohSjf0E6O5rXSE07IepUjSUAR1hvEcbPCrQuuUeyCU5ortfw8HAJTS9BRpQ=
+    - iWYjYkT1KFFAwwICseENreL4esXsLXcoIehxoYT3Voscw4P9h79LJyGf0fp4sx0w8qBN2oHrkQ0N9/K1Cu4hCaNSXjevhcQbyoJoWZPHa9/nP1VdFptiqJuw4iaMsisWXefVqk7+iW7agFF0NMjCnKZO0vE9wNTz35sQntfGguc=
+    on_success: change
+    on_failure: change
