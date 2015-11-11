@@ -20,6 +20,7 @@ describe('models', function () {
   var mockRunnableInstance
   var mockTimestamp
   var mockInstance
+  var mockDependency
   describe('navi-entry', function () {
     beforeEach(function (done) {
       mockTimestamp = new Date().toString()
@@ -35,11 +36,17 @@ describe('models', function () {
           Running: false
         }
       }
+      mockDependency = {
+        getElasticHostname: sinon.stub().returns('elasticHostname'),
+        attrs: {
+          shortHash: 'dependencyShorthash'
+        }
+      }
       mockRunnableInstance = {
         getElasticHostname: sinon.stub().returns('elasticHostname.example.com'),
         getContainerHostname: sinon.stub().returns('directHostname.example.com'),
         getBranchName: sinon.stub().returns('branchName'),
-        fetchDependencies: sinon.stub().yieldsAsync(null, [{dep: 1}]),
+        fetchDependencies: sinon.stub().yieldsAsync(null, [mockDependency]),
         attrs: mockInstance
       }
       sinon.stub(Runnable.prototype, 'newInstance').returns(mockRunnableInstance)
@@ -80,6 +87,10 @@ describe('models', function () {
       })
 
       describe('not running', function () {
+        beforeEach(function (done) {
+          mockRunnableInstance.fetchDependencies.yieldsAsync(null, null)
+          done()
+        })
         it('should update the database', function (done) {
           NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
             .catch(done)
@@ -105,7 +116,7 @@ describe('models', function () {
                       dockerHost: undefined,
                       running: false,
                       branch: 'branchName',
-                      dependencies: [{dep: 1}],
+                      dependencies: {},
                       url: 'directHostname.example.com',
                       masterPod: true
                     }
@@ -192,7 +203,7 @@ describe('models', function () {
                       dockerHost: '10.0.0.1',
                       running: true,
                       branch: 'branchName',
-                      dependencies: [{dep: 1}],
+                      dependencies: {'elasticHostname': 'dependencyShorthash'},
                       url: 'directHostname.example.com',
                       masterPod: false
                     }
@@ -239,7 +250,7 @@ describe('models', function () {
             expect(data).to.deep.equal({
               branch: 'branchName',
               url: 'directHostname.example.com',
-              dependencies: [{dep: 1}],
+              dependencies: {'elasticHostname': 'dependencyShorthash'},
               dockerHost: undefined,
               ports: {},
               running: false,
