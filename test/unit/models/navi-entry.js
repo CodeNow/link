@@ -129,7 +129,7 @@ describe('models', function () {
                 sinon.assert.calledWith(
                   NaviEntry.findOneAndUpdate,
                   {
-                    'directUrls.instanceID': {$exists: true},
+                    elasticUrl: 'elasticHostname.example.com',
                     lastUpdated: { $lt: mockTimestamp }
                   }, {
                     $set: {
@@ -201,7 +201,7 @@ describe('models', function () {
           mockInstance.container.dockerHost = 'http://10.0.0.1:215'
           mockInstance.container.inspect = {
             state: {
-              running: true
+              Running: true
             }
           }
           mockInstance.container.ports = {
@@ -245,7 +245,7 @@ describe('models', function () {
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
                 {
-                  'directUrls.instanceID': {$exists: true},
+                  elasticUrl: 'elasticHostname.example.com',
                   lastUpdated: { $lt: mockTimestamp }
                 }, {
                   $set: {
