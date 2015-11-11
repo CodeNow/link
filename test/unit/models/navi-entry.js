@@ -199,7 +199,11 @@ describe('models', function () {
       describe('running', function () {
         beforeEach(function (done) {
           mockInstance.container.dockerHost = 'http://10.0.0.1:215'
-          mockInstance.container.Running = true
+          mockInstance.container.inspect = {
+            state: {
+              running: true
+            }
+          }
           mockInstance.container.ports = {
             '1/tcp': [
               {
