@@ -87,7 +87,14 @@ describe('models', function () {
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
                 {
-                  'directUrls.instanceID.lastUpdated': { $or: [ {$lt: mockTimestamp}, {$exists: false} ] }
+                  $or: [
+                    {
+                      'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
+                    },
+                    {
+                      'directUrls.instanceID.lastUpdated': {$exists: false}
+                    }
+                  ]
                 }, {
                   $set: {
                     elasticUrl: 'elasticHostname.example.com',
@@ -161,7 +168,14 @@ describe('models', function () {
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
                 {
-                  'directUrls.instanceID.lastUpdated': { $or: [ {$lt: mockTimestamp}, {$exists: false} ] }
+                  $or: [
+                    {
+                      'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
+                    },
+                    {
+                      'directUrls.instanceID.lastUpdated': {$exists: false}
+                    }
+                  ]
                 }, {
                   $set: {
                     elasticUrl: 'elasticHostname.example.com',
