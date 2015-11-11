@@ -160,8 +160,8 @@ describe('models', function () {
           it('should callback err if db errs', function (done) {
             NaviEntry.handleNewInstance(mockInstance)
               .catch(function (returnedErr) {
-                expect(returnedErr).to.be.an.instanceof(TaskFatalError)
-                expect(returnedErr.message).to.match(/findOneAndUpdate/)
+                expect(returnedErr).to.be.an.instanceof(Error)
+                expect(returnedErr).to.not.be.an.instanceof(TaskFatalError)
                 done()
               })
           })
@@ -188,8 +188,8 @@ describe('models', function () {
         it('should callback err if db errs', function (done) {
           NaviEntry.handleInstanceUpdate(mockInstance)
             .catch(function (returnedErr) {
-              expect(returnedErr).to.be.an.instanceof(TaskFatalError)
-              expect(returnedErr.message).to.match(/findOneAndUpdate/)
+              expect(returnedErr).to.be.an.instanceof(Error)
+              expect(returnedErr).to.not.be.an.instanceof(TaskFatalError)
               done()
             })
             .catch(done)
