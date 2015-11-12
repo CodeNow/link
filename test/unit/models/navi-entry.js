@@ -304,7 +304,7 @@ describe('models', function () {
           })
           done()
         })
-        it('should remove the entire documnet', function (done) {
+        it('should remove the entire document', function (done) {
           NaviEntry.handleInstanceDelete(mockInstance, mockTimestamp)
             .catch(done)
             .then(function () {
@@ -321,6 +321,30 @@ describe('models', function () {
                 elasticUrl: 'elasticUrl',
                 directUrls: {}
               })
+              done()
+            })
+            .catch(done)
+        })
+      })
+      describe('when no document exists', function () {
+        beforeEach(function (done) {
+          NaviEntry.findOneAndUpdate.yieldsAsync(null)
+          done()
+        })
+        it('should remove the entire document', function (done) {
+          NaviEntry.handleInstanceDelete(mockInstance, mockTimestamp)
+            .catch(done)
+            .then(function () {
+              sinon.assert.calledWith(
+                NaviEntry.findOneAndUpdate,
+                {
+                  'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
+                }, {
+                  $unset: {
+                    'directUrls.instanceID': true
+                  }
+                })
+              sinon.assert.notCalled(NaviEntry.findOneAndRemove)
               done()
             })
             .catch(done)
