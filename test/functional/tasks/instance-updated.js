@@ -32,6 +32,7 @@ describe('functional', function () {
       after(function (done) {
         mongooseControl.stop().asCallback(done)
       })
+
       beforeEach(function (done) {
         sinon.stub(Runnable.prototype, 'githubLogin').yieldsAsync(null)
         NaviEntry.remove({}, done)
