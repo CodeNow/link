@@ -11,6 +11,7 @@ var beforeEach = lab.beforeEach
 var afterEach = lab.afterEach
 var sinon = require('sinon')
 var Hermes = require('runnable-hermes')
+var log = require('logger.js')
 
 require('loadenv')({ debugName: 'link:env' })
 
@@ -42,10 +43,12 @@ describe('rabbitmq', function () {
   describe('_handleHermesError', function () {
     beforeEach(function (done) {
       sinon.stub(ErrorCat.prototype, 'createAndReport')
+      sinon.stub(log, 'error')
       done()
     })
     afterEach(function (done) {
       ErrorCat.prototype.createAndReport.restore()
+      log.error.restore()
       done()
     })
     it('should throw the error with errorcat', function (done) {
@@ -53,6 +56,7 @@ describe('rabbitmq', function () {
       rabbitmq._handleHermesError(err)
       sinon.assert.calledOnce(ErrorCat.createAndReport)
       sinon.assert.calledWith(ErrorCat.createAndReport, 502, 'RabbitMQ error', err)
+      sinon.assert.calledWith(log.error, {err: err}, '_handleHermesError')
       done()
     })
   })
