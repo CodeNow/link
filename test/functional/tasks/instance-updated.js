@@ -27,7 +27,6 @@ describe('functional', function () {
           NaviEntry.findOneAndUpdate.restore()
           done()
         })
-
         it('should add the instance data to the database', function (done) {
           var job = { instance: masterInstance, timestamp: new Date().valueOf() }
           instanceUpdated(job)
@@ -65,7 +64,6 @@ describe('functional', function () {
           NaviEntry.findOneAndUpdate.restore()
           done()
         })
-
         it('should add the instance data to the database', function (done) {
           var job = { instance: slaveInstance, timestamp: new Date().valueOf() }
           instanceUpdated(job)

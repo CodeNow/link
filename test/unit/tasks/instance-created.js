@@ -24,12 +24,12 @@ describe('tasks', function () {
   describe('instance-create-event', function () {
     beforeEach(function (done) {
       updateResults = { updateResults: true }
-      sinon.stub(NaviEntry, 'handleNewInstance').returns(Promise.resolve(updateResults))
+      sinon.stub(NaviEntry, 'handleInstanceUpdate').returns(Promise.resolve(updateResults))
       done()
     })
 
     afterEach(function (done) {
-      NaviEntry.handleNewInstance.restore()
+      NaviEntry.handleInstanceUpdate.restore()
       done()
     })
 
@@ -69,12 +69,12 @@ describe('tasks', function () {
       })
     })
 
-    it('should call naviEntry.handleNewInstance with the instance', function (done) {
+    it('should call naviEntry.handleInstanceUpdate with the instance', function (done) {
       var job = { instance: instance, timestamp: new Date().valueOf() }
       instanceCreated(job)
         .then(function (results) {
-          sinon.assert.calledOnce(NaviEntry.handleNewInstance)
-          sinon.assert.calledWith(NaviEntry.handleNewInstance, job.instance, new Date(job.timestamp))
+          sinon.assert.calledOnce(NaviEntry.handleInstanceUpdate)
+          sinon.assert.calledWith(NaviEntry.handleInstanceUpdate, job.instance, new Date(job.timestamp))
           expect(results).to.equal(updateResults)
           done()
         })

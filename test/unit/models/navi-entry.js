@@ -20,6 +20,7 @@ describe('models', function () {
   var mockRunnableInstance
   var mockTimestamp
   var mockInstance
+  var mockDependency
   describe('navi-entry', function () {
     beforeEach(function (done) {
       mockTimestamp = new Date().toString()
@@ -35,11 +36,15 @@ describe('models', function () {
           Running: false
         }
       }
+      mockDependency = {
+        hostname: 'elasticHostname',
+        shortHash: 'dependencyShorthash'
+      }
       mockRunnableInstance = {
         getElasticHostname: sinon.stub().returns('elasticHostname.example.com'),
         getContainerHostname: sinon.stub().returns('directHostname.example.com'),
         getBranchName: sinon.stub().returns('branchName'),
-        fetchDependencies: sinon.stub().yieldsAsync(null, [{dep: 1}]),
+        fetchDependencies: sinon.stub().yieldsAsync(null, [mockDependency]),
         attrs: mockInstance
       }
       sinon.stub(Runnable.prototype, 'newInstance').returns(mockRunnableInstance)
@@ -50,123 +55,6 @@ describe('models', function () {
       Runnable.prototype.newInstance.restore()
       Runnable.prototype.githubLogin.restore()
       done()
-    })
-    describe('handleNewInstance', function () {
-      describe('masterPod Instance', function () {
-        beforeEach(function (done) {
-          mockInstance.masterPod = true
-          sinon.stub(NaviEntry.prototype, 'save')
-          done()
-        })
-        afterEach(function (done) {
-          NaviEntry.prototype.save.restore()
-          done()
-        })
-        describe('db success', function () {
-          beforeEach(function (done) {
-            NaviEntry.prototype.save.yieldsAsync()
-            done()
-          })
-          it('should create a navi entry', function (done) {
-            NaviEntry.handleNewInstance(mockInstance)
-              .catch(done)
-              .then(function () {
-                sinon.assert.calledOnce(Runnable.prototype.newInstance)
-                sinon.assert.calledOnce(mockRunnableInstance.getElasticHostname)
-                sinon.assert.calledOnce(mockRunnableInstance.getContainerHostname)
-                sinon.assert.calledOnce(mockRunnableInstance.getBranchName)
-                sinon.assert.calledOnce(mockRunnableInstance.fetchDependencies)
-                sinon.assert.calledOnce(NaviEntry.prototype.save)
-                var naviEntryValue = NaviEntry.prototype.save.lastCall.thisValue
-                expect(naviEntryValue.elasticUrl, 'elastic URL').to.equal('elasticHostname.example.com')
-                expect(naviEntryValue.ownerGithubId, 'ownerGithubId').to.equal(1234)
-                expect(naviEntryValue['directUrls'].instanceID, 'DirectUrls').to.deep.equal({
-                  branch: 'branchName',
-                  url: 'directHostname.example.com',
-                  dependencies: [{dep: 1}],
-                  ports: {},
-                  running: false,
-                  dockerHost: undefined
-                })
-                done()
-              })
-              .catch(done)
-          })
-        })
-        describe('db err', function () {
-          var err
-          beforeEach(function (done) {
-            err = new Error('boom')
-            NaviEntry.prototype.save.yieldsAsync(err)
-            done()
-          })
-          it('should callback err if db errs', function (done) {
-            NaviEntry.handleNewInstance(mockInstance)
-              .catch(function (returnedErr) {
-                expect(returnedErr).to.exist()
-                expect(returnedErr.message).to.equal(err.message)
-                done()
-              })
-              .catch(done)
-          })
-        })
-      })
-      describe('non masterPod Instance', function () {
-        beforeEach(function (done) {
-          mockInstance.masterPod = false
-          sinon.stub(NaviEntry, 'findOneAndUpdate').yieldsAsync()
-          done()
-        })
-        afterEach(function (done) {
-          NaviEntry.findOneAndUpdate.restore()
-          done()
-        })
-        describe('db success', function () {
-          it('should create a navi entry', function (done) {
-            NaviEntry.handleNewInstance(mockInstance, mockTimestamp)
-              .catch(done)
-              .then(function () {
-                sinon.assert.calledWith(
-                  NaviEntry.findOneAndUpdate,
-                  {
-                    elasticUrl: 'elasticHostname.example.com',
-                    lastUpdated: { $lt: mockTimestamp }
-                  }, {
-                    $set: {
-                      lastUpdated: mockTimestamp,
-                      'directUrls.instanceID': {
-                        branch: 'branchName',
-                        url: 'directHostname.example.com',
-                        dependencies: [{dep: 1}],
-                        ports: {},
-                        running: false,
-                        dockerHost: undefined
-                      }
-                    }
-                  }
-                )
-                done()
-              })
-              .catch(done)
-          })
-        })
-        describe('db err', function () {
-          var err
-          beforeEach(function (done) {
-            err = new Error('boom')
-            NaviEntry.findOneAndUpdate.yieldsAsync(err)
-            done()
-          })
-          it('should callback err if db errs', function (done) {
-            NaviEntry.handleNewInstance(mockInstance)
-              .catch(function (returnedErr) {
-                expect(returnedErr).to.be.an.instanceof(Error)
-                expect(returnedErr).to.not.be.an.instanceof(TaskFatalError)
-                done()
-              })
-          })
-        })
-      })
     })
     describe('handleInstanceUpdate', function () {
       beforeEach(function (done) {
@@ -196,9 +84,73 @@ describe('models', function () {
         })
       })
 
+      describe('db match error', function () {
+        var err
+        beforeEach(function (done) {
+          err = new Error('boom')
+          err.code = 11000
+          NaviEntry.findOneAndUpdate.yieldsAsync(err)
+          done()
+        })
+        it('should callback err if db errs', function (done) {
+          NaviEntry.handleInstanceUpdate(mockInstance)
+            .catch(function (returnedErr) {
+              expect(returnedErr).to.be.an.instanceof(TaskFatalError)
+              expect(returnedErr.message).to.match(/old/)
+              done()
+            })
+            .catch(done)
+        })
+      })
+
+      describe('not running', function () {
+        beforeEach(function (done) {
+          mockRunnableInstance.fetchDependencies.yieldsAsync(null, null)
+          done()
+        })
+        it('should update the database', function (done) {
+          NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
+            .catch(done)
+            .then(function () {
+              sinon.assert.calledWith(
+                NaviEntry.findOneAndUpdate,
+                {
+                  elasticUrl: 'elasticHostname.example.com',
+                  $or: [
+                    {
+                      'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
+                    },
+                    {
+                      'directUrls.instanceID.lastUpdated': {$exists: false}
+                    }
+                  ]
+                }, {
+                  $set: {
+                    elasticUrl: 'elasticHostname.example.com',
+                    ownerGithubId: 1234,
+                    'directUrls.instanceID': {
+                      lastUpdated: mockTimestamp,
+                      ports: {},
+                      dockerHost: undefined,
+                      running: false,
+                      branch: 'branchName',
+                      dependencies: [],
+                      url: 'directHostname.example.com',
+                      masterPod: true
+                    }
+                  }
+                }
+              )
+              done()
+            })
+            .catch(done)
+        })
+      })
+
       describe('running', function () {
         beforeEach(function (done) {
           mockInstance.container.dockerHost = 'http://10.0.0.1:215'
+          mockInstance.masterPod = false
           mockInstance.container.inspect = {
             state: {
               Running: true
@@ -246,11 +198,20 @@ describe('models', function () {
                 NaviEntry.findOneAndUpdate,
                 {
                   elasticUrl: 'elasticHostname.example.com',
-                  lastUpdated: { $lt: mockTimestamp }
+                  $or: [
+                    {
+                      'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
+                    },
+                    {
+                      'directUrls.instanceID.lastUpdated': {$exists: false}
+                    }
+                  ]
                 }, {
                   $set: {
-                    lastUpdated: mockTimestamp,
+                    elasticUrl: 'elasticHostname.example.com',
+                    ownerGithubId: 1234,
                     'directUrls.instanceID': {
+                      lastUpdated: mockTimestamp,
                       ports: {
                         '1': '32783',
                         '80': '32782',
@@ -261,8 +222,9 @@ describe('models', function () {
                       dockerHost: '10.0.0.1',
                       running: true,
                       branch: 'branchName',
-                      dependencies: [{dep: 1}],
-                      url: 'directHostname.example.com'
+                      dependencies: [{shortHash: 'dependencyShorthash', elasticUrl: 'elasticHostname'}],
+                      url: 'directHostname.example.com',
+                      masterPod: false
                     }
                   }
                 }
@@ -300,17 +262,19 @@ describe('models', function () {
           .catch(done)
       })
       it('should return the direct url object', function (done) {
-        NaviEntry._getDirectURlObj(mockRunnableInstance)
+        NaviEntry._getDirectURlObj(mockRunnableInstance, mockTimestamp)
           .catch(done)
           .then(function (data) {
             sinon.assert.calledOnce(mockRunnableInstance.fetchDependencies)
             expect(data).to.deep.equal({
               branch: 'branchName',
               url: 'directHostname.example.com',
-              dependencies: [{dep: 1}],
+              dependencies: [{shortHash: 'dependencyShorthash', elasticUrl: 'elasticHostname'}],
               dockerHost: undefined,
               ports: {},
-              running: false
+              running: false,
+              lastUpdated: mockTimestamp,
+              masterPod: true
             })
             done()
           })
@@ -318,61 +282,51 @@ describe('models', function () {
       })
     })
     describe('handleInstanceDelete', function () {
-      describe('master instance', function () {
+      beforeEach(function (done) {
+        sinon.stub(NaviEntry, 'findOneAndUpdate').yieldsAsync(null, {
+          elasticUrl: 'elasticUrl',
+          directUrls: { foo: {} }
+        })
+        sinon.stub(NaviEntry, 'findOneAndRemove').yieldsAsync(null)
+        done()
+      })
+
+      afterEach(function (done) {
+        NaviEntry.findOneAndUpdate.restore()
+        NaviEntry.findOneAndRemove.restore()
+        done()
+      })
+      describe('when on the last document', function () {
         beforeEach(function (done) {
-          mockInstance.masterPod = true
-          sinon.stub(NaviEntry, 'findOneAndRemove').yieldsAsync(null)
+          NaviEntry.findOneAndUpdate.yieldsAsync(null, {
+            elasticUrl: 'elasticUrl',
+            directUrls: { }
+          })
           done()
         })
-
-        afterEach(function (done) {
-          NaviEntry.findOneAndRemove.restore()
-          done()
-        })
-
-        describe('db err', function () {
-          var err
-          beforeEach(function (done) {
-            err = new Error('boom')
-            NaviEntry.findOneAndRemove.yieldsAsync(err)
-            done()
-          })
-          it('should callback err if db errs', function (done) {
-            NaviEntry.handleInstanceDelete(mockInstance)
-              .catch(function (returnedErr) {
-                expect(returnedErr).to.be.an.instanceof(Error)
-                expect(returnedErr).to.not.be.an.instanceof(TaskFatalError)
-                done()
-              })
-              .catch(done)
-          })
-        })
-        it('should update the database', function (done) {
-          NaviEntry.handleInstanceDelete(mockInstance)
+        it('should remove the entire documnet', function (done) {
+          NaviEntry.handleInstanceDelete(mockInstance, mockTimestamp)
             .catch(done)
             .then(function () {
               sinon.assert.calledWith(
-                NaviEntry.findOneAndRemove,
+                NaviEntry.findOneAndUpdate,
                 {
-                  'directUrls.instanceID': {$exists: true}
+                  'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
+                }, {
+                  $unset: {
+                    'directUrls.instanceID': true
+                  }
                 })
+              sinon.assert.calledWith(NaviEntry.findOneAndRemove, {
+                elasticUrl: 'elasticUrl',
+                directUrls: {}
+              })
               done()
             })
             .catch(done)
         })
       })
-      describe('slave instance', function () {
-        beforeEach(function (done) {
-          mockInstance.masterPod = false
-          sinon.stub(NaviEntry, 'findOneAndUpdate').yieldsAsync(null)
-          done()
-        })
-
-        afterEach(function (done) {
-          NaviEntry.findOneAndUpdate.restore()
-          done()
-        })
-
+      describe('with more documents left', function () {
         describe('db err', function () {
           var err
           beforeEach(function (done) {
@@ -383,21 +337,27 @@ describe('models', function () {
           it('should callback err if db errs', function (done) {
             NaviEntry.handleInstanceDelete(mockInstance)
               .catch(function (returnedErr) {
-                expect(returnedErr).to.be.an.instanceof(TaskFatalError)
-                expect(returnedErr.message).to.match(/findOneAndUpdate/)
+                expect(returnedErr).to.be.an.instanceof(Error)
+                expect(returnedErr).to.not.be.an.instanceof(TaskFatalError)
+                sinon.assert.notCalled(NaviEntry.findOneAndRemove)
                 done()
               })
               .catch(done)
           })
         })
         it('should update the database', function (done) {
-          NaviEntry.handleInstanceDelete(mockInstance)
+          NaviEntry.handleInstanceDelete(mockInstance, mockTimestamp)
             .catch(done)
             .then(function () {
+              sinon.assert.notCalled(NaviEntry.findOneAndRemove)
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
                 {
-                  'directUrls.instanceID': {$exists: true}
+                  'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
+                }, {
+                  $unset: {
+                    'directUrls.instanceID': true
+                  }
                 })
               done()
             })
