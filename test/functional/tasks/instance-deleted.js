@@ -6,91 +6,114 @@ var describe = lab.describe
 var it = lab.it
 var beforeEach = lab.beforeEach
 var afterEach = lab.afterEach
+var before = lab.before
+var after = lab.after
 var sinon = require('sinon')
-var Code = require('code')
 var Runnable = require('runnable')
+var Code = require('code')
+var expect = Code.expect
+var mongooseControl = require('mongoose-control')
 
 require('loadenv')({ debugName: 'link:env' })
 
 var instanceDeleted = require('tasks/instance-deleted')
 var NaviEntry = require('models/navi-entry')
 var masterInstance = require('../../mocks/master-instance')
-var slaveInstance = require('../../mocks/slave-instance')
 
 describe('functional', function () {
   describe('tasks', function () {
     describe('instance-deleted', function () {
+      before(function (done) {
+        mongooseControl.start().asCallback(done)
+      })
+      after(function (done) {
+        mongooseControl.stop().asCallback(done)
+      })
       beforeEach(function (done) {
         sinon.stub(Runnable.prototype, 'githubLogin').yieldsAsync(null)
-        done()
+        NaviEntry.remove({}, function (err) {
+          done(err)
+        })
       })
       afterEach(function (done) {
         Runnable.prototype.githubLogin.restore()
-        done()
-      })
-      describe('master instance', function () {
-        beforeEach(function (done) {
-          sinon.stub(NaviEntry, 'findOneAndUpdate').yieldsAsync(null, {
-            elasticUrl: 'foo.bar',
-            directUrls: {
-              'foo': {}
-            }
-          })
-          done()
+        NaviEntry.remove({}, function (err) {
+          done(err)
         })
-        afterEach(function (done) {
-          NaviEntry.findOneAndUpdate.restore()
-          done()
+      })
+
+      describe('when there is more than one instance added', function () {
+        beforeEach(function (done) {
+          var naviEntry = new NaviEntry()
+          naviEntry.elasticUrl = 'api-staging-runnabledemo.runnable2.net'
+          naviEntry.ownerGithubId = 9487339
+          naviEntry.directUrls = {
+            asdf: {
+              branch: 'foo'
+            }
+          }
+          naviEntry.directUrls[masterInstance.shortHash] = {
+            branch: 'asdf',
+            lastUpdated: new Date(1995, 11, 17)
+          }
+          naviEntry.save(function (err) {
+            done(err)
+          })
         })
         it('should remove the instance from the record', function (done) {
-          var job = { instance: masterInstance, timestamp: new Date().valueOf() }
+          var job = { instance: masterInstance, timestamp: new Date(2001, 11, 17).valueOf()}
           instanceDeleted(job)
             .then(function () {
-              sinon.assert.calledOnce(NaviEntry.findOneAndUpdate)
-              var find = {}
-              find['directUrls.' + masterInstance.shortHash + '.lastUpdated'] = { $lt: sinon.match.date }
-              var update = {$unset: {}}
-              update.$unset['directUrls.' + masterInstance.shortHash] = true
-              sinon.assert.calledWith(NaviEntry.findOneAndUpdate, find, update, {
-                new: true
-              }, sinon.match.func)
-              done()
+              NaviEntry.findOne({elasticUrl: 'api-staging-runnabledemo.runnable2.net'}, function (err, document) {
+                if (err) {
+                  return done(err)
+                }
+                expect(Object.keys(document.directUrls).length).to.equal(1)
+                expect(document.directUrls[masterInstance.shortHash]).to.not.exist()
+                done()
+              })
+            })
+        })
+        it('should do nothing if the request is late', function (done) {
+          var job = {instance: masterInstance, timestamp: new Date(1990, 11, 17).valueOf()}
+          instanceDeleted(job)
+            .then(function () {
+              NaviEntry.findOne({elasticUrl: 'api-staging-runnabledemo.runnable2.net'}, function (err, document) {
+                if (err) {
+                  return done(err)
+                }
+                expect(Object.keys(document.directUrls).length).to.equal(2)
+                expect(document.directUrls[masterInstance.shortHash]).to.exist()
+                done()
+              })
             })
         })
       })
-      describe('slave instance', function () {
+      describe('when there is only one instance added', function () {
         beforeEach(function (done) {
-          sinon.stub(NaviEntry, 'findOneAndUpdate').yieldsAsync(null, {
-            elasticUrl: 'foo.bar',
-            directUrls: {}
+          var naviEntry = new NaviEntry()
+          naviEntry.elasticUrl = 'api-staging-runnabledemo.runnable2.net'
+          naviEntry.ownerGithubId = 9487339
+          naviEntry.directUrls = {}
+          naviEntry.directUrls[masterInstance.shortHash] = {
+            branch: 'asdf',
+            lastUpdated: new Date(1995, 11, 17)
+          }
+          naviEntry.save(function (err) {
+            done(err)
           })
-          sinon.stub(NaviEntry, 'findOneAndRemove').yieldsAsync(null)
-          done()
         })
-        afterEach(function (done) {
-          NaviEntry.findOneAndUpdate.restore()
-          NaviEntry.findOneAndRemove.restore()
-          done()
-        })
-
-        it('should remove the instance from the record and delete the record from the database if it was the last item', function (done) {
-          var job = { instance: slaveInstance, timestamp: new Date().valueOf() }
+        it('should remove the entire record', function (done) {
+          var job = {instance: masterInstance, timestamp: new Date(2001, 11, 17).valueOf()}
           instanceDeleted(job)
             .then(function () {
-              sinon.assert.calledOnce(NaviEntry.findOneAndUpdate)
-              var find = {}
-              find['directUrls.' + slaveInstance.shortHash + '.lastUpdated'] = { $lt: sinon.match.date }
-              var update = {$unset: {}}
-              update.$unset['directUrls.' + slaveInstance.shortHash] = true
-              sinon.assert.calledWith(NaviEntry.findOneAndUpdate, find, update, {
-                new: true
-              }, sinon.match.func)
-
-              sinon.assert.calledWith(NaviEntry.findOneAndRemove, {
-                elasticUrl: 'foo.bar',
-                directUrls: {}
-              }, sinon.match.func)
-              done()
+              NaviEntry.findOne({elasticUrl: 'api-staging-runnabledemo.runnable2.net'}, function (err, document) {
+                if (err) {
+                  return done(err)
+                }
+                expect(document).to.not.exist()
+                done()
+              })
             })
         })
       })
