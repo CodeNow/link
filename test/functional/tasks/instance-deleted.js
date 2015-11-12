@@ -58,6 +58,7 @@ describe('functional', function () {
             done(err)
           })
         })
+
         it('should remove the instance from the record', function (done) {
           var job = { instance: masterInstance, timestamp: new Date(2001, 11, 17).valueOf()}
           instanceDeleted(job)
@@ -101,6 +102,7 @@ describe('functional', function () {
             done(err)
           })
         })
+
         it('should remove the entire record', function (done) {
           var job = {instance: masterInstance, timestamp: new Date(2001, 11, 17).valueOf()}
           instanceDeleted(job)

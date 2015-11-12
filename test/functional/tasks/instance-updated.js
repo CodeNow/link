@@ -42,6 +42,7 @@ describe('functional', function () {
           done(err)
         })
       })
+
       describe('when there is no record', function () {
         var nockScope
         beforeEach(function (done) {
@@ -52,6 +53,7 @@ describe('functional', function () {
           nock.cleanAll()
           done()
         })
+
         it('should add the instance data into the database', function (done) {
           var job = { instance: masterInstance, timestamp: new Date().valueOf() }
           instanceUpdated(job)
@@ -97,6 +99,7 @@ describe('functional', function () {
           nock.cleanAll()
           done()
         })
+
         beforeEach(function (done) {
           var naviEntry = new NaviEntry()
           naviEntry.elasticUrl = 'api-staging-runnabledemo.runnable2.net'

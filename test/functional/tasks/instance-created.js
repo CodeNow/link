@@ -42,6 +42,7 @@ describe('functional', function () {
           done(err)
         })
       })
+
       describe('when there is no record', function () {
         var nockScope
         beforeEach(function (done) {
@@ -52,6 +53,7 @@ describe('functional', function () {
           nock.cleanAll()
           done()
         })
+
         it('should add the instance data to the database', function (done) {
           var job = { instance: masterInstance, timestamp: new Date().valueOf() }
           instanceCreated(job)
@@ -114,6 +116,7 @@ describe('functional', function () {
             done(err)
           })
         })
+
         it('should add the instance data to the database', function (done) {
           var job = { instance: slaveInstance, timestamp: new Date().valueOf() }
           instanceCreated(job)
