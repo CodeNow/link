@@ -110,7 +110,6 @@ describe('models', function () {
         })
         it('should update the database', function (done) {
           NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
-            .catch(done)
             .then(function () {
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
@@ -192,7 +191,6 @@ describe('models', function () {
         })
         it('should update the database', function (done) {
           NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
-            .catch(done)
             .then(function () {
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
@@ -263,7 +261,6 @@ describe('models', function () {
       })
       it('should return the direct url object', function (done) {
         NaviEntry._getDirectURlObj(mockRunnableInstance, mockTimestamp)
-          .catch(done)
           .then(function (data) {
             sinon.assert.calledOnce(mockRunnableInstance.fetchDependencies)
             expect(data).to.deep.equal({
@@ -306,7 +303,6 @@ describe('models', function () {
         })
         it('should remove the entire document', function (done) {
           NaviEntry.handleInstanceDelete(mockInstance, mockTimestamp)
-            .catch(done)
             .then(function () {
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
@@ -333,7 +329,6 @@ describe('models', function () {
         })
         it('should remove the entire document', function (done) {
           NaviEntry.handleInstanceDelete(mockInstance, mockTimestamp)
-            .catch(done)
             .then(function () {
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
@@ -371,7 +366,6 @@ describe('models', function () {
         })
         it('should update the database', function (done) {
           NaviEntry.handleInstanceDelete(mockInstance, mockTimestamp)
-            .catch(done)
             .then(function () {
               sinon.assert.notCalled(NaviEntry.findOneAndRemove)
               sinon.assert.calledWith(
