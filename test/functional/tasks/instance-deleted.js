@@ -37,9 +37,7 @@ describe('functional', function () {
       })
       afterEach(function (done) {
         Runnable.prototype.githubLogin.restore()
-        NaviEntry.remove({}, function (err) {
-          done(err)
-        })
+        NaviEntry.remove({}, done)
       })
 
       describe('when there is more than one instance added', function () {

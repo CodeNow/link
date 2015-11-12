@@ -34,9 +34,7 @@ describe('functional', function () {
       })
       beforeEach(function (done) {
         sinon.stub(Runnable.prototype, 'githubLogin').yieldsAsync(null)
-        NaviEntry.remove({}, function (err) {
-          done(err)
-        })
+        NaviEntry.remove({}, done)
       })
       afterEach(function (done) {
         Runnable.prototype.githubLogin.restore()
