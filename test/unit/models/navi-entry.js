@@ -283,48 +283,86 @@ describe('models', function () {
     })
     describe('handleInstanceDelete', function () {
       beforeEach(function (done) {
-        sinon.stub(NaviEntry, 'findOneAndUpdate').yieldsAsync(null)
+        sinon.stub(NaviEntry, 'findOneAndUpdate').yieldsAsync(null, {
+          elasticUrl: 'elasticUrl',
+          directUrls: { foo: {} }
+        })
+        sinon.stub(NaviEntry, 'findOneAndRemove').yieldsAsync(null)
         done()
       })
 
       afterEach(function (done) {
         NaviEntry.findOneAndUpdate.restore()
+        NaviEntry.findOneAndRemove.restore()
         done()
       })
-
-      describe('db err', function () {
-        var err
+      describe('when on the last document', function () {
         beforeEach(function (done) {
-          err = new Error('boom')
-          NaviEntry.findOneAndUpdate.yieldsAsync(err)
+          NaviEntry.findOneAndUpdate.yieldsAsync(null, {
+            elasticUrl: 'elasticUrl',
+            directUrls: { }
+          })
           done()
         })
-        it('should callback err if db errs', function (done) {
-          NaviEntry.handleInstanceDelete(mockInstance)
-            .catch(function (returnedErr) {
-              expect(returnedErr).to.be.an.instanceof(Error)
-              expect(returnedErr).to.not.be.an.instanceof(TaskFatalError)
+        it('should remove the entire documnet', function (done) {
+          NaviEntry.handleInstanceDelete(mockInstance, mockTimestamp)
+            .catch(done)
+            .then(function () {
+              sinon.assert.calledWith(
+                NaviEntry.findOneAndUpdate,
+                {
+                  'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
+                }, {
+                  $unset: {
+                    'directUrls.instanceID': true
+                  }
+                })
+              sinon.assert.calledWith(NaviEntry.findOneAndRemove, {
+                elasticUrl: 'elasticUrl',
+                directUrls: {}
+              })
               done()
             })
             .catch(done)
         })
       })
-      it('should update the database', function (done) {
-        NaviEntry.handleInstanceDelete(mockInstance, mockTimestamp)
-          .catch(done)
-          .then(function () {
-            sinon.assert.calledWith(
-              NaviEntry.findOneAndUpdate,
-              {
-                'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
-              }, {
-                $unset: {
-                  'directUrls.instanceID': true
-                }
-              })
+      describe('with more documents left', function () {
+        describe('db err', function () {
+          var err
+          beforeEach(function (done) {
+            err = new Error('boom')
+            NaviEntry.findOneAndUpdate.yieldsAsync(err)
             done()
           })
-          .catch(done)
+          it('should callback err if db errs', function (done) {
+            NaviEntry.handleInstanceDelete(mockInstance)
+              .catch(function (returnedErr) {
+                expect(returnedErr).to.be.an.instanceof(Error)
+                expect(returnedErr).to.not.be.an.instanceof(TaskFatalError)
+                sinon.assert.notCalled(NaviEntry.findOneAndRemove)
+                done()
+              })
+              .catch(done)
+          })
+        })
+        it('should update the database', function (done) {
+          NaviEntry.handleInstanceDelete(mockInstance, mockTimestamp)
+            .catch(done)
+            .then(function () {
+              sinon.assert.notCalled(NaviEntry.findOneAndRemove)
+              sinon.assert.calledWith(
+                NaviEntry.findOneAndUpdate,
+                {
+                  'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
+                }, {
+                  $unset: {
+                    'directUrls.instanceID': true
+                  }
+                })
+              done()
+            })
+            .catch(done)
+        })
       })
     })
   })
