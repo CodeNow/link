@@ -6,9 +6,9 @@
   "scripts": {
     "standard": "standard lib/**/*.js",
     "standard-test": "standard test/**/*.js",
-    "test": "npm run standard && npm run standard-test && npm run unit",
+    "test": "npm run standard && npm run standard-test && npm run unit && npm run functional",
     "unit": "NODE_PATH=./lib NODE_ENV=test lab --leaks -v -c -a code test/unit",
-    "functional": "NODE_PATH=./lib NODE_ENV=test lab  --leaks -v -a code test/functional",
+    "functional": "NODE_PATH=./lib NODE_ENV=test lab --leaks -v -a code test/functional",
     "start": "NODE_PATH=./lib node lib/index.js"
   },
   "author": "Ryan Kahn <kahn@runnable.com>",
@@ -32,6 +32,7 @@
     "debug": "^2.2.0",
     "jshint": "^2.8.0",
     "lab": "^6.2.0",
+    "nock": "^2.17.0",
     "sinon": "^1.15.4",
     "standard": "^5.3.1"
   },
