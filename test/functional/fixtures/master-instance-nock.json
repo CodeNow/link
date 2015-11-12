@@ -1,0 +1,56 @@
+[
+  {
+    "scope": "https://api.runnable-beta.com:443",
+    "method": "GET",
+    "path": "/instances/5643e9c816c10c1e00716703/dependencies",
+    "body": "",
+    "status": 200,
+    "response": [
+      {
+        "id": "5643ea5216c10c1e00716750",
+        "shortHash": "2gxk81",
+        "name": "MongoDB",
+        "lowerName": "mongodb",
+        "hostname": "mongodb-staging-runnabledemo.runnablecloud.com",
+        "owner": {
+          "github": 9487339
+        },
+        "contextVersion": {
+          "context": "5643ea5016c10c1e0071673d"
+        },
+        "network": {
+          "hostIp": "10.21.0.5"
+        }
+      },
+      {
+        "id": "5643eb8d16c10c1e00716831",
+        "shortHash": "1jndz2",
+        "name": "helloworld",
+        "lowerName": "helloworld",
+        "hostname": "helloworld-staging-runnabledemo.runnablecloud.com",
+        "owner": {
+          "github": 9487339
+        },
+        "contextVersion": {
+          "context": "5643eb7716c10c1e0071680e"
+        },
+        "network": {
+          "hostIp": "10.21.0.9"
+        }
+      }
+    ],
+    "headers": {
+      "x-powered-by": "Express",
+      "vary": "Origin, Accept-Encoding",
+      "access-control-allow-credentials": "true",
+      "x-runnable-tid": "6250f04d-17e9-4c78-9ebf-80110a4f0f2f",
+      "access-control-expose-headers": "x-runnable-tid",
+      "cache-control": "no-cache",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "550",
+      "etag": "W/\"226-AbY3VN0mIfqRououa7MRfg\"",
+      "date": "Thu, 12 Nov 2015 18:52:32 GMT",
+      "connection": "close"
+    }
+  }
+]

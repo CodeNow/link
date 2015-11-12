@@ -17,7 +17,7 @@ var mongooseControl = require('mongoose-control')
 
 require('loadenv')({ debugName: 'link:env' })
 
-var instanceUpdated = require('tasks/instance-updated')
+var instanceCreated = require('tasks/instance-created')
 var NaviEntry = require('models/navi-entry')
 var masterInstance = require('../../mocks/master-instance')
 var slaveInstance = require('../../mocks/slave-instance')
@@ -25,7 +25,7 @@ var TaskFatalError = require('ponos').TaskFatalError
 
 describe('functional', function () {
   describe('tasks', function () {
-    describe('instance-updated', function () {
+    describe('instance-created', function () {
       before(function (done) {
         mongooseControl.start().asCallback(done)
       })
@@ -52,14 +52,15 @@ describe('functional', function () {
           nockScope = nock.load('test/functional/fixtures/master-instance-nock.json')
           done()
         })
+
         afterEach(function (done) {
           nock.cleanAll()
           done()
         })
 
-        it('should add the instance data into the database', function (done) {
+        it('should add the instance data to the database', function (done) {
           var job = { instance: masterInstance, timestamp: new Date().valueOf() }
-          instanceUpdated(job)
+          instanceCreated(job)
             .then(function () {
               nockScope.forEach(function (nockedRequest) {
                 expect(nockedRequest.isDone()).to.equal(true)
@@ -89,7 +90,7 @@ describe('functional', function () {
                 ])
                 done()
               })
-          })
+            })
         })
       })
 
@@ -121,9 +122,9 @@ describe('functional', function () {
           naviEntry.save(done)
         })
 
-        it('should add the instance data to the existing record', function (done) {
+        it('should add the instance data to the database', function (done) {
           var job = { instance: slaveInstance, timestamp: new Date().valueOf() }
-          instanceUpdated(job)
+          instanceCreated(job)
             .then(function () {
               nockScope.forEach(function (nockedRequest) {
                 expect(nockedRequest.isDone()).to.equal(true)
@@ -158,7 +159,7 @@ describe('functional', function () {
 
         it('should do nothing if the update is old', function (done) {
           var job = { instance: slaveInstance, timestamp: new Date(1990, 11, 17).valueOf() }
-          instanceUpdated(job)
+          instanceCreated(job)
             .catch(function (err) {
               expect(err).to.be.an.instanceof(TaskFatalError)
               expect(err.message).to.match(/old/)
