@@ -152,7 +152,7 @@ describe('models', function () {
           mockInstance.container.dockerHost = 'http://10.0.0.1:215'
           mockInstance.masterPod = false
           mockInstance.container.inspect = {
-            state: {
+            State: {
               Running: true
             }
           }
