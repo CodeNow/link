@@ -22,7 +22,7 @@
     "mongoose": "^4.2.5",
     "mongoose-validator": "~1.0.3",
     "ponos": "^1.1.0",
-    "runnable": "git+ssh://git@github.com:CodeNow/runnable-api-client#v4.8.0"
+    "runnable": "git+ssh://git@github.com:CodeNow/runnable-api-client#v4.8.1"
   },
   "devDependencies": {
     "code": "^1.4.1",
