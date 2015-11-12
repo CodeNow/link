@@ -29,6 +29,7 @@ describe('functional', function () {
       before(function (done) {
         mongooseControl.start().asCallback(done)
       })
+
       after(function (done) {
         mongooseControl.stop().asCallback(done)
       })
@@ -37,6 +38,7 @@ describe('functional', function () {
         sinon.stub(Runnable.prototype, 'githubLogin').yieldsAsync(null)
         NaviEntry.remove({}, done)
       })
+
       afterEach(function (done) {
         Runnable.prototype.githubLogin.restore()
         NaviEntry.remove({}, function (err) {
@@ -50,6 +52,7 @@ describe('functional', function () {
           nockScope = nock.load('test/functional/fixtures/master-instance-nock.json')
           done()
         })
+
         afterEach(function (done) {
           nock.cleanAll()
           done()
@@ -90,16 +93,19 @@ describe('functional', function () {
             })
         })
       })
+
       describe('when there is a record in the database', function () {
         var nockScope
         beforeEach(function (done) {
           nockScope = nock.load('test/functional/fixtures/slave-instance-nock.json')
           done()
         })
+
         afterEach(function (done) {
           nock.cleanAll()
           done()
         })
+
         beforeEach(function (done) {
           var naviEntry = new NaviEntry()
           naviEntry.elasticUrl = 'api-staging-runnabledemo.runnable2.net'
@@ -154,6 +160,7 @@ describe('functional', function () {
               done(err)
             })
         })
+
         it('should do nothing if the update is old', function (done) {
           var job = { instance: slaveInstance, timestamp: new Date(1990, 11, 17).valueOf() }
           instanceCreated(job)

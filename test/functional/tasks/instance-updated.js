@@ -29,6 +29,7 @@ describe('functional', function () {
       before(function (done) {
         mongooseControl.start().asCallback(done)
       })
+
       after(function (done) {
         mongooseControl.stop().asCallback(done)
       })
@@ -37,6 +38,7 @@ describe('functional', function () {
         sinon.stub(Runnable.prototype, 'githubLogin').yieldsAsync(null)
         NaviEntry.remove({}, done)
       })
+
       afterEach(function (done) {
         Runnable.prototype.githubLogin.restore()
         NaviEntry.remove({}, function (err) {
@@ -90,12 +92,14 @@ describe('functional', function () {
           })
         })
       })
+
       describe('when there is a record in the database', function () {
         var nockScope
         beforeEach(function (done) {
           nockScope = nock.load('test/functional/fixtures/slave-instance-nock.json')
           done()
         })
+
         afterEach(function (done) {
           nock.cleanAll()
           done()
@@ -118,6 +122,7 @@ describe('functional', function () {
             done(err)
           })
         })
+
         it('should add the instance data to the existing record', function (done) {
           var job = { instance: slaveInstance, timestamp: new Date().valueOf() }
           instanceUpdated(job)
@@ -154,6 +159,7 @@ describe('functional', function () {
               done(err)
             })
         })
+
         it('should do nothing if the update is old', function (done) {
           var job = { instance: slaveInstance, timestamp: new Date(1990, 11, 17).valueOf() }
           instanceUpdated(job)

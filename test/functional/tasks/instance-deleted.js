@@ -26,6 +26,7 @@ describe('functional', function () {
       before(function (done) {
         mongooseControl.start().asCallback(done)
       })
+
       after(function (done) {
         mongooseControl.stop().asCallback(done)
       })
@@ -36,6 +37,7 @@ describe('functional', function () {
           done(err)
         })
       })
+
       afterEach(function (done) {
         Runnable.prototype.githubLogin.restore()
         NaviEntry.remove({}, done)
@@ -74,6 +76,7 @@ describe('functional', function () {
               })
             })
         })
+
         it('should do nothing if the request is late', function (done) {
           var job = {instance: masterInstance, timestamp: new Date(1990, 11, 17).valueOf()}
           instanceDeleted(job)
@@ -89,6 +92,7 @@ describe('functional', function () {
             })
         })
       })
+
       describe('when there is only one instance added', function () {
         beforeEach(function (done) {
           var naviEntry = new NaviEntry()
