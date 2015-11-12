@@ -57,9 +57,7 @@ describe('functional', function () {
             branch: 'asdf',
             lastUpdated: new Date(1995, 11, 17)
           }
-          naviEntry.save(function (err) {
-            done(err)
-          })
+          naviEntry.save(done)
         })
 
         it('should remove the instance from the record', function (done) {
@@ -103,9 +101,7 @@ describe('functional', function () {
             branch: 'asdf',
             lastUpdated: new Date(1995, 11, 17)
           }
-          naviEntry.save(function (err) {
-            done(err)
-          })
+          naviEntry.save(done)
         })
 
         it('should remove the entire record', function (done) {

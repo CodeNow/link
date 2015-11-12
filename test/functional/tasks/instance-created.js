@@ -119,9 +119,7 @@ describe('functional', function () {
             branch: 'asdf',
             lastUpdated: new Date(1995, 11, 17)
           }
-          naviEntry.save(function (err) {
-            done(err)
-          })
+          naviEntry.save(done)
         })
 
         it('should add the instance data to the database', function (done) {
@@ -156,9 +154,7 @@ describe('functional', function () {
                 done()
               })
             })
-            .catch(function (err) {
-              done(err)
-            })
+            .catch(done)
         })
 
         it('should do nothing if the update is old', function (done) {
