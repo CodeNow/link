@@ -43,11 +43,11 @@ destroy the record completely.
       "url": "erwoj2-test-ws-server-staging-anandkumarpatel.runnablecloud.com",
       "dependencies": [
         {
-          elasticUrl: "mongodb-staging-runnabledemo.runnablecloud.com",
-          shortHash: "2gxk81" 
+          "elasticUrl": "mongodb-staging-runnabledemo.runnablecloud.com",
+          "shortHash": "2gxk81" 
         },{
-          elasticUrl: "helloworld-staging-runnabledemo.runnablecloud.com",
-          shortHash: "1jndz2"
+          "elasticUrl": "helloworld-staging-runnabledemo.runnablecloud.com",
+          "shortHash": "1jndz2"
         }
       ],
       "dockerHost": "10.20.219.250",
@@ -66,11 +66,11 @@ destroy the record completely.
       "url": "ew0kl1-test-ws-server-staging-anandkumarpatel.runnablecloud.com",
       "dependencies": [
         {
-          elasticUrl: "mongodb-staging-runnabledemo.runnablecloud.com",
-          shortHash: "2gxk81" 
+          "elasticUrl": "mongodb-staging-runnabledemo.runnablecloud.com",
+          "shortHash": "2gxk81" 
         },{
-          elasticUrl: "helloworld-staging-runnabledemo.runnablecloud.com",
-          shortHash: "1jndz2"
+          "elasticUrl": "helloworld-staging-runnabledemo.runnablecloud.com",
+          "shortHash": "1jndz2"
         }
       ],
       "dockerHost": "10.20.209.167",
