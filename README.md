@@ -41,7 +41,15 @@ destroy the record completely.
     "erwoj2": {
       "branch": "change-it",
       "url": "erwoj2-test-ws-server-staging-anandkumarpatel.runnablecloud.com",
-      "dependencies": [],
+      "dependencies": [
+        {
+          elasticUrl: "mongodb-staging-runnabledemo.runnablecloud.com",
+          shortHash: "2gxk81" 
+        },{
+          elasticUrl: "helloworld-staging-runnabledemo.runnablecloud.com",
+          shortHash: "1jndz2"
+        }
+      ],
       "dockerHost": "10.20.219.250",
       "ports": {
         "80": "32809",
@@ -56,7 +64,15 @@ destroy the record completely.
     "ew0kl1": {
       "branch": "master",
       "url": "ew0kl1-test-ws-server-staging-anandkumarpatel.runnablecloud.com",
-      "dependencies": [],
+      "dependencies": [
+        {
+          elasticUrl: "mongodb-staging-runnabledemo.runnablecloud.com",
+          shortHash: "2gxk81" 
+        },{
+          elasticUrl: "helloworld-staging-runnabledemo.runnablecloud.com",
+          shortHash: "1jndz2"
+        }
+      ],
       "dockerHost": "10.20.209.167",
       "ports": {
         "80": "33102",
