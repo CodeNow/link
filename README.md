@@ -35,20 +35,43 @@ destroy the record completely.
 
 ```JSON
 {
-  "_id": "564a6f486095bf55310e2896",
-  "elasticUrl": "api-staging-runnabletest20.runnablecloud.com",
+  "_id": "5646698d6095bf55310e2863",
+  "elasticUrl": "test-ws-server-staging-anandkumarpatel.runnablecloud.com",
   "directUrls": {
-    "26wgl1": {
-      "branch": "master",
-      "url": "26wgl1-api-staging-runnabletest20.runnablecloud.com",
+    "erwoj2": {
+      "branch": "change-it",
+      "url": "erwoj2-test-ws-server-staging-anandkumarpatel.runnablecloud.com",
       "dependencies": [],
-      "dockerHost": null,
-      "running": false,
-      "lastUpdated": "2015-11-17T00:08:10.855Z",
+      "dockerHost": "10.20.219.250",
+      "ports": {
+        "80": "32809",
+        "3000": "32808",
+        "8000": "32806",
+        "8080": "32807"
+      },
+      "running": true,
+      "lastUpdated": "2015-11-13T23:10:16.142Z",
+      "masterPod": false
+    },
+    "ew0kl1": {
+      "branch": "master",
+      "url": "ew0kl1-test-ws-server-staging-anandkumarpatel.runnablecloud.com",
+      "dependencies": [],
+      "dockerHost": "10.20.209.167",
+      "ports": {
+        "80": "33102",
+        "3000": "33101",
+        "8000": "33103",
+        "8080": "33104"
+      },
+      "running": true,
+      "lastUpdated": "2015-11-17T00:03:27.708Z",
       "masterPod": true
     }
   },
-  "ownerGithubId": 14130763,
-  "__v": 0
+  "ownerGithubId": 2194285,
+  "userMappings": {
+    "2194285": "ew0kl1"
+  }
 }
 ```
