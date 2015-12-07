@@ -1,20 +1,26 @@
+/**
+ * @module test/unit/models/navi-entry
+ */
 'use strict'
 
-var Lab = require('lab')
-var lab = exports.lab = Lab.script()
-var describe = lab.describe
-var it = lab.it
-var beforeEach = lab.beforeEach
-var afterEach = lab.afterEach
 var Code = require('code')
-var expect = Code.expect
-var sinon = require('sinon')
+var Lab = require('lab')
 var Runnable = require('runnable')
+var TaskFatalError = require('ponos').TaskFatalError
+var sinon = require('sinon')
 
-require('loadenv')({ debugName: 'link:env' })
+var lab = exports.lab = Lab.script()
 
 var NaviEntry = require('models/navi-entry')
-var TaskFatalError = require('ponos').TaskFatalError
+var hermesInstance = require('hermes')
+
+var afterEach = lab.afterEach
+var beforeEach = lab.beforeEach
+var describe = lab.describe
+var expect = Code.expect
+var it = lab.it
+
+require('loadenv')({ debugName: 'link:env' })
 
 describe('models', function () {
   var mockRunnableInstance
@@ -49,11 +55,13 @@ describe('models', function () {
       }
       sinon.stub(Runnable.prototype, 'newInstance').returns(mockRunnableInstance)
       sinon.stub(Runnable.prototype, 'githubLogin').yieldsAsync(null)
+      sinon.stub(hermesInstance, 'publish')
       done()
     })
     afterEach(function (done) {
       Runnable.prototype.newInstance.restore()
       Runnable.prototype.githubLogin.restore()
+      hermesInstance.publish.restore()
       done()
     })
     describe('handleInstanceUpdate', function () {
@@ -76,6 +84,7 @@ describe('models', function () {
         it('should callback err if db errs', function (done) {
           NaviEntry.handleInstanceUpdate(mockInstance)
             .catch(function (returnedErr) {
+              sinon.assert.notCalled(hermesInstance.publish)
               expect(returnedErr).to.be.an.instanceof(Error)
               expect(returnedErr).to.not.be.an.instanceof(TaskFatalError)
               done()
@@ -95,6 +104,7 @@ describe('models', function () {
         it('should callback err if db errs', function (done) {
           NaviEntry.handleInstanceUpdate(mockInstance)
             .catch(function (returnedErr) {
+              sinon.assert.notCalled(hermesInstance.publish)
               expect(returnedErr).to.be.an.instanceof(TaskFatalError)
               expect(returnedErr.message).to.match(/old/)
               done()
@@ -111,6 +121,10 @@ describe('models', function () {
         it('should update the database', function (done) {
           NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
             .then(function () {
+              sinon.assert.calledOnce(hermesInstance.publish)
+              sinon.assert.calledWith(hermesInstance.publish,
+                'cache.invalidated',
+                sinon.match.has('elasticUrl', 'elasticHostname.example.com'))
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
                 {
@@ -192,6 +206,10 @@ describe('models', function () {
         it('should update the database', function (done) {
           NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
             .then(function () {
+              sinon.assert.calledOnce(hermesInstance.publish)
+              sinon.assert.calledWith(hermesInstance.publish,
+                'cache.invalidated',
+                sinon.match.has('elasticUrl', 'elasticHostname.example.com'))
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
                 {
@@ -304,6 +322,10 @@ describe('models', function () {
         it('should remove the entire document', function (done) {
           NaviEntry.handleInstanceDelete(mockInstance, mockTimestamp)
             .then(function () {
+              sinon.assert.calledOnce(hermesInstance.publish)
+              sinon.assert.calledWith(hermesInstance.publish,
+                'cache.invalidated',
+                sinon.match.has('elasticUrl', 'elasticUrl'))
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
                 {
@@ -330,6 +352,7 @@ describe('models', function () {
         it('should remove the entire document', function (done) {
           NaviEntry.handleInstanceDelete(mockInstance, mockTimestamp)
             .then(function () {
+              sinon.assert.notCalled(hermesInstance.publish)
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
                 {
@@ -356,6 +379,7 @@ describe('models', function () {
           it('should callback err if db errs', function (done) {
             NaviEntry.handleInstanceDelete(mockInstance)
               .catch(function (returnedErr) {
+                sinon.assert.notCalled(hermesInstance.publish)
                 expect(returnedErr).to.be.an.instanceof(Error)
                 expect(returnedErr).to.not.be.an.instanceof(TaskFatalError)
                 sinon.assert.notCalled(NaviEntry.findOneAndRemove)
@@ -368,6 +392,10 @@ describe('models', function () {
           NaviEntry.handleInstanceDelete(mockInstance, mockTimestamp)
             .then(function () {
               sinon.assert.notCalled(NaviEntry.findOneAndRemove)
+              sinon.assert.calledOnce(hermesInstance.publish)
+              sinon.assert.calledWith(hermesInstance.publish,
+                'cache.invalidated',
+                sinon.match.has('elasticUrl', 'elasticUrl'))
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
                 {

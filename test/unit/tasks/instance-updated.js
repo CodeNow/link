@@ -1,23 +1,27 @@
+/**
+ * @module test/unit/tasks/instance-updated
+ */
 'use strict'
 
-var Lab = require('lab')
-var lab = exports.lab = Lab.script()
-var describe = lab.describe
-var it = lab.it
-var beforeEach = lab.beforeEach
-var afterEach = lab.afterEach
 var Code = require('code')
-var expect = Code.expect
-var sinon = require('sinon')
-var instance = require('../../mocks/master-instance')
-
-require('loadenv')({ debugName: 'link:env' })
-
+var Lab = require('lab')
 var Promise = require('bluebird')
 var TaskFatalError = require('ponos').TaskFatalError
+var sinon = require('sinon')
 
-var instanceUpdated = require('tasks/instance-updated')
+var lab = exports.lab = Lab.script()
+
 var NaviEntry = require('models/navi-entry')
+var instance = require('../../mocks/master-instance')
+var instanceUpdated = require('tasks/instance-updated')
+
+var afterEach = lab.afterEach
+var beforeEach = lab.beforeEach
+var describe = lab.describe
+var expect = Code.expect
+var it = lab.it
+
+require('loadenv')({ debugName: 'link:env' })
 
 describe('tasks', function () {
   var updateResults
