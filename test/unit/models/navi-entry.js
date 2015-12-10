@@ -1,6 +1,3 @@
-/**
- * @module test/unit/models/navi-entry
- */
 'use strict'
 
 var Code = require('code')
