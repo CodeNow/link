@@ -1,6 +1,3 @@
-/**
- * @module test/unit/tasks/instance-updated
- */
 'use strict'
 
 var Code = require('code')
