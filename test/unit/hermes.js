@@ -42,7 +42,7 @@ describe('lib/hermes', function () {
     it('should enqueue cache.invalidated tasks with correct arguments', function (done) {
       hermesInstance.publishCacheInvalidated('elastic-url-staging.runnableapp.com')
       sinon.assert.calledOnce(hermesInstance.publish)
-      sinon.assert.calledWith(hermesInstance.publish, 'cache.invalidated', sinon.match.has(
+      sinon.assert.calledWith(hermesInstance.publish, 'routing.cache.invalidated', sinon.match.has(
         'elasticUrl', 'elastic-url-staging.runnableapp.com'
       ))
       done()
