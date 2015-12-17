@@ -6,8 +6,6 @@ var Code = require('code')
 var Lab = require('lab')
 var sinon = require('sinon')
 
-// var log = require('logger.js')
-
 var lab = exports.lab = Lab.script()
 
 var afterEach = lab.afterEach
