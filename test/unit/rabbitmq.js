@@ -39,6 +39,15 @@ describe('rabbitmq', function () {
       expect(subscriber).to.equal(newSubscriber)
       done()
     })
+    it('should have overriden getQueues method for Ponos', function (done) {
+      var subscriber = rabbitmq.getSubscriber()
+      expect(subscriber.getQueues()).to.deep.equal([
+        'instance.updated',
+        'instance.created',
+        'instance.deleted'
+      ])
+      done()
+    })
   })
   describe('_handleHermesError', function () {
     beforeEach(function (done) {
