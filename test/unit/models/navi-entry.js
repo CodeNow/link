@@ -112,6 +112,8 @@ describe('models', function () {
       describe('not running', function () {
         beforeEach(function (done) {
           mockRunnableInstance.fetchDependencies.yieldsAsync(null, null)
+          mockRunnableInstance.attrs.contextVersion.attrs.dockRemoved = false
+          mockRunnableInstance.contextVersion.attrs.dockRemoved = false
           done()
         })
         it('should update the database', function (done) {
@@ -142,7 +144,7 @@ describe('models', function () {
                       dependencies: [],
                       url: 'directHostname.example.com',
                       masterPod: true,
-                      dockRemoved: true
+                      dockRemoved: false
                     }
                   }
                 }
