@@ -37,6 +37,11 @@ describe('models', function () {
         masterPod: true,
         container: {
           Running: false
+        },
+        contextVersion: {
+          attrs: {
+            dockRemoved: true
+          }
         }
       }
       mockDependency = {
@@ -48,7 +53,8 @@ describe('models', function () {
         getContainerHostname: sinon.stub().returns('directHostname.example.com'),
         getBranchName: sinon.stub().returns('branchName'),
         fetchDependencies: sinon.stub().yieldsAsync(null, [mockDependency]),
-        attrs: mockInstance
+        attrs: mockInstance,
+        contextVersion: mockInstance.contextVersion
       }
       sinon.stub(Runnable.prototype, 'newInstance').returns(mockRunnableInstance)
       sinon.stub(Runnable.prototype, 'githubLogin').yieldsAsync(null)
@@ -113,6 +119,8 @@ describe('models', function () {
       describe('not running', function () {
         beforeEach(function (done) {
           mockRunnableInstance.fetchDependencies.yieldsAsync(null, null)
+          mockRunnableInstance.attrs.contextVersion.attrs.dockRemoved = false
+          mockRunnableInstance.contextVersion.attrs.dockRemoved = false
           done()
         })
         it('should update the database', function (done) {
@@ -145,7 +153,8 @@ describe('models', function () {
                       branch: 'branchName',
                       dependencies: [],
                       url: 'directHostname.example.com',
-                      masterPod: true
+                      masterPod: true,
+                      dockRemoved: false
                     }
                   }
                 }
@@ -235,7 +244,8 @@ describe('models', function () {
                       branch: 'branchName',
                       dependencies: [{shortHash: 'dependencyShorthash', elasticUrl: 'elasticHostname'}],
                       url: 'directHostname.example.com',
-                      masterPod: false
+                      masterPod: false,
+                      dockRemoved: true
                     }
                   }
                 }
@@ -284,7 +294,8 @@ describe('models', function () {
               ports: {},
               running: false,
               lastUpdated: mockTimestamp,
-              masterPod: true
+              masterPod: true,
+              dockRemoved: true
             })
             done()
           })
