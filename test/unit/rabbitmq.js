@@ -59,5 +59,21 @@ describe('rabbitmq', function () {
       sinon.assert.calledWith(log.error, {err: err}, '_handleHermesError')
       done()
     })
+    describe('_handleHermesError bound to hermesInstance error event', function () {
+      beforeEach(function (done) {
+        sinon.stub(rabbitmq, '_handleHermesError')
+        done()
+      })
+      afterEach(function (done) {
+        rabbitmq._handleHermesError.restore()
+        done()
+      })
+      it('should invoke function if rabbitMQ eventemitter emits error event', function (done) {
+        var hermesInstance = rabbitmq.getSubscriber()
+        hermesInstance.emit('error', {foo: 'bar'})
+        sinon.assert.calledOnce(rabbitmq._handleHermesError)
+        done()
+      })
+    })
   })
 })
