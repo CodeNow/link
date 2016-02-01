@@ -70,7 +70,7 @@ describe('functional', function () {
                   return done(err)
                 }
                 expect(document.ipWhitelist).to.be.object()
-                expect(document.ipWhitelist.enabled).to.be.true
+                expect(document.ipWhitelist.enabled).to.be.true()
 
                 expect(document.elasticUrl).to.equal('api-staging-runnabledemo.runnable2.net')
                 expect(Object.keys(document.directUrls).length).to.equal(1)
