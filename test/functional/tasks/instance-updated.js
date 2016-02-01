@@ -98,7 +98,9 @@ describe('functional', function () {
 
         it('should update the whitelist to false', function (done) {
           var updatedMasterInstance = clone(masterInstance)
-          updatedMasterInstance.ipWhitelist.enabled = false
+          updatedMasterInstance.ipWhitelist = {
+            enabled: false
+          }
           var job = { instance: updatedMasterInstance, timestamp: new Date().valueOf() }
           instanceUpdated(job)
             .then(function () {
