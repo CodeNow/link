@@ -96,6 +96,9 @@
     "successful": true,
     "id": "5643ef1416c10c1e00716a55"
   },
+  "ipWhitelist": {
+    "enabled": true
+  },
   "autoForked": false,
   "masterPod": true,
   "env": [

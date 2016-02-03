@@ -145,6 +145,7 @@ describe('models', function () {
                   $set: {
                     elasticUrl: 'elasticHostname.example.com',
                     ownerGithubId: 1234,
+                    'ipWhitelist.enabled': false,
                     'directUrls.instanceID': {
                       lastUpdated: mockTimestamp,
                       ports: {},
@@ -209,6 +210,9 @@ describe('models', function () {
           done()
         })
         it('should update the database', function (done) {
+          mockInstance.ipWhitelist = {
+            enabled: true
+          }
           NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
             .then(function () {
               sinon.assert.calledOnce(hermesInstance.publishCacheInvalidated)
@@ -230,6 +234,7 @@ describe('models', function () {
                   $set: {
                     elasticUrl: 'elasticHostname.example.com',
                     ownerGithubId: 1234,
+                    'ipWhitelist.enabled': true,
                     'directUrls.instanceID': {
                       lastUpdated: mockTimestamp,
                       ports: {

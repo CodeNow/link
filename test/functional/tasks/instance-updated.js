@@ -12,6 +12,7 @@ var sinon = require('sinon')
 var nock = require('nock')
 var Code = require('code')
 var expect = Code.expect
+var clone = require('101/clone')
 var Runnable = require('runnable')
 var mongooseControl = require('mongoose-control')
 
@@ -68,6 +69,9 @@ describe('functional', function () {
                 if (err) {
                   return done(err)
                 }
+                expect(document.ipWhitelist).to.be.object()
+                expect(document.ipWhitelist.enabled).to.be.true()
+
                 expect(document.elasticUrl).to.equal('api-staging-runnabledemo.runnable2.net')
                 expect(Object.keys(document.directUrls).length).to.equal(1)
 
@@ -89,7 +93,29 @@ describe('functional', function () {
                 ])
                 done()
               })
-          })
+            })
+        })
+
+        it('should update the whitelist to false', function (done) {
+          var updatedMasterInstance = clone(masterInstance)
+          updatedMasterInstance.ipWhitelist = {
+            enabled: false
+          }
+          var job = { instance: updatedMasterInstance, timestamp: new Date().valueOf() }
+          instanceUpdated(job)
+            .then(function () {
+              nockScope.forEach(function (nockedRequest) {
+                expect(nockedRequest.isDone()).to.equal(true)
+              })
+              NaviEntry.findOne({elasticUrl: 'api-staging-runnabledemo.runnable2.net'}, function (err, document) {
+                if (err) {
+                  return done(err)
+                }
+                expect(document.ipWhitelist).to.be.object()
+                expect(document.ipWhitelist.enabled).to.be.false()
+                done()
+              })
+            })
         })
       })
 
