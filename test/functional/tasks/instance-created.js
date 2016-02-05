@@ -58,7 +58,7 @@ describe('functional', function () {
           done()
         })
 
-        it('should add the instance data to the database', function (done) {
+        it('should remove the instance data to the database', function (done) {
           var job = { instance: masterInstance, timestamp: new Date().valueOf() }
           instanceCreated(job)
             .then(function () {
@@ -69,28 +69,29 @@ describe('functional', function () {
                 if (err) {
                   return done(err)
                 }
-                expect(document.ipWhitelist).to.be.object()
-                expect(document.ipWhitelist.enabled).to.be.true()
-
-                expect(document.elasticUrl).to.equal('api-staging-runnabledemo.runnable2.net')
-                expect(Object.keys(document.directUrls).length).to.equal(1)
-
-                var subDocument = document.directUrls[masterInstance.shortHash]
-                expect(subDocument.running).to.equal(true)
-                expect(subDocument.branch).to.equal(masterInstance.contextVersion.appCodeVersions[0].branch)
-                expect(subDocument.ports).to.deep.equal({
-                  '80': '32823',
-                  '3000': '32821',
-                  '3001': '32822',
-                  '8000': '32824',
-                  '8080': '32825'
-                })
-                expect(subDocument.dependencies).to.deep.equal([
-                  { elasticUrl: 'mongodb-staging-runnabledemo.runnablecloud.com',
-                    shortHash: '2gxk81' },
-                  { elasticUrl: 'helloworld-staging-runnabledemo.runnablecloud.com',
-                    shortHash: '1jndz2' }
-                ])
+                expect(document).to.be.null()
+                //expect(document.ipWhitelist).to.be.object()
+                //expect(document.ipWhitelist.enabled).to.be.true()
+                //
+                //expect(document.elasticUrl).to.equal('api-staging-runnabledemo.runnable2.net')
+                //expect(Object.keys(document.directUrls).length).to.equal(1)
+                //
+                //var subDocument = document.directUrls[masterInstance.shortHash]
+                //expect(subDocument.running).to.equal(true)
+                //expect(subDocument.branch).to.equal(masterInstance.contextVersion.appCodeVersions[0].branch)
+                //expect(subDocument.ports).to.deep.equal({
+                //  '80': '32823',
+                //  '3000': '32821',
+                //  '3001': '32822',
+                //  '8000': '32824',
+                //  '8080': '32825'
+                //})
+                //expect(subDocument.dependencies).to.deep.equal([
+                //  { elasticUrl: 'mongodb-staging-runnabledemo.runnablecloud.com',
+                //    shortHash: '2gxk81' },
+                //  { elasticUrl: 'helloworld-staging-runnabledemo.runnablecloud.com',
+                //    shortHash: '1jndz2' }
+                //])
                 done()
               })
             })
