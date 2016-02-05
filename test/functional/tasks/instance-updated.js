@@ -15,6 +15,7 @@ var expect = Code.expect
 var clone = require('101/clone')
 var Runnable = require('runnable')
 var mongooseControl = require('mongoose-control')
+var hermesInstance = require('hermes')
 
 require('loadenv')({ debugName: 'link:env' })
 
@@ -51,14 +52,16 @@ describe('functional', function () {
         var nockScope
         beforeEach(function (done) {
           nockScope = nock.load('test/functional/fixtures/master-instance-nock.json')
+          sinon.spy(hermesInstance, 'publishCacheInvalidated')
           done()
         })
         afterEach(function (done) {
           nock.cleanAll()
+          hermesInstance.publishCacheInvalidated.restore()
           done()
         })
 
-        it('should add the instance data into the database', function (done) {
+        it('should not add the instance data into the database with whitelist enabled', function (done) {
           var job = { instance: masterInstance, timestamp: new Date().valueOf() }
           instanceUpdated(job)
             .then(function () {
@@ -69,28 +72,31 @@ describe('functional', function () {
                 if (err) {
                   return done(err)
                 }
-                expect(document.ipWhitelist).to.be.object()
-                expect(document.ipWhitelist.enabled).to.be.true()
-
-                expect(document.elasticUrl).to.equal('api-staging-runnabledemo.runnable2.net')
-                expect(Object.keys(document.directUrls).length).to.equal(1)
-
-                var subDocument = document.directUrls[masterInstance.shortHash]
-                expect(subDocument.running).to.equal(true)
-                expect(subDocument.branch).to.equal(masterInstance.contextVersion.appCodeVersions[0].branch)
-                expect(subDocument.ports).to.deep.equal({
-                  '80': '32823',
-                  '3000': '32821',
-                  '3001': '32822',
-                  '8000': '32824',
-                  '8080': '32825'
-                })
-                expect(subDocument.dependencies).to.deep.equal([
-                  { elasticUrl: 'mongodb-staging-runnabledemo.runnablecloud.com',
-                    shortHash: '2gxk81' },
-                  { elasticUrl: 'helloworld-staging-runnabledemo.runnablecloud.com',
-                    shortHash: '1jndz2' }
-                ])
+                expect(document).to.be.null()
+                // Since nothing was deleted, the cache shouldn't invalidate
+                sinon.assert.notCalled(hermesInstance.publishCacheInvalidated)
+                //expect(document.ipWhitelist).to.be.object()
+                //expect(document.ipWhitelist.enabled).to.be.true()
+                //
+                //expect(document.elasticUrl).to.equal('api-staging-runnabledemo.runnable2.net')
+                //expect(Object.keys(document.directUrls).length).to.equal(1)
+                //
+                //var subDocument = document.directUrls[masterInstance.shortHash]
+                //expect(subDocument.running).to.equal(true)
+                //expect(subDocument.branch).to.equal(masterInstance.contextVersion.appCodeVersions[0].branch)
+                //expect(subDocument.ports).to.deep.equal({
+                //  '80': '32823',
+                //  '3000': '32821',
+                //  '3001': '32822',
+                //  '8000': '32824',
+                //  '8080': '32825'
+                //})
+                //expect(subDocument.dependencies).to.deep.equal([
+                //  { elasticUrl: 'mongodb-staging-runnabledemo.runnablecloud.com',
+                //    shortHash: '2gxk81' },
+                //  { elasticUrl: 'helloworld-staging-runnabledemo.runnablecloud.com',
+                //    shortHash: '1jndz2' }
+                //])
                 done()
               })
             })

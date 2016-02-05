@@ -69,11 +69,13 @@ describe('models', function () {
     })
     describe('handleInstanceUpdate', function () {
       beforeEach(function (done) {
-        sinon.stub(NaviEntry, 'findOneAndUpdate').yieldsAsync(null)
+        sinon.stub(NaviEntry, 'findOneAndUpdate').yieldsAsync(null, { count: 1})
+        sinon.stub(NaviEntry, 'findOneAndRemove').yieldsAsync(null, { count: 1})
         done()
       })
       afterEach(function (done) {
         NaviEntry.findOneAndUpdate.restore()
+        NaviEntry.findOneAndRemove.restore()
         done()
       })
 
@@ -110,6 +112,21 @@ describe('models', function () {
               sinon.assert.notCalled(hermesInstance.publishCacheInvalidated)
               expect(returnedErr).to.be.an.instanceof(TaskFatalError)
               expect(returnedErr.message).to.match(/old/)
+              done()
+            })
+            .catch(done)
+        })
+      })
+
+      describe('When the naviEntry did not update anything', function () {
+        beforeEach(function (done) {
+          NaviEntry.findOneAndUpdate.yieldsAsync()
+          done()
+        })
+        it('should attempt', function (done) {
+          NaviEntry.handleInstanceUpdate(mockInstance)
+            .then(function () {
+              sinon.assert.notCalled(hermesInstance.publishCacheInvalidated)
               done()
             })
             .catch(done)
@@ -210,9 +227,6 @@ describe('models', function () {
           done()
         })
         it('should update the database', function (done) {
-          mockInstance.ipWhitelist = {
-            enabled: true
-          }
           NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
             .then(function () {
               sinon.assert.calledOnce(hermesInstance.publishCacheInvalidated)
@@ -234,7 +248,7 @@ describe('models', function () {
                   $set: {
                     elasticUrl: 'elasticHostname.example.com',
                     ownerGithubId: 1234,
-                    'ipWhitelist.enabled': true,
+                    'ipWhitelist.enabled': false,
                     'directUrls.instanceID': {
                       lastUpdated: mockTimestamp,
                       ports: {
@@ -259,6 +273,62 @@ describe('models', function () {
             })
             .catch(done)
         })
+        describe('Whitelist enabled', function () {
+          beforeEach(function (done) {
+            mockInstance.ipWhitelist = {
+              enabled: true
+            }
+            done()
+          })
+          it('should remove from the database with ipWhitelist', function (done) {
+            NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
+              .then(function () {
+                sinon.assert.calledOnce(hermesInstance.publishCacheInvalidated)
+                sinon.assert.calledWith(hermesInstance.publishCacheInvalidated,
+                  'elasticHostname.example.com')
+                sinon.assert.calledWith(
+                  NaviEntry.findOneAndRemove,
+                  {
+                    elasticUrl: 'elasticHostname.example.com',
+                    $or: [
+                      {
+                        'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
+                      },
+                      {
+                        'directUrls.instanceID.lastUpdated': {$exists: false}
+                      }
+                    ]
+                  }
+                )
+                done()
+              })
+              .catch(done)
+          })
+          it('should shouldn\'t invalidate cache if it did not delete anything', function (done) {
+            NaviEntry.findOneAndRemove.yieldsAsync()
+            NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
+              .then(function () {
+                sinon.assert.notCalled(hermesInstance.publishCacheInvalidated)
+                sinon.assert.calledWith(
+                  NaviEntry.findOneAndRemove,
+                  {
+                    elasticUrl: 'elasticHostname.example.com',
+                    $or: [
+                      {
+                        'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
+                      },
+                      {
+                        'directUrls.instanceID.lastUpdated': {$exists: false}
+                      }
+                    ]
+                  }
+                )
+                done()
+              })
+              .catch(done)
+          })
+        })
+
       })
     })
     describe('_getDirectURlObj', function () {
