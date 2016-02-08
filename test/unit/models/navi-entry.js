@@ -167,97 +167,198 @@ describe('models', function () {
       })
 
       describe('running', function () {
-        beforeEach(function (done) {
-          mockInstance.container.dockerHost = 'http://10.0.0.1:215'
-          mockInstance.masterPod = false
-          mockInstance.container.inspect = {
-            State: {
-              Running: true
+
+        describe('is masterPod', function () {
+          beforeEach(function (done) {
+            mockInstance.container.dockerHost = 'http://10.0.0.1:215'
+            mockInstance.container.inspect = {
+              State: {
+                Running: true
+              }
             }
-          }
-          mockInstance.container.ports = {
-            '1/tcp': [
-              {
-                'HostIp': '0.0.0.0',
-                'HostPort': '32783'
-              }
-            ],
-            '3000/tcp': [
-              {
-                'HostIp': '0.0.0.0',
-                'HostPort': '32779'
-              }
-            ],
-            '3001/tcp': [
-              {
-                'HostIp': '0.0.0.0',
-                'HostPort': '32780'
-              }
-            ],
-            '443/tcp': [
-              {
-                'HostIp': '0.0.0.0',
-                'HostPort': '32781'
-              }
-            ],
-            '80/tcp': [
-              {
-                'HostIp': '0.0.0.0',
-                'HostPort': '32782'
-              }
-            ]
-          }
-          done()
-        })
-        it('should update the database', function (done) {
-          mockInstance.ipWhitelist = {
-            enabled: true
-          }
-          NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
-            .then(function () {
-              sinon.assert.calledOnce(hermesInstance.publishCacheInvalidated)
-              sinon.assert.calledWith(hermesInstance.publishCacheInvalidated,
-                'elasticHostname.example.com')
-              sinon.assert.calledWith(
-                NaviEntry.findOneAndUpdate,
+            mockInstance.container.ports = {
+              '1/tcp': [
                 {
-                  elasticUrl: 'elasticHostname.example.com',
-                  $or: [
-                    {
-                      'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
-                    },
-                    {
-                      'directUrls.instanceID.lastUpdated': {$exists: false}
-                    }
-                  ]
-                }, {
-                  $set: {
+                  'HostIp': '0.0.0.0',
+                  'HostPort': '32783'
+                }
+              ],
+              '3000/tcp': [
+                {
+                  'HostIp': '0.0.0.0',
+                  'HostPort': '32779'
+                }
+              ],
+              '3001/tcp': [
+                {
+                  'HostIp': '0.0.0.0',
+                  'HostPort': '32780'
+                }
+              ],
+              '443/tcp': [
+                {
+                  'HostIp': '0.0.0.0',
+                  'HostPort': '32781'
+                }
+              ],
+              '80/tcp': [
+                {
+                  'HostIp': '0.0.0.0',
+                  'HostPort': '32782'
+                }
+              ]
+            }
+            done()
+          })
+          it('should update the database', function (done) {
+            mockInstance.ipWhitelist = {
+              enabled: true
+            }
+            NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
+              .then(function () {
+                sinon.assert.calledOnce(hermesInstance.publishCacheInvalidated)
+                sinon.assert.calledWith(hermesInstance.publishCacheInvalidated,
+                  'elasticHostname.example.com')
+                sinon.assert.calledWith(
+                  NaviEntry.findOneAndUpdate,
+                  {
                     elasticUrl: 'elasticHostname.example.com',
-                    ownerGithubId: 1234,
-                    'ipWhitelist.enabled': true,
-                    'directUrls.instanceID': {
-                      lastUpdated: mockTimestamp,
-                      ports: {
-                        '1': '32783',
-                        '80': '32782',
-                        '443': '32781',
-                        '3000': '32779',
-                        '3001': '32780'
+                    $or: [
+                      {
+                        'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
                       },
-                      dockerHost: '10.0.0.1',
-                      running: true,
-                      branch: 'branchName',
-                      dependencies: [{shortHash: 'dependencyShorthash', elasticUrl: 'elasticHostname'}],
-                      url: 'directHostname.example.com',
-                      masterPod: false,
-                      dockRemoved: true
+                      {
+                        'directUrls.instanceID.lastUpdated': {$exists: false}
+                      }
+                    ]
+                  }, {
+                    $set: {
+                      elasticUrl: 'elasticHostname.example.com',
+                      ownerGithubId: 1234,
+                      'ipWhitelist.enabled': true,
+                      'directUrls.instanceID': {
+                        lastUpdated: mockTimestamp,
+                        ports: {
+                          '1': '32783',
+                          '80': '32782',
+                          '443': '32781',
+                          '3000': '32779',
+                          '3001': '32780'
+                        },
+                        dockerHost: '10.0.0.1',
+                        running: true,
+                        branch: 'branchName',
+                        dependencies: [{
+                          shortHash: 'dependencyShorthash',
+                          elasticUrl: 'elasticHostname'
+                        }],
+                        url: 'directHostname.example.com',
+                        masterPod: true,
+                        dockRemoved: true
+                      }
                     }
                   }
+                )
+                done()
+              })
+              .catch(done)
+          })
+        })
+        describe('not masterPod', function () {
+          beforeEach(function (done) {
+            mockInstance.container.dockerHost = 'http://10.0.0.1:215'
+            mockInstance.masterPod = false
+            mockInstance.container.inspect = {
+              State: {
+                Running: true
+              }
+            }
+            mockInstance.container.ports = {
+              '1/tcp': [
+                {
+                  'HostIp': '0.0.0.0',
+                  'HostPort': '32783'
                 }
-              )
-              done()
-            })
-            .catch(done)
+              ],
+              '3000/tcp': [
+                {
+                  'HostIp': '0.0.0.0',
+                  'HostPort': '32779'
+                }
+              ],
+              '3001/tcp': [
+                {
+                  'HostIp': '0.0.0.0',
+                  'HostPort': '32780'
+                }
+              ],
+              '443/tcp': [
+                {
+                  'HostIp': '0.0.0.0',
+                  'HostPort': '32781'
+                }
+              ],
+              '80/tcp': [
+                {
+                  'HostIp': '0.0.0.0',
+                  'HostPort': '32782'
+                }
+              ]
+            }
+            done()
+          })
+          it('should update the database', function (done) {
+            mockInstance.ipWhitelist = {
+              enabled: true
+            }
+            NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
+              .then(function () {
+                sinon.assert.calledOnce(hermesInstance.publishCacheInvalidated)
+                sinon.assert.calledWith(hermesInstance.publishCacheInvalidated,
+                  'elasticHostname.example.com')
+                sinon.assert.calledWith(
+                  NaviEntry.findOneAndUpdate,
+                  {
+                    elasticUrl: 'elasticHostname.example.com',
+                    $or: [
+                      {
+                        'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
+                      },
+                      {
+                        'directUrls.instanceID.lastUpdated': {$exists: false}
+                      }
+                    ]
+                  }, {
+                    $set: {
+                      elasticUrl: 'elasticHostname.example.com',
+                      ownerGithubId: 1234,
+                      'directUrls.instanceID': {
+                        lastUpdated: mockTimestamp,
+                        ports: {
+                          '1': '32783',
+                          '80': '32782',
+                          '443': '32781',
+                          '3000': '32779',
+                          '3001': '32780'
+                        },
+                        dockerHost: '10.0.0.1',
+                        running: true,
+                        branch: 'branchName',
+                        dependencies: [{
+                          shortHash: 'dependencyShorthash',
+                          elasticUrl: 'elasticHostname'
+                        }],
+                        url: 'directHostname.example.com',
+                        masterPod: false,
+                        dockRemoved: true
+                      }
+                    }
+                  }
+                )
+                done()
+              })
+              .catch(done)
+          })
         })
       })
     })
