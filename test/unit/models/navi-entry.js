@@ -362,6 +362,79 @@ describe('models', function () {
         })
       })
     })
+    describe('no ports exposed', function () {
+      beforeEach(function (done) {
+        sinon.stub(NaviEntry, 'findOneAndUpdate').yieldsAsync(null)
+        done()
+      })
+      afterEach(function (done) {
+        NaviEntry.findOneAndUpdate.restore()
+        done()
+      })
+      beforeEach(function (done) {
+        mockInstance.container.dockerHost = 'http://10.0.0.1:215'
+        mockInstance.masterPod = false
+        mockInstance.container.inspect = {
+          State: {
+            Running: true
+          }
+        }
+        mockInstance.container.ports = {
+          '1/tcp': null,
+          '3000/tcp': null,
+          '3001/tcp': null,
+          '443/tcp': null,
+          '80/tcp': null
+        }
+        done()
+      })
+      it('should update the database', function (done) {
+        mockInstance.ipWhitelist = {
+          enabled: true
+        }
+        NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
+          .then(function () {
+            sinon.assert.calledOnce(hermesInstance.publishCacheInvalidated)
+            sinon.assert.calledWith(hermesInstance.publishCacheInvalidated,
+              'elasticHostname.example.com')
+            sinon.assert.calledWith(
+              NaviEntry.findOneAndUpdate,
+              {
+                elasticUrl: 'elasticHostname.example.com',
+                $or: [
+                  {
+                    'directUrls.instanceID.lastUpdated': {$lt: mockTimestamp}
+                  },
+                  {
+                    'directUrls.instanceID.lastUpdated': {$exists: false}
+                  }
+                ]
+              }, {
+                $set: {
+                  elasticUrl: 'elasticHostname.example.com',
+                  ownerGithubId: 1234,
+                  'directUrls.instanceID': {
+                    lastUpdated: mockTimestamp,
+                    ports: {},
+                    dockerHost: '10.0.0.1',
+                    running: true,
+                    branch: 'branchName',
+                    dependencies: [{
+                      shortHash: 'dependencyShorthash',
+                      elasticUrl: 'elasticHostname'
+                    }],
+                    url: 'directHostname.example.com',
+                    masterPod: false,
+                    dockRemoved: true
+                  }
+                }
+              }
+            )
+            done()
+          })
+          .catch(done)
+      })
+    })
     describe('_getDirectURlObj', function () {
       it('should handle error fetching dependencies', function (done) {
         var err = new Error('Hello!')
