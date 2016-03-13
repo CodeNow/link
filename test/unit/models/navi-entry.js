@@ -480,6 +480,64 @@ describe('models', function () {
           })
           .catch(done)
       })
+      it('should return a fixed isolated object', function (done) {
+        var mockTimestamp = new Date().toString()
+        var mockInstance = {
+          _id: 'instanceID',
+          shortHash: 'instanceID',
+          owner: {
+            github: 1234,
+            username: 'Myztiq'
+          },
+          masterPod: true,
+          container: {
+            Running: false
+          },
+          contextVersion: {
+            attrs: {
+              dockRemoved: true
+            }
+          }
+        }
+        mockDependency = {
+          hostname : '2x6md2--mongodb-staging-codenow.runnablecloud.com',
+          shortHash : '264yle',
+          instance: {
+            attrs: {
+              isolated: 'asdasdasd'
+            }
+          }
+        }
+        mockRunnableInstance = {
+          getElasticHostname: sinon.stub().returns('elasticHostname.example.com'),
+          getContainerHostname: sinon.stub().returns('directHostname.example.com'),
+          getBranchName: sinon.stub().returns('branchName'),
+          fetchDependencies: sinon.stub().yieldsAsync(null, [mockDependency]),
+          attrs: mockInstance,
+          contextVersion: mockInstance.contextVersion
+        }
+        NaviEntry._getDirectURlObj(mockRunnableInstance, mockTimestamp)
+          .then(function (data) {
+            sinon.assert.calledOnce(mockRunnableInstance.fetchDependencies)
+            expect(data).to.deep.equal({
+              branch: 'branchName',
+              url: 'directHostname.example.com',
+              dependencies: [{
+                shortHash: '2x6md2-',
+                isolatedShorthash: '264yle',
+                elasticUrl: 'mongodb-staging-codenow.runnablecloud.com'
+              }],
+              dockerHost: undefined,
+              ports: {},
+              running: false,
+              lastUpdated: mockTimestamp,
+              masterPod: true,
+              dockRemoved: true
+            })
+            done()
+          })
+          .catch(done)
+      })
     })
     describe('handleInstanceDelete', function () {
       beforeEach(function (done) {
