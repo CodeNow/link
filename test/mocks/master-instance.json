@@ -99,6 +99,7 @@
   "ipWhitelist": {
     "enabled": true
   },
+  "redirectEnabled": false,
   "autoForked": false,
   "masterPod": true,
   "env": [
