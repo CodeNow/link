@@ -146,6 +146,7 @@ describe('models', function () {
                     elasticUrl: 'elasticHostname.example.com',
                     ownerGithubId: 1234,
                     'ipWhitelist.enabled': false,
+                    'redirect': false,
                     'directUrls.instanceID': {
                       lastUpdated: mockTimestamp,
                       ports: {},
@@ -214,6 +215,7 @@ describe('models', function () {
             mockInstance.ipWhitelist = {
               enabled: true
             }
+            mockInstance.redirect = true
             NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
               .then(function () {
                 sinon.assert.calledOnce(hermesInstance.publishCacheInvalidated)
@@ -236,6 +238,7 @@ describe('models', function () {
                       elasticUrl: 'elasticHostname.example.com',
                       ownerGithubId: 1234,
                       'ipWhitelist.enabled': true,
+                      'redirect': true,
                       'directUrls.instanceID': {
                         lastUpdated: mockTimestamp,
                         ports: {
