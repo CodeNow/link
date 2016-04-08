@@ -2,7 +2,7 @@
 
 var Code = require('code')
 var Lab = require('lab')
-var Runnable = require('runnable')
+var Runnable = require('@runnable/api-client')
 var TaskFatalError = require('ponos').TaskFatalError
 var sinon = require('sinon')
 

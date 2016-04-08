@@ -13,7 +13,7 @@ var nock = require('nock')
 var Code = require('code')
 var expect = Code.expect
 var clone = require('101/clone')
-var Runnable = require('runnable')
+var Runnable = require('@runnable/api-client')
 var mongooseControl = require('mongoose-control')
 
 require('loadenv')({ debugName: 'link:env' })
