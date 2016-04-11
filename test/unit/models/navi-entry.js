@@ -46,6 +46,7 @@ describe('models', function () {
       }
       mockDependency = {
         hostname: 'elasticHostname',
+        name: 'elasticName',
         shortHash: 'dependencyShorthash'
       }
       mockRunnableInstance = {
@@ -500,7 +501,8 @@ describe('models', function () {
           }
         }
         mockDependency = {
-          hostname: '2x6md2--mongodb-staging-codenow.runnablecloud.com',
+          hostname: 'mongodb-staging-codenow.runnablecloud.com',
+          name: '2x6md2--mongodb',
           shortHash: '264yle',
           isolated: 'asdasdasd'
         }
@@ -520,7 +522,7 @@ describe('models', function () {
               url: 'directHostname.example.com',
               dependencies: [{
                 shortHash: '264yle',
-                isolatedMastersShorthash: '2x6md2',
+                isolatedMastersShortHash: '2x6md2',
                 elasticUrl: 'mongodb-staging-codenow.runnablecloud.com'
               }],
               dockerHost: undefined,
