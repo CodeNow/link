@@ -500,13 +500,9 @@ describe('models', function () {
           }
         }
         mockDependency = {
-          hostname : '2x6md2--mongodb-staging-codenow.runnablecloud.com',
-          shortHash : '264yle',
-          instance: {
-            attrs: {
-              isolated: 'asdasdasd'
-            }
-          }
+          hostname: '2x6md2--mongodb-staging-codenow.runnablecloud.com',
+          shortHash: '264yle',
+          isolated: 'asdasdasd'
         }
         mockRunnableInstance = {
           getElasticHostname: sinon.stub().returns('elasticHostname.example.com'),
@@ -523,8 +519,8 @@ describe('models', function () {
               branch: 'branchName',
               url: 'directHostname.example.com',
               dependencies: [{
-                shortHash: '2x6md2-',
-                isolatedShorthash: '264yle',
+                shortHash: '264yle',
+                isolatedMastersShorthash: '2x6md2',
                 elasticUrl: 'mongodb-staging-codenow.runnablecloud.com'
               }],
               dockerHost: undefined,
