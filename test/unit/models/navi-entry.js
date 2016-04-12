@@ -648,5 +648,58 @@ describe('models', function () {
         })
       })
     })
+    describe('_extractIsolatedMasterShortHash', function () {
+      it('should pull out the shortHash from the instance master', function (done) {
+        expect(NaviEntry._extractIsolatedMasterShortHash('asdf--foo.bar.baz')).to.equal('asdf')
+        done()
+      })
+      it('should throw a task fatal error if the regular expresion does not match properly', function (done) {
+        try {
+          NaviEntry._extractIsolatedMasterShortHash('asdf')
+          Code.fail('No exception thrown')
+        } catch (e) {
+          expect(e).to.be.an.instanceof(TaskFatalError)
+        }
+        done()
+      })
+    })
+    describe('_getIsolatedShortHash', function () {
+      var extractedShortHash
+      beforeEach(function (done) {
+        extractedShortHash = 'deadbeefextracted'
+        sinon.stub(NaviEntry, '_extractIsolatedMasterShortHash').returns(extractedShortHash)
+        done()
+      })
+      afterEach(function (done) {
+        NaviEntry._extractIsolatedMasterShortHash.restore()
+        done()
+      })
+      it('should call _extractIsolatedMasterShortHash if the instance is isolated', function (done) {
+        var results = NaviEntry._getIsolatedShortHash({
+          attrs: {
+            isolated: true,
+            isIsolationGroupMaster: false,
+            shortHash: 'shortHash',
+            name: 'instanceName'
+          }
+        })
+        expect(results).to.equal(extractedShortHash)
+        sinon.assert.calledOnce(NaviEntry._extractIsolatedMasterShortHash)
+        sinon.assert.calledWith(NaviEntry._extractIsolatedMasterShortHash, 'instanceName')
+        done()
+      })
+      it('should return the shorthash if the instance is not isolated', function (done) {
+        var results = NaviEntry._getIsolatedShortHash({
+          attrs: {
+            isolated: false,
+            isIsolationGroupMaster: false,
+            shortHash: 'shortHash'
+          }
+        })
+        sinon.assert.notCalled(NaviEntry._extractIsolatedMasterShortHash)
+        expect(results).to.equal('shortHash')
+        done()
+      })
+    })
   })
 })
