@@ -2,7 +2,7 @@
 
 var Code = require('code')
 var Lab = require('lab')
-var Runnable = require('runnable')
+var Runnable = require('@runnable/api-client')
 var TaskFatalError = require('ponos').TaskFatalError
 var sinon = require('sinon')
 
@@ -46,6 +46,7 @@ describe('models', function () {
       }
       mockDependency = {
         hostname: 'elasticHostname',
+        name: 'elasticName',
         shortHash: 'dependencyShorthash'
       }
       mockRunnableInstance = {
@@ -480,6 +481,61 @@ describe('models', function () {
           })
           .catch(done)
       })
+      it('should return a fixed isolated object', function (done) {
+        var mockTimestamp = new Date().toString()
+        var mockInstance = {
+          _id: 'instanceID',
+          shortHash: 'instanceID',
+          owner: {
+            github: 1234,
+            username: 'Myztiq'
+          },
+          masterPod: true,
+          container: {
+            Running: false
+          },
+          contextVersion: {
+            attrs: {
+              dockRemoved: true
+            }
+          }
+        }
+        mockDependency = {
+          hostname: 'mongodb-staging-codenow.runnablecloud.com',
+          name: '2x6md2--mongodb',
+          shortHash: '264yle',
+          isolated: 'asdasdasd'
+        }
+        mockRunnableInstance = {
+          getElasticHostname: sinon.stub().returns('elasticHostname.example.com'),
+          getContainerHostname: sinon.stub().returns('directHostname.example.com'),
+          getBranchName: sinon.stub().returns('branchName'),
+          fetchDependencies: sinon.stub().yieldsAsync(null, [mockDependency]),
+          attrs: mockInstance,
+          contextVersion: mockInstance.contextVersion
+        }
+        NaviEntry._getDirectURlObj(mockRunnableInstance, mockTimestamp)
+          .then(function (data) {
+            sinon.assert.calledOnce(mockRunnableInstance.fetchDependencies)
+            expect(data).to.deep.equal({
+              branch: 'branchName',
+              url: 'directHostname.example.com',
+              dependencies: [{
+                shortHash: '264yle',
+                isolatedMastersShortHash: '2x6md2',
+                elasticUrl: 'mongodb-staging-codenow.runnablecloud.com'
+              }],
+              dockerHost: undefined,
+              ports: {},
+              running: false,
+              lastUpdated: mockTimestamp,
+              masterPod: true,
+              dockRemoved: true
+            })
+            done()
+          })
+          .catch(done)
+      })
     })
     describe('handleInstanceDelete', function () {
       beforeEach(function (done) {
@@ -590,6 +646,59 @@ describe('models', function () {
             })
             .catch(done)
         })
+      })
+    })
+    describe('_extractIsolatedMasterShortHash', function () {
+      it('should pull out the shortHash from the instance master', function (done) {
+        expect(NaviEntry._extractIsolatedMasterShortHash('asdf--foo.bar.baz')).to.equal('asdf')
+        done()
+      })
+      it('should throw a task fatal error if the regular expresion does not match properly', function (done) {
+        try {
+          NaviEntry._extractIsolatedMasterShortHash('asdf')
+          Code.fail('No exception thrown')
+        } catch (e) {
+          expect(e).to.be.an.instanceof(TaskFatalError)
+        }
+        done()
+      })
+    })
+    describe('_getIsolatedShortHash', function () {
+      var extractedShortHash
+      beforeEach(function (done) {
+        extractedShortHash = 'deadbeefextracted'
+        sinon.stub(NaviEntry, '_extractIsolatedMasterShortHash').returns(extractedShortHash)
+        done()
+      })
+      afterEach(function (done) {
+        NaviEntry._extractIsolatedMasterShortHash.restore()
+        done()
+      })
+      it('should call _extractIsolatedMasterShortHash if the instance is isolated', function (done) {
+        var results = NaviEntry._getIsolatedShortHash({
+          attrs: {
+            isolated: true,
+            isIsolationGroupMaster: false,
+            shortHash: 'shortHash',
+            name: 'instanceName'
+          }
+        })
+        expect(results).to.equal(extractedShortHash)
+        sinon.assert.calledOnce(NaviEntry._extractIsolatedMasterShortHash)
+        sinon.assert.calledWith(NaviEntry._extractIsolatedMasterShortHash, 'instanceName')
+        done()
+      })
+      it('should return the shorthash if the instance is not isolated', function (done) {
+        var results = NaviEntry._getIsolatedShortHash({
+          attrs: {
+            isolated: false,
+            isIsolationGroupMaster: false,
+            shortHash: 'shortHash'
+          }
+        })
+        sinon.assert.notCalled(NaviEntry._extractIsolatedMasterShortHash)
+        expect(results).to.equal('shortHash')
+        done()
       })
     })
   })

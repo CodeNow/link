@@ -12,7 +12,7 @@ var sinon = require('sinon')
 var nock = require('nock')
 var Code = require('code')
 var expect = Code.expect
-var Runnable = require('runnable')
+var Runnable = require('@runnable/api-client')
 var mongooseControl = require('mongoose-control')
 
 require('loadenv')({ debugName: 'link:env' })

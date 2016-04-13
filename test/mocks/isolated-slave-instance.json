@@ -1,0 +1,555 @@
+{
+  "_id": "5643ed0a16c10c1e00716960",
+  "name": "testbranch1-api",
+  "owner": {
+    "gravatar": "https://avatars.githubusercontent.com/u/9487339?v=3",
+    "username": "RunnableDemo",
+    "github": 9487339
+  },
+  "parent": "17joj1",
+  "lowerName": "testbranch1-api",
+  "contextVersion": {
+    "_id": "5643eddd16c10c1e00716a19",
+    "infraCodeVersion": "5643e9bc16c10c1e007166e1",
+    "createdBy": {
+      "github": 467885
+    },
+    "context": "5643e9bc16c10c1e007166de",
+    "owner": {
+      "github": 9487339
+    },
+    "__v": 0,
+    "containerId": "5643eddd16c10c1e00716a18",
+    "dockerHost": "http://10.20.209.167:4242",
+    "build": {
+      "message": "Manual build",
+      "triggeredBy": {
+        "github": 467885
+      },
+      "started": "2015-11-12T01:39:41.295Z",
+      "dockerTag": "registry.runnable.com/9487339/5643e9bc16c10c1e007166de:5643eddd16c10c1e00716a19",
+      "dockerContainer": "105bb31dbd1546b5437ba85c1d14aaa5e34708050955d42e75d643e78ac7d8c4",
+      "containerStarted": "2015-11-12T01:39:41.610Z",
+      "dockerImage": "ad4971040bd3",
+      "failed": false,
+      "completed": "2015-11-12T01:39:59.515Z",
+      "triggeredAction": {
+        "manual": true,
+        "appCodeVersion": {
+          "commitLog": []
+        }
+      },
+      "_id": "5643eddd16c10c1e00716a18",
+      "dockerContainerName": "5643eddd16c10c1e00716a18",
+      "duration": 18220
+    },
+    "advanced": false,
+    "appCodeVersions": [
+      {
+        "commit": "dde1094234a91fd090aea0bddbdf0649d42124d2",
+        "branch": "testbranch1",
+        "lowerBranch": "testbranch1",
+        "repo": "RunnableDemo/api",
+        "lowerRepo": "runnabledemo/api",
+        "_id": "5643e9bd16c10c1e007166e6",
+        "privateKey": "RunnableDemo/api.key",
+        "publicKey": "RunnableDemo/api.key.pub",
+        "defaultBranch": "master",
+        "useLatest": false,
+        "transformRules": {
+          "rename": [],
+          "replace": [],
+          "exclude": []
+        }
+      }
+    ],
+    "created": "2015-11-12T01:39:41.072Z",
+    "id": "5643eddd16c10c1e00716a19"
+  },
+  "shortHash": "1mn7k2",
+  "createdBy": {
+    "gravatar": "https://avatars.githubusercontent.com/u/467885?v=3",
+    "username": "cflynn07",
+    "github": 467885
+  },
+  "build": {
+    "_id": "5643eddd16c10c1e00716a1b",
+    "createdBy": {
+      "github": 467885
+    },
+    "owner": {
+      "github": 9487339
+    },
+    "__v": 0,
+    "started": "2015-11-12T01:39:41.238Z",
+    "buildNumber": 5617,
+    "completed": "2015-11-12T01:39:59.534Z",
+    "failed": false,
+    "created": "2015-11-12T01:39:41.081Z",
+    "contextVersions": [
+      "5643eddd16c10c1e00716a19"
+    ],
+    "contexts": [
+      "5643e9bc16c10c1e007166de"
+    ],
+    "duration": 18296,
+    "successful": true,
+    "id": "5643eddd16c10c1e00716a1b"
+  },
+  "autoForked": true,
+  "masterPod": false,
+  "env": [
+    "MONGODB_URL=mongodb-staging-runnabledemo.runnablecloud.com",
+    "SOMETHING=helloworld-staging-runnabledemo.runnablecloud.com"
+  ],
+  "isIsolationGroupMaster": true,
+  "isolated": "5643e9c816c10c1e00716703",
+  "created": "2015-11-12T01:36:10.067Z",
+  "locked": false,
+  "public": false,
+  "__v": 0,
+  "container": {
+    "dockerContainer": "6ee520fa173a7838210ef8e0cbaa43eba7ff133d073ffddb816f1a51512a06f7",
+    "dockerHost": "http://10.20.209.167:4242",
+    "inspect": {
+      "AppArmorProfile": "",
+      "Args": [
+        "-c",
+        "until grep -q ethwe /proc/net/dev; do sleep 1; done;npm start"
+      ],
+      "Config": {
+        "AttachStderr": false,
+        "AttachStdin": false,
+        "AttachStdout": false,
+        "Cmd": [
+          "/bin/sh",
+          "-c",
+          "until grep -q ethwe /proc/net/dev; do sleep 1; done;npm start"
+        ],
+        "CpuShares": 0,
+        "Cpuset": "",
+        "Domainname": "",
+        "Entrypoint": null,
+        "Env": [
+          "MONGODB_URL=mongodb-staging-runnabledemo.runnablecloud.com",
+          "SOMETHING=helloworld-staging-runnabledemo.runnablecloud.com",
+          "RUNNABLE_CONTAINER_ID=1mn7k2",
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "NODE_VERSION=0.10.35",
+          "NPM_VERSION=2.2.0"
+        ],
+        "Hostname": "6ee520fa173a",
+        "Image": "registry.runnable.com/9487339/5643e9bc16c10c1e007166de:5643eddd16c10c1e00716a19",
+        "Labels": {
+          "contextVersionId": "5643eddd16c10c1e00716a19",
+          "creatorGithubId": "467885",
+          "deploymentUuid": "4c3aa18f-6da0-4f55-987d-5afea2d596fb",
+          "instanceId": "5643ed0a16c10c1e00716960",
+          "instanceName": "testbranch1-api",
+          "instanceShortHash": "1mn7k2",
+          "ownerGithubId": "9487339",
+          "ownerUsername": "RunnableDemo",
+          "sessionUserGithubId": "467885",
+          "tid": "65eac78c-bba3-4c9c-9137-94cd2fb5a274",
+          "type": "user-container"
+        },
+        "MacAddress": "",
+        "Memory": 1000000000,
+        "MemorySwap": -1,
+        "NetworkDisabled": false,
+        "OnBuild": null,
+        "OpenStdin": false,
+        "PortSpecs": null,
+        "StdinOnce": false,
+        "Tty": false,
+        "User": "",
+        "Volumes": null,
+        "WorkingDir": "/api"
+      },
+      "Created": "2015-11-12T01:37:08.144037992Z",
+      "Driver": "aufs",
+      "ExecDriver": "native-0.2",
+      "ExecIDs": null,
+      "HostConfig": {
+        "Binds": null,
+        "CapAdd": null,
+        "CapDrop": null,
+        "CgroupParent": "",
+        "ContainerIDFile": "",
+        "CpuShares": 0,
+        "CpusetCpus": "",
+        "Devices": null,
+        "Dns": null,
+        "DnsSearch": null,
+        "ExtraHosts": null,
+        "IpcMode": "",
+        "Links": null,
+        "LogConfig": {
+          "Config": null,
+          "Type": "json-file"
+        },
+        "LxcConf": null,
+        "Memory": 0,
+        "MemorySwap": 0,
+        "NetworkMode": "",
+        "PidMode": "",
+        "PortBindings": null,
+        "Privileged": false,
+        "PublishAllPorts": true,
+        "ReadonlyRootfs": false,
+        "RestartPolicy": {
+          "MaximumRetryCount": 0,
+          "Name": ""
+        },
+        "SecurityOpt": null,
+        "Ulimits": null,
+        "VolumesFrom": null
+      },
+      "HostnamePath": "/docker/containers/6ee520fa173a7838210ef8e0cbaa43eba7ff133d073ffddb816f1a51512a06f7/hostname",
+      "HostsPath": "/docker/containers/6ee520fa173a7838210ef8e0cbaa43eba7ff133d073ffddb816f1a51512a06f7/hosts",
+      "Id": "6ee520fa173a7838210ef8e0cbaa43eba7ff133d073ffddb816f1a51512a06f7",
+      "Image": "ad4971040bd39a8c9ac8ef452a57a7fb052673d0cceade241311fd0380b220ae",
+      "LogPath": "/docker/containers/6ee520fa173a7838210ef8e0cbaa43eba7ff133d073ffddb816f1a51512a06f7/6ee520fa173a7838210ef8e0cbaa43eba7ff133d073ffddb816f1a51512a06f7-json.log",
+      "MountLabel": "",
+      "Name": "/goofy_ardinghelli",
+      "NetworkSettings": {
+        "Bridge": "docker0",
+        "Gateway": "172.17.42.1",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "IPAddress": "172.17.0.50",
+        "IPPrefixLen": 16,
+        "IPv6Gateway": "",
+        "LinkLocalIPv6Address": "fe80::42:acff:fe11:32",
+        "LinkLocalIPv6PrefixLen": 64,
+        "MacAddress": "02:42:ac:11:00:32",
+        "PortMapping": null,
+        "Ports": {
+          "3000/tcp": [
+            {
+              "HostIp": "0.0.0.0",
+              "HostPort": "32817"
+            }
+          ],
+          "80/tcp": [
+            {
+              "HostIp": "0.0.0.0",
+              "HostPort": "32818"
+            }
+          ],
+          "8000/tcp": [
+            {
+              "HostIp": "0.0.0.0",
+              "HostPort": "32819"
+            }
+          ],
+          "8080/tcp": [
+            {
+              "HostIp": "0.0.0.0",
+              "HostPort": "32820"
+            }
+          ]
+        }
+      },
+      "Path": "/bin/sh",
+      "ProcessLabel": "",
+      "ResolvConfPath": "/docker/containers/6ee520fa173a7838210ef8e0cbaa43eba7ff133d073ffddb816f1a51512a06f7/resolv.conf",
+      "RestartCount": 0,
+      "State": {
+        "Dead": false,
+        "Error": "",
+        "ExitCode": 0,
+        "FinishedAt": "0001-01-01T00:00:00Z",
+        "OOMKilled": false,
+        "Paused": false,
+        "Pid": 17544,
+        "Restarting": false,
+        "Running": true,
+        "StartedAt": "2015-11-12T01:37:08.535951902Z"
+      }
+    },
+    "ports": {
+      "3000/tcp": [
+        {
+          "HostIp": "0.0.0.0",
+          "HostPort": "32817"
+        }
+      ],
+      "80/tcp": [
+        {
+          "HostIp": "0.0.0.0",
+          "HostPort": "32818"
+        }
+      ],
+      "8000/tcp": [
+        {
+          "HostIp": "0.0.0.0",
+          "HostPort": "32819"
+        }
+      ],
+      "8080/tcp": [
+        {
+          "HostIp": "0.0.0.0",
+          "HostPort": "32820"
+        }
+      ]
+    }
+  },
+  "lastBuiltSimpleContextVersion": {
+    "created": "2015-11-12T01:39:41.624Z",
+    "id": "5643ed0916c10c1e00716953"
+  },
+  "network": {
+    "hostIp": "10.21.0.13"
+  },
+  "contextVersions": [
+    {
+      "_id": "5643eddd16c10c1e00716a19",
+      "infraCodeVersion": "5643e9bc16c10c1e007166e1",
+      "createdBy": {
+        "github": 467885
+      },
+      "context": "5643e9bc16c10c1e007166de",
+      "owner": {
+        "github": 9487339
+      },
+      "__v": 0,
+      "containerId": "5643eddd16c10c1e00716a18",
+      "dockerHost": "http://10.20.209.167:4242",
+      "build": {
+        "message": "Manual build",
+        "triggeredBy": {
+          "github": 467885
+        },
+        "started": "2015-11-12T01:39:41.295Z",
+        "dockerTag": "registry.runnable.com/9487339/5643e9bc16c10c1e007166de:5643eddd16c10c1e00716a19",
+        "dockerContainer": "105bb31dbd1546b5437ba85c1d14aaa5e34708050955d42e75d643e78ac7d8c4",
+        "containerStarted": "2015-11-12T01:39:41.610Z",
+        "dockerImage": "ad4971040bd3",
+        "failed": false,
+        "completed": "2015-11-12T01:39:59.515Z",
+        "triggeredAction": {
+          "manual": true,
+          "appCodeVersion": {
+            "commitLog": []
+          }
+        },
+        "_id": "5643eddd16c10c1e00716a18",
+        "dockerContainerName": "5643eddd16c10c1e00716a18",
+        "duration": 18220
+      },
+      "advanced": false,
+      "appCodeVersions": [
+        {
+          "commit": "dde1094234a91fd090aea0bddbdf0649d42124d2",
+          "branch": "testbranch1",
+          "lowerBranch": "testbranch1",
+          "repo": "RunnableDemo/api",
+          "lowerRepo": "runnabledemo/api",
+          "_id": "5643e9bd16c10c1e007166e6",
+          "privateKey": "RunnableDemo/api.key",
+          "publicKey": "RunnableDemo/api.key.pub",
+          "defaultBranch": "master",
+          "useLatest": false,
+          "transformRules": {
+            "rename": [],
+            "replace": [],
+            "exclude": []
+          }
+        }
+      ],
+      "created": "2015-11-12T01:39:41.072Z",
+      "id": "5643eddd16c10c1e00716a19"
+    }
+  ],
+  "containers": [
+    {
+      "dockerContainer": "6ee520fa173a7838210ef8e0cbaa43eba7ff133d073ffddb816f1a51512a06f7",
+      "dockerHost": "http://10.20.209.167:4242",
+      "inspect": {
+        "AppArmorProfile": "",
+        "Args": [
+          "-c",
+          "until grep -q ethwe /proc/net/dev; do sleep 1; done;npm start"
+        ],
+        "Config": {
+          "AttachStderr": false,
+          "AttachStdin": false,
+          "AttachStdout": false,
+          "Cmd": [
+            "/bin/sh",
+            "-c",
+            "until grep -q ethwe /proc/net/dev; do sleep 1; done;npm start"
+          ],
+          "CpuShares": 0,
+          "Cpuset": "",
+          "Domainname": "",
+          "Entrypoint": null,
+          "Env": [
+            "MONGODB_URL=mongodb-staging-runnabledemo.runnablecloud.com",
+            "SOMETHING=helloworld-staging-runnabledemo.runnablecloud.com",
+            "RUNNABLE_CONTAINER_ID=1mn7k2",
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "NODE_VERSION=0.10.35",
+            "NPM_VERSION=2.2.0"
+          ],
+          "Hostname": "6ee520fa173a",
+          "Image": "registry.runnable.com/9487339/5643e9bc16c10c1e007166de:5643eddd16c10c1e00716a19",
+          "Labels": {
+            "contextVersionId": "5643eddd16c10c1e00716a19",
+            "creatorGithubId": "467885",
+            "deploymentUuid": "4c3aa18f-6da0-4f55-987d-5afea2d596fb",
+            "instanceId": "5643ed0a16c10c1e00716960",
+            "instanceName": "testbranch1-api",
+            "instanceShortHash": "1mn7k2",
+            "ownerGithubId": "9487339",
+            "ownerUsername": "RunnableDemo",
+            "sessionUserGithubId": "467885",
+            "tid": "65eac78c-bba3-4c9c-9137-94cd2fb5a274",
+            "type": "user-container"
+          },
+          "MacAddress": "",
+          "Memory": 1000000000,
+          "MemorySwap": -1,
+          "NetworkDisabled": false,
+          "OnBuild": null,
+          "OpenStdin": false,
+          "PortSpecs": null,
+          "StdinOnce": false,
+          "Tty": false,
+          "User": "",
+          "Volumes": null,
+          "WorkingDir": "/api"
+        },
+        "Created": "2015-11-12T01:37:08.144037992Z",
+        "Driver": "aufs",
+        "ExecDriver": "native-0.2",
+        "ExecIDs": null,
+        "HostConfig": {
+          "Binds": null,
+          "CapAdd": null,
+          "CapDrop": null,
+          "CgroupParent": "",
+          "ContainerIDFile": "",
+          "CpuShares": 0,
+          "CpusetCpus": "",
+          "Devices": null,
+          "Dns": null,
+          "DnsSearch": null,
+          "ExtraHosts": null,
+          "IpcMode": "",
+          "Links": null,
+          "LogConfig": {
+            "Config": null,
+            "Type": "json-file"
+          },
+          "LxcConf": null,
+          "Memory": 0,
+          "MemorySwap": 0,
+          "NetworkMode": "",
+          "PidMode": "",
+          "PortBindings": null,
+          "Privileged": false,
+          "PublishAllPorts": true,
+          "ReadonlyRootfs": false,
+          "RestartPolicy": {
+            "MaximumRetryCount": 0,
+            "Name": ""
+          },
+          "SecurityOpt": null,
+          "Ulimits": null,
+          "VolumesFrom": null
+        },
+        "HostnamePath": "/docker/containers/6ee520fa173a7838210ef8e0cbaa43eba7ff133d073ffddb816f1a51512a06f7/hostname",
+        "HostsPath": "/docker/containers/6ee520fa173a7838210ef8e0cbaa43eba7ff133d073ffddb816f1a51512a06f7/hosts",
+        "Id": "6ee520fa173a7838210ef8e0cbaa43eba7ff133d073ffddb816f1a51512a06f7",
+        "Image": "ad4971040bd39a8c9ac8ef452a57a7fb052673d0cceade241311fd0380b220ae",
+        "LogPath": "/docker/containers/6ee520fa173a7838210ef8e0cbaa43eba7ff133d073ffddb816f1a51512a06f7/6ee520fa173a7838210ef8e0cbaa43eba7ff133d073ffddb816f1a51512a06f7-json.log",
+        "MountLabel": "",
+        "Name": "/goofy_ardinghelli",
+        "NetworkSettings": {
+          "Bridge": "docker0",
+          "Gateway": "172.17.42.1",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "IPAddress": "172.17.0.50",
+          "IPPrefixLen": 16,
+          "IPv6Gateway": "",
+          "LinkLocalIPv6Address": "fe80::42:acff:fe11:32",
+          "LinkLocalIPv6PrefixLen": 64,
+          "MacAddress": "02:42:ac:11:00:32",
+          "PortMapping": null,
+          "Ports": {
+            "3000/tcp": [
+              {
+                "HostIp": "0.0.0.0",
+                "HostPort": "32817"
+              }
+            ],
+            "80/tcp": [
+              {
+                "HostIp": "0.0.0.0",
+                "HostPort": "32818"
+              }
+            ],
+            "8000/tcp": [
+              {
+                "HostIp": "0.0.0.0",
+                "HostPort": "32819"
+              }
+            ],
+            "8080/tcp": [
+              {
+                "HostIp": "0.0.0.0",
+                "HostPort": "32820"
+              }
+            ]
+          }
+        },
+        "Path": "/bin/sh",
+        "ProcessLabel": "",
+        "ResolvConfPath": "/docker/containers/6ee520fa173a7838210ef8e0cbaa43eba7ff133d073ffddb816f1a51512a06f7/resolv.conf",
+        "RestartCount": 0,
+        "State": {
+          "Dead": false,
+          "Error": "",
+          "ExitCode": 0,
+          "FinishedAt": "0001-01-01T00:00:00Z",
+          "OOMKilled": false,
+          "Paused": false,
+          "Pid": 17544,
+          "Restarting": false,
+          "Running": true,
+          "StartedAt": "2015-11-12T01:37:08.535951902Z"
+        }
+      },
+      "ports": {
+        "3000/tcp": [
+          {
+            "HostIp": "0.0.0.0",
+            "HostPort": "32817"
+          }
+        ],
+        "80/tcp": [
+          {
+            "HostIp": "0.0.0.0",
+            "HostPort": "32818"
+          }
+        ],
+        "8000/tcp": [
+          {
+            "HostIp": "0.0.0.0",
+            "HostPort": "32819"
+          }
+        ],
+        "8080/tcp": [
+          {
+            "HostIp": "0.0.0.0",
+            "HostPort": "32820"
+          }
+        ]
+      }
+    }
+  ],
+  "id": "5643ed0a16c10c1e00716960"
+}
