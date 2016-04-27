@@ -73,6 +73,8 @@ describe('functional', function () {
                 expect(document.ipWhitelist.enabled).to.be.true()
 
                 expect(document.elasticUrl).to.equal('api-staging-runnabledemo.runnable2.net')
+                expect(document.ownerUsername).to.equal(masterInstance.owner.username)
+                expect(document.ownerGithubId).to.equal(masterInstance.owner.github)
                 expect(Object.keys(document.directUrls).length).to.equal(1)
 
                 var subDocument = document.directUrls[masterInstance.shortHash]
