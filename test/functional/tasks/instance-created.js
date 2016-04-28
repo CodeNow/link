@@ -113,6 +113,7 @@ describe('functional', function () {
           var naviEntry = new NaviEntry()
           naviEntry.elasticUrl = 'api-staging-runnabledemo.runnable2.net'
           naviEntry.ownerGithubId = 9487339
+          naviEntry.ownerUsername = 'RunnableDemo'
           naviEntry.directUrls = {
             asdf: {
               branch: 'foo'

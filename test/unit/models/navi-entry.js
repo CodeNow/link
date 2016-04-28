@@ -146,6 +146,7 @@ describe('models', function () {
                   $set: {
                     elasticUrl: 'elasticHostname.example.com',
                     ownerGithubId: 1234,
+                    ownerUsername: 'Myztiq',
                     'ipWhitelist.enabled': false,
                     'directUrls.instanceID': {
                       lastUpdated: mockTimestamp,
@@ -236,6 +237,7 @@ describe('models', function () {
                     $set: {
                       elasticUrl: 'elasticHostname.example.com',
                       ownerGithubId: 1234,
+                      ownerUsername: 'Myztiq',
                       'ipWhitelist.enabled': true,
                       'directUrls.instanceID': {
                         lastUpdated: mockTimestamp,
@@ -333,6 +335,7 @@ describe('models', function () {
                     $set: {
                       elasticUrl: 'elasticHostname.example.com',
                       ownerGithubId: 1234,
+                      ownerUsername: 'Myztiq',
                       'directUrls.instanceID': {
                         lastUpdated: mockTimestamp,
                         ports: {
@@ -414,6 +417,7 @@ describe('models', function () {
                 $set: {
                   elasticUrl: 'elasticHostname.example.com',
                   ownerGithubId: 1234,
+                  ownerUsername: 'Myztiq',
                   'directUrls.instanceID': {
                     lastUpdated: mockTimestamp,
                     ports: {},
