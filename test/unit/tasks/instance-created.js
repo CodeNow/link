@@ -80,5 +80,15 @@ describe('tasks', function () {
         })
         .catch(done)
     })
+
+    it('should skip isolation updates', function (done) {
+      var job = { instance: instance, timestamp: new Date().valueOf(), action: 'isolation' }
+      instanceCreated(job)
+        .then(function (results) {
+          sinon.assert.notCalled(NaviEntry.handleInstanceUpdate)
+          done()
+        })
+        .catch(done)
+    })
   })
 })
