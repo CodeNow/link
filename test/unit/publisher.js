@@ -17,7 +17,7 @@ const describe = lab.describe
 const expect = Code.expect
 const it = lab.it
 
-describe('lib/hermes', function () {
+describe('lib/publisher', function () {
   beforeEach(function (done) {
     sinon.stub(publisher._publisher, 'publishEvent')
     sinon.stub(publisher._publisher, 'connect')
@@ -41,7 +41,7 @@ describe('lib/hermes', function () {
     })
   }) // end connect
 
-  describe('hermesInstance.publishCacheInvalidated', function () {
+  describe('publisher.publishCacheInvalidated', function () {
     it('should throw with invalid arguments', function (done) {
       function throws () {
         publisher.publishCacheInvalidated(null)
