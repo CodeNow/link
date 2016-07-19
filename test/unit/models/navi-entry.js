@@ -1,21 +1,21 @@
 'use strict'
 
-var Code = require('code')
-var Lab = require('lab')
-var Runnable = require('@runnable/api-client')
-var TaskFatalError = require('ponos').TaskFatalError
-var sinon = require('sinon')
+const Code = require('code')
+const Lab = require('lab')
+const Runnable = require('@runnable/api-client')
+const sinon = require('sinon')
+const WorkerStopError = require('error-cat/errors/worker-stop-error')
 
-var lab = exports.lab = Lab.script()
+const NaviEntry = require('models/navi-entry')
+const publisher = require('../../../lib/publisher')
 
-var NaviEntry = require('models/navi-entry')
-var hermesInstance = require('hermes')
+const lab = exports.lab = Lab.script()
 
-var afterEach = lab.afterEach
-var beforeEach = lab.beforeEach
-var describe = lab.describe
-var expect = Code.expect
-var it = lab.it
+const afterEach = lab.afterEach
+const beforeEach = lab.beforeEach
+const describe = lab.describe
+const expect = Code.expect
+const it = lab.it
 
 require('loadenv')({ debugName: 'link:env' })
 
@@ -59,13 +59,13 @@ describe('models', function () {
       }
       sinon.stub(Runnable.prototype, 'newInstance').returns(mockRunnableInstance)
       sinon.stub(Runnable.prototype, 'githubLogin').yieldsAsync(null)
-      sinon.stub(hermesInstance, 'publishCacheInvalidated')
+      sinon.stub(publisher, 'publishCacheInvalidated')
       done()
     })
     afterEach(function (done) {
       Runnable.prototype.newInstance.restore()
       Runnable.prototype.githubLogin.restore()
-      hermesInstance.publishCacheInvalidated.restore()
+      publisher.publishCacheInvalidated.restore()
       done()
     })
     describe('handleInstanceUpdate', function () {
@@ -88,9 +88,9 @@ describe('models', function () {
         it('should callback err if db errs', function (done) {
           NaviEntry.handleInstanceUpdate(mockInstance)
             .catch(function (returnedErr) {
-              sinon.assert.notCalled(hermesInstance.publishCacheInvalidated)
+              sinon.assert.notCalled(publisher.publishCacheInvalidated)
               expect(returnedErr).to.be.an.instanceof(Error)
-              expect(returnedErr).to.not.be.an.instanceof(TaskFatalError)
+              expect(returnedErr).to.not.be.an.instanceof(WorkerStopError)
               done()
             })
             .catch(done)
@@ -108,8 +108,8 @@ describe('models', function () {
         it('should callback err if db errs', function (done) {
           NaviEntry.handleInstanceUpdate(mockInstance)
             .catch(function (returnedErr) {
-              sinon.assert.notCalled(hermesInstance.publishCacheInvalidated)
-              expect(returnedErr).to.be.an.instanceof(TaskFatalError)
+              sinon.assert.notCalled(publisher.publishCacheInvalidated)
+              expect(returnedErr).to.be.an.instanceof(WorkerStopError)
               expect(returnedErr.message).to.match(/old/)
               done()
             })
@@ -127,8 +127,8 @@ describe('models', function () {
         it('should update the database', function (done) {
           NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
             .then(function () {
-              sinon.assert.calledOnce(hermesInstance.publishCacheInvalidated)
-              sinon.assert.calledWith(hermesInstance.publishCacheInvalidated,
+              sinon.assert.calledOnce(publisher.publishCacheInvalidated)
+              sinon.assert.calledWith(publisher.publishCacheInvalidated,
                                       'elasticHostname.example.com')
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
@@ -169,7 +169,6 @@ describe('models', function () {
       })
 
       describe('running', function () {
-
         describe('is masterPod', function () {
           beforeEach(function (done) {
             mockInstance.container.dockerHost = 'http://10.0.0.1:215'
@@ -218,8 +217,8 @@ describe('models', function () {
             }
             NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
               .then(function () {
-                sinon.assert.calledOnce(hermesInstance.publishCacheInvalidated)
-                sinon.assert.calledWith(hermesInstance.publishCacheInvalidated,
+                sinon.assert.calledOnce(publisher.publishCacheInvalidated)
+                sinon.assert.calledWith(publisher.publishCacheInvalidated,
                   'elasticHostname.example.com')
                 sinon.assert.calledWith(
                   NaviEntry.findOneAndUpdate,
@@ -316,8 +315,8 @@ describe('models', function () {
             }
             NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
               .then(function () {
-                sinon.assert.calledOnce(hermesInstance.publishCacheInvalidated)
-                sinon.assert.calledWith(hermesInstance.publishCacheInvalidated,
+                sinon.assert.calledOnce(publisher.publishCacheInvalidated)
+                sinon.assert.calledWith(publisher.publishCacheInvalidated,
                   'elasticHostname.example.com')
                 sinon.assert.calledWith(
                   NaviEntry.findOneAndUpdate,
@@ -398,8 +397,8 @@ describe('models', function () {
         }
         NaviEntry.handleInstanceUpdate(mockInstance, mockTimestamp)
           .then(function () {
-            sinon.assert.calledOnce(hermesInstance.publishCacheInvalidated)
-            sinon.assert.calledWith(hermesInstance.publishCacheInvalidated,
+            sinon.assert.calledOnce(publisher.publishCacheInvalidated)
+            sinon.assert.calledWith(publisher.publishCacheInvalidated,
               'elasticHostname.example.com')
             sinon.assert.calledWith(
               NaviEntry.findOneAndUpdate,
@@ -460,7 +459,7 @@ describe('models', function () {
         NaviEntry._getDirectURlObj(mockRunnableInstance)
           .catch(function (returnedError) {
             expect(returnedError).to.exist()
-            expect(returnedError).to.be.an.instanceof(TaskFatalError)
+            expect(returnedError).to.be.an.instanceof(WorkerStopError)
             expect(returnedError.message).to.match(/not found/)
             done()
           })
@@ -567,8 +566,8 @@ describe('models', function () {
         it('should remove the entire document', function (done) {
           NaviEntry.handleInstanceDelete(mockInstance, mockTimestamp)
             .then(function () {
-              sinon.assert.calledOnce(hermesInstance.publishCacheInvalidated)
-              sinon.assert.calledWith(hermesInstance.publishCacheInvalidated, 'elasticUrl')
+              sinon.assert.calledOnce(publisher.publishCacheInvalidated)
+              sinon.assert.calledWith(publisher.publishCacheInvalidated, 'elasticUrl')
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
                 {
@@ -595,7 +594,7 @@ describe('models', function () {
         it('should remove the entire document', function (done) {
           NaviEntry.handleInstanceDelete(mockInstance, mockTimestamp)
             .then(function () {
-              sinon.assert.notCalled(hermesInstance.publishCacheInvalidated)
+              sinon.assert.notCalled(publisher.publishCacheInvalidated)
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
                 {
@@ -622,9 +621,9 @@ describe('models', function () {
           it('should callback err if db errs', function (done) {
             NaviEntry.handleInstanceDelete(mockInstance)
               .catch(function (returnedErr) {
-                sinon.assert.notCalled(hermesInstance.publishCacheInvalidated)
+                sinon.assert.notCalled(publisher.publishCacheInvalidated)
                 expect(returnedErr).to.be.an.instanceof(Error)
-                expect(returnedErr).to.not.be.an.instanceof(TaskFatalError)
+                expect(returnedErr).to.not.be.an.instanceof(WorkerStopError)
                 sinon.assert.notCalled(NaviEntry.findOneAndRemove)
                 done()
               })
@@ -635,8 +634,8 @@ describe('models', function () {
           NaviEntry.handleInstanceDelete(mockInstance, mockTimestamp)
             .then(function () {
               sinon.assert.notCalled(NaviEntry.findOneAndRemove)
-              sinon.assert.calledOnce(hermesInstance.publishCacheInvalidated)
-              sinon.assert.calledWith(hermesInstance.publishCacheInvalidated, 'elasticUrl');
+              sinon.assert.calledOnce(publisher.publishCacheInvalidated)
+              sinon.assert.calledWith(publisher.publishCacheInvalidated, 'elasticUrl')
               sinon.assert.calledWith(
                 NaviEntry.findOneAndUpdate,
                 {
@@ -662,7 +661,7 @@ describe('models', function () {
           NaviEntry._extractIsolatedMasterShortHash('asdf')
           Code.fail('No exception thrown')
         } catch (e) {
-          expect(e).to.be.an.instanceof(TaskFatalError)
+          expect(e).to.be.an.instanceof(WorkerStopError)
         }
         done()
       })

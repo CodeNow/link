@@ -1,22 +1,22 @@
 'use strict'
 
-var Code = require('code')
-var Lab = require('lab')
-var Promise = require('bluebird')
-var TaskFatalError = require('ponos').TaskFatalError
-var sinon = require('sinon')
+const Code = require('code')
+const Lab = require('lab')
+const Promise = require('bluebird')
+const sinon = require('sinon')
+const WorkerStopError = require('error-cat/errors/worker-stop-error')
 
-var lab = exports.lab = Lab.script()
+const instance = require('../../mocks/master-instance')
+const instanceUpdated = require('tasks/instance-updated')
+const NaviEntry = require('models/navi-entry')
 
-var NaviEntry = require('models/navi-entry')
-var instance = require('../../mocks/master-instance')
-var instanceUpdated = require('tasks/instance-updated')
+const lab = exports.lab = Lab.script()
 
-var afterEach = lab.afterEach
-var beforeEach = lab.beforeEach
-var describe = lab.describe
-var expect = Code.expect
-var it = lab.it
+const afterEach = lab.afterEach
+const beforeEach = lab.beforeEach
+const describe = lab.describe
+const expect = Code.expect
+const it = lab.it
 
 require('loadenv')({ debugName: 'link:env' })
 
@@ -37,7 +37,7 @@ describe('tasks', function () {
     it('should fatally reject without a job', function (done) {
       var job = null
       instanceUpdated(job).asCallback(function (err) {
-        expect(err).to.be.an.instanceof(TaskFatalError)
+        expect(err).to.be.an.instanceof(WorkerStopError)
         expect(err.message).to.match(/non-object job/)
         done()
       })
@@ -46,7 +46,7 @@ describe('tasks', function () {
     it('should fatally reject without object `instance`', function (done) {
       var job = { instance: [] }
       instanceUpdated(job).asCallback(function (err) {
-        expect(err).to.be.an.instanceof(TaskFatalError)
+        expect(err).to.be.an.instanceof(WorkerStopError)
         expect(err.message).to.match(/instance.*object/)
         done()
       })
@@ -55,7 +55,7 @@ describe('tasks', function () {
     it('should fatally reject without number `timestamp`', function (done) {
       var job = { instance: instance }
       instanceUpdated(job).asCallback(function (err) {
-        expect(err).to.be.an.instanceof(TaskFatalError)
+        expect(err).to.be.an.instanceof(WorkerStopError)
         expect(err.message).to.match(/timestamp.*number/)
         done()
       })
@@ -64,7 +64,7 @@ describe('tasks', function () {
     it('should fatally reject without `Job.instance.owner.username`', function (done) {
       var job = { instance: {}, timestamp: new Date().valueOf() }
       instanceUpdated(job).asCallback(function (err) {
-        expect(err).to.be.an.instanceof(TaskFatalError)
+        expect(err).to.be.an.instanceof(WorkerStopError)
         expect(err.message).to.match(/username.*string/)
         done()
       })

@@ -1,23 +1,23 @@
 'use strict'
-
-var Lab = require('lab')
-var lab = exports.lab = Lab.script()
-var describe = lab.describe
-var it = lab.it
-var beforeEach = lab.beforeEach
-var afterEach = lab.afterEach
-var Code = require('code')
-var expect = Code.expect
-var sinon = require('sinon')
-var instance = require('../../mocks/master-instance')
-
 require('loadenv')({ debugName: 'link:env' })
 
-var Promise = require('bluebird')
-var TaskFatalError = require('ponos').TaskFatalError
+const Code = require('code')
+const Lab = require('lab')
+const Promise = require('bluebird')
+const sinon = require('sinon')
+const WorkerStopError = require('error-cat/errors/worker-stop-error')
 
-var instanceDeleted = require('tasks/instance-deleted')
-var NaviEntry = require('models/navi-entry')
+const instance = require('../../mocks/master-instance')
+const instanceDeleted = require('tasks/instance-deleted')
+const NaviEntry = require('models/navi-entry')
+
+const lab = exports.lab = Lab.script()
+
+const afterEach = lab.afterEach
+const beforeEach = lab.beforeEach
+const describe = lab.describe
+const expect = Code.expect
+const it = lab.it
 
 describe('tasks', function () {
   var deleteResults
@@ -36,7 +36,7 @@ describe('tasks', function () {
     it('should fatally reject without a job', function (done) {
       var job = null
       instanceDeleted(job).asCallback(function (err) {
-        expect(err).to.be.an.instanceof(TaskFatalError)
+        expect(err).to.be.an.instanceof(WorkerStopError)
         expect(err.message).to.match(/non-object job/)
         done()
       })
@@ -45,7 +45,7 @@ describe('tasks', function () {
     it('should fatally reject without object `instance`', function (done) {
       var job = { instance: [] }
       instanceDeleted(job).asCallback(function (err) {
-        expect(err).to.be.an.instanceof(TaskFatalError)
+        expect(err).to.be.an.instanceof(WorkerStopError)
         expect(err.message).to.match(/instance.*object/)
         done()
       })
