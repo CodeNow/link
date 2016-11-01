@@ -1,28 +1,30 @@
 'use strict'
-
-var Lab = require('lab')
-var lab = exports.lab = Lab.script()
-var describe = lab.describe
-var it = lab.it
-var beforeEach = lab.beforeEach
-var afterEach = lab.afterEach
-var before = lab.before
-var after = lab.after
-var sinon = require('sinon')
-var nock = require('nock')
-var Code = require('code')
-var expect = Code.expect
-var clone = require('101/clone')
-var Runnable = require('@runnable/api-client')
-var mongooseControl = require('mongoose-control')
-
 require('loadenv')({ debugName: 'link:env' })
 
-var instanceUpdated = require('tasks/instance-updated')
-var NaviEntry = require('models/navi-entry')
-var masterInstance = require('../../mocks/master-instance')
-var slaveInstance = require('../../mocks/slave-instance')
-var TaskFatalError = require('ponos').TaskFatalError
+const clone = require('101/clone')
+const Code = require('code')
+const Lab = require('lab')
+const mongooseControl = require('mongoose-control')
+const nock = require('nock')
+const Runnable = require('@runnable/api-client')
+const sinon = require('sinon')
+const WorkerStopError = require('error-cat/errors/worker-stop-error')
+
+const instanceUpdated = require('tasks/instance-updated')
+const masterInstance = require('../../mocks/master-instance')
+const NaviEntry = require('models/navi-entry')
+const publisher = require('../../../lib/publisher')
+const slaveInstance = require('../../mocks/slave-instance')
+
+const lab = exports.lab = Lab.script()
+
+const after = lab.after
+const afterEach = lab.afterEach
+const before = lab.before
+const beforeEach = lab.beforeEach
+const describe = lab.describe
+const expect = Code.expect
+const it = lab.it
 
 describe('functional', function () {
   describe('tasks', function () {
@@ -37,11 +39,13 @@ describe('functional', function () {
 
       beforeEach(function (done) {
         sinon.stub(Runnable.prototype, 'githubLogin').yieldsAsync(null)
+        sinon.stub(publisher._publisher, 'publishEvent')
         NaviEntry.remove({}, done)
       })
 
       afterEach(function (done) {
         Runnable.prototype.githubLogin.restore()
+        publisher._publisher.publishEvent.restore()
         NaviEntry.remove({}, function (err) {
           done(err)
         })
@@ -93,6 +97,7 @@ describe('functional', function () {
                   { elasticUrl: 'helloworld-staging-runnabledemo.runnablecloud.com',
                     shortHash: '1jndz2' }
                 ])
+                sinon.assert.calledOnce(publisher._publisher.publishEvent)
                 done()
               })
             })
@@ -115,6 +120,7 @@ describe('functional', function () {
                 }
                 expect(document.ipWhitelist).to.be.object()
                 expect(document.ipWhitelist.enabled).to.be.false()
+                sinon.assert.calledOnce(publisher._publisher.publishEvent)
                 done()
               })
             })
@@ -179,6 +185,7 @@ describe('functional', function () {
                   { elasticUrl: 'helloworld-staging-runnabledemo.runnablecloud.com',
                     shortHash: '1jndz2' }
                 ])
+                sinon.assert.calledOnce(publisher._publisher.publishEvent)
                 done()
               })
             })
@@ -189,7 +196,7 @@ describe('functional', function () {
           var job = { instance: slaveInstance, timestamp: new Date(1990, 11, 17).valueOf() }
           instanceUpdated(job)
             .catch(function (err) {
-              expect(err).to.be.an.instanceof(TaskFatalError)
+              expect(err).to.be.an.instanceof(WorkerStopError)
               expect(err.message).to.match(/old/)
               nockScope.forEach(function (nockedRequest) {
                 expect(nockedRequest.isDone()).to.equal(true)
@@ -200,6 +207,7 @@ describe('functional', function () {
                 }
                 expect(Object.keys(document.directUrls).length).to.equal(2)
                 expect(document.directUrls[slaveInstance.shortHash]).to.exist()
+                sinon.assert.notCalled(publisher._publisher.publishEvent)
                 done()
               })
             })
