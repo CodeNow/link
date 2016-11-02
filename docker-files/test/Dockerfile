@@ -1,7 +1,5 @@
 FROM node:4.2
 
-ENV LOG_LEVEL=error
-
 # Make sure we have the right version of npm
 RUN npm install -g npm@2.14.7
 
