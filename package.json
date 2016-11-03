@@ -1,6 +1,6 @@
 {
   "name": "link",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Workers for Navi",
   "main": "lib/index.js",
   "scripts": {
