@@ -49,6 +49,9 @@ NaviEntry.findAsync({})
     })
     return Promise.all(promises)
   })
+  .then(arrayOfSuccessfulPromises => {
+    console.log('Removed ' + arrayOfSuccessfulPromises.length + ' Navi Entries')
+  })
   .catch(err => {
     console.error(err)
   })
