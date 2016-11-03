@@ -38,10 +38,11 @@ NaviEntry.findAsync({})
       multiples[ elasticUrl ].forEach(record => {
         if (record !== newestRecord) {
           if (DRY_RUN) {
-            console.log('Remove navi-entry _id ' + record._id)
+            console.log('Remove navi-entry ' + record.elasticUrl)
             console.log(record)
           } else {
-            promises.push(NaviEntry.removeByIdAsync(record._id))
+            console.log('Remove navi-entry ' + record.elasticUrl)
+            promises.push(NaviEntry.removeAsync({ _id: record._id }))
           }
         }
       })
